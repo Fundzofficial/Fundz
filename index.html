@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="FUNDZ — Raves Never Die. Premium clothing built for the culture." />
+  <title>FUNDZ — Raves Never Die</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            display: ['Arial', 'Helvetica', 'sans-serif']
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    html { scroll-behavior: smooth; }
+    body { background:#080808; color:#f5f5f5; }
+    html.light { color-scheme: light; }
+    html.light body { background:#f8fafc; color:#0f172a; }
+    html.light .glass { background:rgba(255,255,255,.92) !important; color:#0f172a; }
+    html.light .text-white, html.light .text-white\/60, html.light .text-white\/70, html.light .text-white\/80 { color:#334155 !important; }
+    html.light .text-white { color:#0f172a !important; }
+    html.light .border-white\/10 { border-color: rgba(15,23,42,.12) !important; }
+    .glass { background:rgba(10,10,10,.68); -webkit-backdrop-filter:blur(16px); backdrop-filter:blur(16px); }
+    .hero-bg { background:
+      linear-gradient(90deg,rgba(0,0,0,.86),rgba(0,0,0,.34),rgba(0,0,0,.78)),
+      url('https://images.unsplash.com/photo-1529139574466-a303027c1d8b?auto=format&fit=crop&w=2200&q=90') center/cover; }
+    .product-card img { transition:transform .6s ease; }
+    .product-card:hover img { transform:scale(1.045); }
+    .fade { animation:fade .45s ease both; }
+    @keyframes fade { from {opacity:0; transform:translateY(10px)} to {opacity:1; transform:none} }
+    .loader { width:22px;height:22px;border:2px solid #444;border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite; }
+    @keyframes spin { to {transform:rotate(360deg)} }
+  </style>
+</head>
+
+<body class="font-display antialiased">
+  <div id="toast" class="fixed top-5 right-5 z-[100] hidden rounded-full bg-white px-5 py-3 text-sm font-bold text-black shadow-2xl"></div>
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<header class="fixed top-0 left-0 right-0 z-50 border-b border-white/10 glass">
+
+  <nav class="max-w-7xl mx-auto px-5 lg:px-8 py-4">
+
+    <div class="flex items-center justify-between">
+
+      <button
+        id="mobileMenuButton"
+        type="button"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-xl text-white/90 hover:bg-white/10 md:hidden"
+        aria-label="Open navigation menu"
+      >
+        ☰
+      </button>
+
+      <!-- LOGO -->
+
+      <a
+        href="index.html"
+        class="text-2xl font-black tracking-[0.22em]"
+      >
+        FUNDZ
+      </a>
+
+
+      <!-- DESKTOP NAV -->
+
+      <div class="hidden md:flex items-center gap-8 text-sm">
+
+        <a
+          href="index.html"
+          class="font-bold"
+        >
+          Home
+        </a>
+
+        <a
+          href="shop.html"
+          class="text-white/60 hover:text-white"
+        >
+          Shop
+        </a>
+
+        <a
+          href="index.html#story"
+          class="text-white/60 hover:text-white"
+        >
+          Our Story
+        </a>
+
+        <a
+          href="index.html#community"
+          class="text-white/60 hover:text-white"
+        >
+          Community
+        </a>
+
+        <a
+          href="index.html#world"
+          class="text-white/60 hover:text-white"
+        >
+          FUNDZ World
+        </a>
+
+      </div>
+
+
+      <!-- ACTIONS -->
+
+      <div class="flex items-center gap-2">
+
+        <button
+          type="button"
+          id="wishlistBtn"
+          class="rounded-full border border-white/20 px-4 py-2 text-sm hover:bg-white hover:text-black"
+        >
+          ♡
+          <span id="wishlistCount">0</span>
+        </button>
+
+        <button
+          type="button"
+          id="cartBtn"
+          class="rounded-full border border-white/20 px-4 py-2 text-sm hover:bg-white hover:text-black"
+        >
+          Bag
+          <span id="cartCount">0</span>
+        </button>
+
+        <a
+          id="accountBtn"
+          href="account.html"
+          class="hidden h-10 items-center rounded-full border border-white/10 px-4 text-xs uppercase sm:flex"
+        >
+          Account
+        </a>
+
+      </div>
+
+    </div>
+
+  </nav>
+
+</header>
+
+<div
+  id="mobileMenu"
+  class="hidden fixed inset-0 z-[60] bg-black/95 px-5 py-6 backdrop-blur-lg"
+>
+  <div class="mx-auto flex h-full max-w-sm flex-col">
+    <div class="flex items-center justify-between">
+      <a href="index.html" class="text-2xl font-black tracking-[.22em]">FUNDZ</a>
+      <button
+        id="mobileMenuClose"
+        type="button"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-2xl hover:bg-white/10"
+        aria-label="Close navigation menu"
+      >
+        ×
+      </button>
+    </div>
+
+    <nav class="mt-10 flex flex-col gap-5 text-lg uppercase">
+      <a href="index.html" class="font-bold">Home</a>
+      <a href="shop.html" class="text-white/70 hover:text-white">Shop</a>
+      <a href="index.html#story" class="text-white/70 hover:text-white">Our Story</a>
+      <a href="index.html#community" class="text-white/70 hover:text-white">Community</a>
+      <a href="index.html#world" class="text-white/70 hover:text-white">FUNDZ World</a>
+    </nav>
+
+    <div class="mt-auto space-y-3">
+      <a href="account.html" class="block rounded-full border border-white/20 px-5 py-3 text-center text-sm font-bold hover:bg-white/10">Account</a>
+      <a href="wishlist.html" class="block rounded-full border border-white/20 px-5 py-3 text-center text-sm font-bold hover:bg-white/10">Wishlist</a>
+      <a href="cart.html" class="block rounded-full border border-white/20 px-5 py-3 text-center text-sm font-bold hover:bg-white/10">Bag</a>
+    </div>
+  </div>
+</div>
+
+  <main>
+    <section class="hero-bg flex min-h-screen items-end">
+      <div class="mx-auto w-full max-w-7xl px-5 pb-20 pt-32 lg:px-8 lg:pb-28">
+        <div class="max-w-3xl fade">
+          <p class="mb-5 text-xs font-bold uppercase tracking-[.4em] text-white/70">FUNDZ / EST. FOR THE CULTURE</p>
+          <h1 class="text-6xl font-black uppercase leading-[.88] tracking-[-.06em] sm:text-7xl lg:text-9xl">Raves<br/>Never Die.</h1>
+          <p class="mt-7 max-w-xl text-base leading-7 text-white/70 sm:text-lg">
+            Premium pieces for people who refuse to disappear into the crowd.
+          </p>
+          <div class="mt-9 flex flex-wrap gap-3">
+            <a href="shop.html" class="rounded-full bg-white px-7 py-3.5 text-sm font-bold text-black hover:bg-white/80">Shop Now</a>
+      </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="story" class="mx-auto max-w-7xl px-5 py-24 lg:px-8 lg:py-32">
+      <div class="grid gap-12 lg:grid-cols-2 lg:items-end">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[.35em] text-white/40">The Brand</p>
+          <h2 class="mt-4 text-4xl font-black uppercase tracking-tight sm:text-6xl">Wear the moment.<br/>Keep the memory.</h2>
+        </div>
+        <p id="brandStory" class="text-lg leading-8 text-white/60">
+          FUNDZ is built around movement, expression and the people who make ordinary nights unforgettable.
+          Every piece is designed to feel premium without losing the energy that started it all.
+        </p>
+      </div>
+    </section>
+
+    <section id="shop" class="border-y border-white/10 bg-white/[.025]">
+      <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8">
+        <div class="mb-10 flex flex-wrap items-end justify-between gap-5">
+          <div>
+            <p class="text-xs font-bold uppercase tracking-[.35em] text-white/40">FUNDZ Collection</p>
+            <h2 class="mt-3 text-4xl font-black uppercase tracking-tight">Featured</h2>
+          </div>
+          <a href="shop.html" class="text-sm font-bold underline underline-offset-4">View all</a>
+        </div>
+        <div id="featuredGrid" class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+          <div class="col-span-full flex min-h-48 items-center justify-center"><div class="loader"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="mx-auto max-w-7xl px-5 py-20 lg:px-8">
+      <div class="mb-10 flex items-end justify-between">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[.35em] text-white/40">Most Wanted</p>
+          <h2 class="mt-3 text-4xl font-black uppercase tracking-tight">Best Sellers</h2>
+        </div>
+      </div>
+      <div id="bestGrid" class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+        <div class="col-span-full flex min-h-48 items-center justify-center"><div class="loader"></div></div>
+      </div>
+    </section>
+
+    <section class="border-y border-white/10 bg-white/[.025]">
+      <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8">
+        <div class="mb-10">
+          <p class="text-xs font-bold uppercase tracking-[.35em] text-white/40">Fresh Drop</p>
+          <h2 class="mt-3 text-4xl font-black uppercase tracking-tight">New Arrivals</h2>
+        </div>
+        <div id="newGrid" class="grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4">
+          <div class="col-span-full flex min-h-48 items-center justify-center"><div class="loader"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="community" class="mx-auto max-w-7xl px-5 py-24 lg:px-8">
+      <div class="grid gap-12 lg:grid-cols-[.8fr_1.2fr] lg:items-center">
+        <div>
+          <p class="text-xs font-bold uppercase tracking-[.35em] text-white/40">The Family</p>
+          <h2 class="mt-4 text-5xl font-black uppercase leading-none">Seen in<br/>FUNDZ.</h2>
+          <p class="mt-6 leading-7 text-white/60">Real people. Real fits. Admin-approved community photos from the people keeping the rave alive.</p>
+          <a href="#newsletter" class="mt-8 inline-block rounded-full bg-white px-6 py-3 text-sm font-bold text-black">Join the Family</a>
+        </div>
+        <div id="communityGrid" class="grid grid-cols-2 gap-3">
+          <div class="col-span-full flex min-h-64 items-center justify-center"><div class="loader"></div></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="world" class="border-y border-white/10 bg-white/[.025]">
+      <div class="mx-auto max-w-7xl px-5 py-20 lg:px-8">
+        <div class="mb-10">
+          <p class="text-xs font-bold uppercase tracking-[.35em] text-white/40">Inside FUNDZ</p>
+          <h2 class="mt-3 text-4xl font-black uppercase tracking-tight">FUNDZ World</h2>
+        </div>
+        <div id="worldGrid" class="grid gap-5 md:grid-cols-3">
+          <article class="rounded-2xl border border-white/10 p-6">
+            <p class="text-xs uppercase tracking-widest text-white/40">Updates</p>
+            <h3 class="mt-3 text-2xl font-bold">The next chapter is loading.</h3>
+            <p class="mt-3 text-sm leading-6 text-white/50">New drops, events and behind-the-scenes stories will appear here.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+
+      </div>
+    </section>
+
+    <section id="newsletter" class="bg-white py-20 text-black">
+      <div class="mx-auto max-w-3xl px-5 text-center">
+        <p class="text-xs font-bold uppercase tracking-[.35em] text-black/40">Join the Family</p>
+        <h2 class="mt-4 text-4xl font-black uppercase tracking-tight sm:text-6xl">Never miss a rave.</h2>
+        <p class="mx-auto mt-5 max-w-xl text-black/60">Get first access to drops, events and FUNDZ World updates.</p>
+        <form id="newsletterForm" class="mx-auto mt-8 flex max-w-xl flex-col gap-3 sm:flex-row">
+          <input id="newsletterEmail" required type="email" placeholder="Your email address"
+                 class="min-w-0 flex-1 rounded-full border border-black/15 bg-black/5 px-5 py-3.5 outline-none focus:border-black" />
+          <button type="submit" class="rounded-full bg-black px-7 py-3.5 text-sm font-bold text-white hover:bg-black/80">Subscribe</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+<!-- FOOTER -->
+
+<footer class="border-t border-white/10">
+
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-14">
+
+    <div class="grid gap-10 md:grid-cols-4">
+
+      <div class="md:col-span-2">
+
+        <div class="text-2xl font-black tracking-[.22em]">
+          FUNDZ
+        </div>
+
+        <p class="mt-4 max-w-sm text-sm leading-6 text-white/40">
+          Raves Never Die. Premium clothing for the people,
+          moments and memories that matter.
+        </p>
+
+      </div>
+
+      <div>
+
+        <p class="text-xs font-bold uppercase tracking-widest text-white/40">
+          FUNDZ
+        </p>
+
+        <div class="mt-4 space-y-3 text-sm text-white/60">
+
+          <a href="index.html#story" class="block hover:text-white">
+            Our Story
+          </a>
+
+          <a href="index.html#community" class="block hover:text-white">
+            Community
+          </a>
+
+          <a href="index.html#world" class="block hover:text-white">
+            FUNDZ World
+          </a>
+
+          <a href="addresses.html" class="block hover:text-emerald-700 transition-colors">
+            Address
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="space-y-3 text-white/80">
+
+        <h4 class="font-bold uppercase tracking-wider text-[11px] text-white/60">
+          Contact
+        </h4>
+
+        <ul class="space-y-3 text-sm text-white/60">
+
+          <li>
+            <a
+              href="mailto:support@fundz.app"
+              class="flex items-start gap-2 hover:text-emerald-500 transition-colors"
+            >
+              <span class="text-emerald-500">✉</span>
+              <span>fundzstore243@gmail.com</span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="tel:+234 814 461 4604"
+              class="flex items-start gap-2 hover:text-emerald-500 transition-colors"
+            >
+              <span class="text-emerald-500">☎</span>
+              <span>+234 814 461 4604</span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="https://wa.me/+234 814 461 4604"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-start gap-2 hover:text-emerald-500 transition-colors"
+            >
+              <span class="text-emerald-500">◉</span>
+              <span>WhatsApp</span>
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+      <div class="space-y-3 text-white/80">
+
+        <h4 class="font-bold uppercase tracking-wider text-[11px] text-white/60">
+          Customer Support
+        </h4>
+
+        <p class="text-sm text-white/60">Mon - Sat</p>
+        <p class="text-sm text-white/60">8:00 AM - 8:00 PM WAT</p>
+
+        <a
+          href="mailto:fundzstore243@gmail.com"
+          class="inline-block mt-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-black transition hover:bg-emerald-500"
+        >
+          Contact Support
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="border-t border-white/10">
+
+    <div class="max-w-7xl mx-auto px-5 lg:px-8 py-5">
+
+      <p class="text-xs text-white/30">
+        © <span id="year"></span> FUNDZ. All rights reserved.
+      </p>
+
+    </div>
+
+  </div>
+
+</footer>
+
+<script src="./index.js?v=4" type="module"></script>
+<script type="module" src="./supabase.js?v=4"></script>
+<script src="./auth.js?v=4" type="module"></script>
+
+<script>
+  const mobileMenuButton = document.getElementById("mobileMenuButton");
+  const mobileMenu = document.getElementById("mobileMenu");
+  const mobileMenuClose = document.getElementById("mobileMenuClose");
+
+  function openMobileMenu() {
+    mobileMenu?.classList.remove("hidden");
+  }
+
+  function closeMobileMenu() {
+    mobileMenu?.classList.add("hidden");
+  }
+
+  if (mobileMenuButton) mobileMenuButton.addEventListener("click", openMobileMenu);
+  if (mobileMenuClose) mobileMenuClose.addEventListener("click", closeMobileMenu);
+  if (mobileMenu) {
+    mobileMenu.addEventListener("click", (event) => {
+      if (event.target === mobileMenu) closeMobileMenu();
+    });
+  }
+</script>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6a75c65766bcd71d4237749d/1jve0tjv1';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+</body>
+</html>

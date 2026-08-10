@@ -1,0 +1,1495 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>My Account | FUNDZ</title>
+
+  <meta
+    name="description"
+    content="Manage your FUNDZ account, orders, wishlist and profile."
+  >
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #080808;
+      color: #f5f5f5;
+    }
+
+    html.light {
+      color-scheme: light;
+    }
+
+    html.light body {
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    html.light .glass {
+      background: rgba(255, 255, 255, 0.9) !important;
+      color: #0f172a;
+    }
+
+    html.light .text-white,
+    html.light .text-white\/50,
+    html.light .text-white\/60,
+    html.light .text-white\/70,
+    html.light .text-white\/80 {
+      color: #334155 !important;
+    }
+
+    html.light .text-white {
+      color: #0f172a !important;
+    }
+
+    html.light .border-white\/10 {
+      border-color: rgba(15, 23, 42, 0.12) !important;
+    }
+
+    .glass {
+      background: rgba(8, 8, 8, .86);
+      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(18px);
+    }
+
+    .loader {
+      width: 22px;
+      height: 22px;
+      border: 2px solid #333;
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    .account-card {
+      transition:
+        transform .25s ease,
+        border-color .25s ease,
+        background .25s ease;
+    }
+
+    .account-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(255,255,255,.2);
+      background: rgba(255,255,255,.05);
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<!-- =====================================================
+     NAVIGATION
+===================================================== -->
+
+<header class="fixed top-0 left-0 right-0 z-50 border-b border-white/10 glass">
+
+  <nav class="max-w-7xl mx-auto px-5 lg:px-8 py-4">
+
+    <div class="flex items-center justify-between">
+
+      <button
+        id="mobileMenuButton"
+        type="button"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/20 text-xl text-white/90 hover:bg-white/10 md:hidden"
+        aria-label="Open navigation menu"
+      >
+        ☰
+      </button>
+
+      <a
+        href="index.html"
+        class="text-2xl font-black tracking-[.22em]"
+      >
+        FUNDZ
+      </a>
+
+      <div class="hidden md:flex items-center gap-8 text-sm">
+
+      <a
+        href="index.html"
+        class="text-white/50 hover:text-white"
+      >
+        Home
+      </a>
+
+      <a
+        href="wishlist.html"
+        class="text-white/50 hover:text-white"
+      >
+        Wishlist
+      </a>
+
+      <a
+        href="cart.html"
+        class="text-white/50 hover:text-white"
+      >
+        Bag
+        <span id="cartCount">0</span>
+      </a>
+
+      </div>
+
+
+      <button
+        id="logoutTopButton"
+        class="rounded-full border border-white/20 px-4 py-2 text-sm hover:bg-white hover:text-black"
+      >
+        Logout
+      </button>
+
+    </div>
+
+  </nav>
+
+</header>
+
+  <div
+  id="mobileMenu"
+  class="hidden fixed inset-0 z-[60] bg-black/95 px-5 py-6 backdrop-blur-lg"
+>
+  <div class="mx-auto flex h-full max-w-sm flex-col">
+    <div class="flex items-center justify-between">
+      <a href="index.html" class="text-2xl font-black tracking-[.22em]">FUNDZ</a>
+      <button
+        id="mobileMenuClose"
+        type="button"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-2xl hover:bg-white/10"
+        aria-label="Close navigation menu"
+      >
+        ×
+      </button>
+    </div>
+
+    <nav class="mt-10 flex flex-col gap-5 text-lg uppercase">
+      <a href="index.html" class="font-bold">Home</a>
+      <a href="shop.html" class="text-white/70 hover:text-white">Shop</a>
+      <a href="index.html#story" class="text-white/70 hover:text-white">Our Story</a>
+      <a href="index.html#community" class="text-white/70 hover:text-white">Community</a>
+      <a href="index.html#world" class="text-white/70 hover:text-white">FUNDZ World</a>
+    </nav>
+
+    <div class="mt-auto space-y-3">
+      <a href="account.html" class="block rounded-full border border-white/20 px-5 py-3 text-center text-sm font-bold hover:bg-white/10">Account</a>
+      <a href="wishlist.html" class="block rounded-full border border-white/20 px-5 py-3 text-center text-sm font-bold hover:bg-white/10">Wishlist</a>
+      <a href="cart.html" class="block rounded-full border border-white/20 px-5 py-3 text-center text-sm font-bold hover:bg-white/10">Bag</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- =====================================================
+     MAIN
+===================================================== -->
+
+<main class="max-w-7xl mx-auto px-5 lg:px-8 pt-36 pb-24">
+
+
+  <!-- LOADING -->
+
+  <div
+    id="loading"
+    class="flex min-h-[50vh] items-center justify-center"
+  >
+
+    <div class="loader"></div>
+
+  </div>
+
+
+  <!-- ACCOUNT -->
+
+  <div
+    id="accountContent"
+    class="hidden"
+  >
+
+
+    <!-- =================================================
+         HEADER
+    ================================================== -->
+
+    <section class="mb-12">
+
+      <p class="text-xs font-bold uppercase tracking-[.35em] text-white/40">
+        FUNDZ Member
+      </p>
+
+      <h1
+        id="welcomeTitle"
+        class="mt-4 text-5xl font-black uppercase tracking-tight md:text-7xl"
+      >
+        My Account
+      </h1>
+
+      <p
+        id="memberEmail"
+        class="mt-5 text-white/40"
+      ></p>
+
+      <button
+        id="adminPanelButton"
+        class="mt-6 hidden rounded-full border border-white/20 bg-white/5 px-5 py-3 text-sm font-bold uppercase tracking-wider text-white hover:bg-white/10"
+      >
+        Return as admin
+      </button>
+
+    </section>
+
+
+    <!-- =================================================
+         DASHBOARD GRID
+    ================================================== -->
+
+    <section class="grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+
+      <!-- ORDERS -->
+
+      <a
+        href="orders.html"
+        class="account-card rounded-3xl border border-white/10 bg-white/[.03] p-6"
+      >
+
+        <div class="text-3xl">
+          📦
+        </div>
+
+        <h2 class="mt-6 font-black uppercase">
+          My Orders
+        </h2>
+
+        <p class="mt-2 text-sm text-white/40">
+          View your purchases and order history.
+        </p>
+
+        <div class="mt-5 text-xs font-bold uppercase tracking-wider text-white/60">
+          View Orders →
+        </div>
+
+      </a>
+
+
+      <!-- WISHLIST -->
+
+      <a
+        href="wishlist.html"
+        class="account-card rounded-3xl border border-white/10 bg-white/[.03] p-6"
+      >
+
+        <div class="text-3xl">
+          ♡
+        </div>
+
+        <h2 class="mt-6 font-black uppercase">
+          Wishlist
+        </h2>
+
+        <p class="mt-2 text-sm text-white/40">
+          Your saved FUNDZ pieces.
+        </p>
+
+        <div class="mt-5 text-xs font-bold uppercase tracking-wider text-white/60">
+          View Wishlist →
+        </div>
+
+      </a>
+
+
+      <!-- ADDRESSES -->
+
+      <a
+        href="addresses.html"
+        class="account-card rounded-3xl border border-white/10 bg-white/[.03] p-6"
+      >
+
+        <div class="text-3xl">
+          📍
+        </div>
+
+        <h2 class="mt-6 font-black uppercase">
+          Addresses
+        </h2>
+
+        <p class="mt-2 text-sm text-white/40">
+          Manage your shipping addresses.
+        </p>
+
+        <div class="mt-5 text-xs font-bold uppercase tracking-wider text-white/60">
+          Manage Addresses →
+        </div>
+
+      </a>
+
+
+      <!-- SETTINGS -->
+
+      <a
+        href="#settings"
+        class="account-card rounded-3xl border border-white/10 bg-white/[.03] p-6"
+      >
+
+        <div class="text-3xl">
+          ⚙
+        </div>
+
+        <h2 class="mt-6 font-black uppercase">
+          Settings
+        </h2>
+
+        <p class="mt-2 text-sm text-white/40">
+          Manage your account information.
+        </p>
+
+        <div class="mt-5 text-xs font-bold uppercase tracking-wider text-white/60">
+          Account Settings →
+        </div>
+
+      </a>
+
+    </section>
+
+
+    <!-- =================================================
+         PROFILE
+    ================================================== -->
+
+    <section
+      id="profile"
+      class="mt-12 grid gap-10 lg:grid-cols-[1fr_360px]"
+    >
+
+
+      <!-- PROFILE FORM -->
+
+      <div>
+
+        <div class="mb-6">
+
+          <p class="text-xs font-bold uppercase tracking-[.3em] text-white/40">
+            Personal Information
+          </p>
+
+          <h2 class="mt-3 text-2xl font-black uppercase">
+            Your Profile
+          </h2>
+
+        </div>
+
+
+        <form
+          id="profileForm"
+          class="rounded-3xl border border-white/10 bg-white/[.03] p-6 sm:p-8"
+        >
+
+
+          <!-- NAME -->
+
+          <label class="block">
+
+            <span class="text-xs font-bold uppercase tracking-wider text-white/50">
+              Full Name
+            </span>
+
+            <input
+              id="fullName"
+              type="text"
+              autocomplete="name"
+              class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 outline-none focus:border-white/40"
+              placeholder="Your full name"
+            >
+
+          </label>
+
+
+          <!-- PHONE -->
+
+          <label class="mt-5 block">
+
+            <span class="text-xs font-bold uppercase tracking-wider text-white/50">
+              Phone Number
+            </span>
+
+            <input
+              id="phone"
+              type="tel"
+              autocomplete="tel"
+              class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 outline-none focus:border-white/40"
+              placeholder="+234..."
+            >
+
+          </label>
+
+
+          <!-- EMAIL -->
+
+          <label class="mt-5 block">
+
+            <span class="text-xs font-bold uppercase tracking-wider text-white/50">
+              Email Address
+            </span>
+
+            <input
+              id="email"
+              type="email"
+              disabled
+              class="mt-2 w-full cursor-not-allowed rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 text-white/40 outline-none"
+            >
+
+          </label>
+
+
+          <!-- MESSAGE -->
+
+          <div
+            id="profileMessage"
+            class="mt-5 hidden text-sm"
+          ></div>
+
+
+          <!-- SAVE -->
+
+          <button
+            id="saveProfileButton"
+            type="submit"
+            class="mt-6 rounded-full bg-white px-7 py-3.5 text-sm font-black uppercase tracking-wider text-black hover:bg-white/90 disabled:opacity-50"
+          >
+            Save Changes
+          </button>
+
+        </form>
+
+      </div>
+
+
+      <!-- MEMBER CARD -->
+
+      <aside>
+
+        <div class="rounded-3xl border border-white/10 bg-white/[.03] p-7">
+
+          <div class="flex h-16 w-16 items-center justify-center rounded-full bg-white text-xl font-black text-black">
+            <span id="initials">
+              F
+            </span>
+          </div>
+
+
+          <h2
+            id="memberName"
+            class="mt-6 text-xl font-black"
+          >
+            FUNDZ Member
+          </h2>
+
+
+          <p
+            id="verifiedStatus"
+            class="mt-2 text-xs text-white/40"
+          >
+            Account member
+          </p>
+
+
+          <div class="mt-8 border-t border-white/10 pt-6">
+
+            <p class="text-xs font-bold uppercase tracking-wider text-white/30">
+              Member Since
+            </p>
+
+            <p
+              id="memberSince"
+              class="mt-2 text-sm"
+            >
+              —
+            </p>
+
+          </div>
+
+        </div>
+
+      </aside>
+
+    </section>
+
+
+    <!-- =================================================
+         ACCOUNT SETTINGS
+    ================================================== -->
+
+    <section
+      id="settings"
+      class="mt-12"
+    >
+
+      <div class="mb-6">
+
+        <p class="text-xs font-bold uppercase tracking-[.3em] text-white/40">
+          Account
+        </p>
+
+        <h2 class="mt-3 text-2xl font-black uppercase">
+          Settings
+        </h2>
+
+      </div>
+
+
+      <div class="overflow-hidden rounded-3xl border border-white/10 bg-white/[.03]">
+
+
+        <!-- PASSWORD -->
+
+        <a
+          href="forgot-password.html"
+          class="flex items-center justify-between border-b border-white/10 p-6 hover:bg-white/[.03]"
+        >
+
+          <div>
+
+            <h3 class="font-bold">
+              Change Password
+            </h3>
+
+            <p class="mt-1 text-sm text-white/40">
+              Request a password reset link.
+            </p>
+
+          </div>
+
+          <span class="text-white/40">
+            →
+          </span>
+
+        </a>
+
+
+        <!-- NOTIFICATIONS -->
+
+        <div class="flex items-center justify-between border-b border-white/10 p-6">
+
+          <div>
+
+            <h3 class="font-bold">
+              Email Notifications
+            </h3>
+
+            <p class="mt-1 text-sm text-white/40">
+              Receive updates about your orders.
+            </p>
+
+          </div>
+
+          <label class="relative inline-flex cursor-pointer">
+
+            <input
+              id="notificationToggle"
+              type="checkbox"
+              class="peer sr-only"
+              checked
+              aria-label="Enable email notifications"
+            >
+
+            <span class="sr-only">Enable email notifications</span>
+
+            <div class="h-6 w-11 rounded-full bg-white/10 after:absolute after:left-[2px] after:top-[2px] after:h-5 after:w-5 after:rounded-full after:bg-white after:transition-all peer-checked:bg-white peer-checked:after:translate-x-full peer-checked:after:bg-black"></div>
+
+          </label>
+
+        </div>
+
+
+        <!-- LOGOUT -->
+
+        <button
+          id="logoutButton"
+          class="flex w-full items-center justify-between p-6 text-left hover:bg-white/[.03]"
+        >
+
+          <div>
+
+            <h3 class="font-bold text-red-400">
+              Log Out
+            </h3>
+
+            <p class="mt-1 text-sm text-white/40">
+              Sign out of your FUNDZ account.
+            </p>
+
+          </div>
+
+          <span class="text-red-400">
+            →
+          </span>
+
+        </button>
+
+      </div>
+
+    </section>
+
+
+  </div>
+
+</main>
+
+
+<!-- =====================================================
+     TOAST
+===================================================== -->
+
+<div
+  id="toast"
+  class="fixed right-5 top-5 z-[100] hidden rounded-full bg-white px-5 py-3 text-sm font-bold text-black shadow-2xl"
+></div>
+
+
+<!-- FOOTER -->
+
+<footer class="border-t border-white/10">
+
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-14">
+
+    <div class="grid gap-10 md:grid-cols-4">
+
+      <div class="md:col-span-2">
+
+        <div class="text-2xl font-black tracking-[.22em]">
+          FUNDZ
+        </div>
+
+        <p class="mt-4 max-w-sm text-sm leading-6 text-white/40">
+          Raves Never Die. Premium clothing for the people,
+          moments and memories that matter.
+        </p>
+
+      </div>
+
+      <div>
+
+        <p class="text-xs font-bold uppercase tracking-widest text-white/40">
+          FUNDZ
+        </p>
+
+        <div class="mt-4 space-y-3 text-sm text-white/60">
+
+          <a href="index.html#story" class="block hover:text-white">
+            Our Story
+          </a>
+
+          <a href="index.html#community" class="block hover:text-white">
+            Community
+          </a>
+
+          <a href="index.html#world" class="block hover:text-white">
+            FUNDZ World
+          </a>
+
+          <a href="addresses.html" class="block hover:text-emerald-700 transition-colors">
+            Address
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="space-y-3 text-white/80">
+
+        <h4 class="font-bold uppercase tracking-wider text-[11px] text-white/60">
+          Contact
+        </h4>
+
+        <ul class="space-y-3 text-sm text-white/60">
+
+          <li>
+            <a
+              href="mailto:support@fundz.app"
+              class="flex items-start gap-2 hover:text-emerald-500 transition-colors"
+            >
+              <span class="text-emerald-500">✉</span>
+              <span>fundzstore243@gmail.com</span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="tel:+234 814 461 4604"
+              class="flex items-start gap-2 hover:text-emerald-500 transition-colors"
+            >
+              <span class="text-emerald-500">☎</span>
+              <span>+234 814 461 4604</span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="https://wa.me/+234 814 461 4604"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-start gap-2 hover:text-emerald-500 transition-colors"
+            >
+              <span class="text-emerald-500">◉</span>
+              <span>WhatsApp</span>
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+      <div class="space-y-3 text-white/80">
+
+        <h4 class="font-bold uppercase tracking-wider text-[11px] text-white/60">
+          Customer Support
+        </h4>
+
+        <p class="text-sm text-white/60">Mon - Sat</p>
+        <p class="text-sm text-white/60">8:00 AM - 8:00 PM WAT</p>
+
+        <a
+          href="mailto:fundzstore243@gmail.com"
+          class="inline-block mt-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-black transition hover:bg-emerald-500"
+        >
+          Contact Support
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="border-t border-white/10">
+
+    <div class="max-w-7xl mx-auto px-5 lg:px-8 py-5">
+
+      <p class="text-xs text-white/30">
+        © <span id="year"></span> FUNDZ. All rights reserved.
+      </p>
+
+    </div>
+
+  </div>
+
+</footer>
+
+<script>
+<!--Start of Tawk.to Script-->
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6a75c65766bcd71d4237749d/1jve0tjv1';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+
+<!-- =====================================================
+     JAVASCRIPT
+===================================================== -->
+
+<script type="module">
+
+import {
+  getCurrentUser,
+  logout,
+  showMessage,
+  requireAuth
+} from "./auth.js";
+
+import {
+  supabase
+} from "./supabase.js";
+
+
+// =====================================================
+// ELEMENTS
+// =====================================================
+
+const loading =
+  document.getElementById(
+    "loading"
+  );
+
+const accountContent =
+  document.getElementById(
+    "accountContent"
+  );
+
+const fullNameInput =
+  document.getElementById(
+    "fullName"
+  );
+
+const phoneInput =
+  document.getElementById(
+    "phone"
+  );
+
+const emailInput =
+  document.getElementById(
+    "email"
+  );
+
+const profileForm =
+  document.getElementById(
+    "profileForm"
+  );
+
+const profileMessage =
+  document.getElementById(
+    "profileMessage"
+  );
+
+const saveButton =
+  document.getElementById(
+    "saveProfileButton"
+  );
+
+const welcomeTitle =
+  document.getElementById(
+    "welcomeTitle"
+  );
+
+const memberEmail =
+  document.getElementById(
+    "memberEmail"
+  );
+
+const memberName =
+  document.getElementById(
+    "memberName"
+  );
+
+const initials =
+  document.getElementById(
+    "initials"
+  );
+
+const adminPanelButton =
+      document.getElementById(
+        "adminPanelButton"
+      );
+
+const cartCount =
+  document.getElementById(
+    "cartCount"
+  );
+
+const toast =
+  document.getElementById(
+    "toast"
+  );
+
+
+// =====================================================
+// YEAR
+// =====================================================
+
+document.getElementById(
+  "year"
+).textContent =
+  new Date().getFullYear();
+
+
+// =====================================================
+// TOAST
+// =====================================================
+
+function showToast(message) {
+
+  toast.textContent =
+    message;
+
+  toast.classList.remove(
+    "hidden"
+  );
+
+  clearTimeout(
+    window.toastTimer
+  );
+
+  window.toastTimer =
+    setTimeout(() => {
+
+      toast.classList.add(
+        "hidden"
+      );
+
+    }, 3000);
+
+}
+
+
+// =====================================================
+// INITIALS
+// =====================================================
+
+function getInitials(
+  name
+) {
+
+  if (!name) {
+    return "F";
+  }
+
+
+  return name
+    .trim()
+    .split(/\s+/)
+    .slice(0, 2)
+    .map(
+      word =>
+        word
+          .charAt(0)
+          .toUpperCase()
+    )
+    .join("");
+
+}
+
+
+// =====================================================
+// CART COUNT
+// =====================================================
+
+function updateCartCount() {
+
+  try {
+
+    const cart =
+      JSON.parse(
+        localStorage.getItem(
+          "fundz_cart"
+        ) || "[]"
+      );
+
+
+    const count =
+      cart.reduce(
+        (total, item) =>
+          total +
+          Number(
+            item.quantity || 1
+          ),
+        0
+      );
+
+
+    cartCount.textContent =
+      count;
+
+  } catch {
+
+    cartCount.textContent =
+      "0";
+
+  }
+
+}
+
+
+// =====================================================
+// LOAD PROFILE
+// =====================================================
+
+async function loadProfile(
+  user
+) {
+
+  /*
+    We expect a profiles table:
+
+    profiles
+      id
+      full_name
+      phone
+      email_notifications
+      created_at
+      updated_at
+
+    id should match auth.users.id.
+  */
+
+
+  const {
+    data: profile,
+    error
+  } =
+    await supabase
+      .from("profiles")
+      .select(`
+        id,
+        full_name,
+        phone,
+        email_notifications,
+        created_at
+      `)
+      .eq(
+        "id",
+        user.id
+      )
+      .maybeSingle();
+
+
+  if (error) {
+
+    console.error(
+      "Profile loading error:",
+      error
+    );
+
+  }
+
+
+  /*
+    Supabase Auth metadata is used as a
+    fallback if a profile doesn't exist.
+  */
+
+  const metadata =
+    user.user_metadata || {};
+
+
+  const name =
+    profile?.full_name ||
+    metadata.full_name ||
+    "";
+
+
+  fullNameInput.value =
+    name;
+
+
+  phoneInput.value =
+    profile?.phone ||
+    "";
+
+
+  emailInput.value =
+    user.email ||
+    "";
+
+
+  memberEmail.textContent =
+    user.email ||
+    "";
+
+
+  const displayName =
+    name ||
+    "FUNDZ Member";
+
+
+  memberName.textContent =
+    displayName;
+
+
+  initials.textContent =
+    getInitials(
+      displayName
+    );
+
+
+  welcomeTitle.textContent =
+    name
+      ? `Welcome, ${name.split(" ")[0]}`
+      : "My Account";
+
+
+  if (
+    user.email_confirmed_at
+  ) {
+
+    verifiedStatus.textContent =
+      "✓ Email verified";
+
+    verifiedStatus.classList.remove(
+      "text-white/40"
+    );
+
+    verifiedStatus.classList.add(
+      "text-green-400"
+    );
+
+  } else {
+
+    verifiedStatus.textContent =
+      "Email not verified";
+
+  }
+
+
+  const createdDate =
+    profile?.created_at ||
+    user.created_at;
+
+
+  if (createdDate) {
+
+    memberSince.textContent =
+      new Intl.DateTimeFormat(
+        "en-NG",
+        {
+          year: "numeric",
+          month: "long",
+          day: "numeric"
+        }
+      ).format(
+        new Date(
+          createdDate
+        )
+      );
+
+  }
+
+  const role =
+    user.user_metadata?.role;
+
+  if (
+    role === "admin" &&
+    adminPanelButton
+  ) {
+    adminPanelButton.classList.remove(
+      "hidden"
+    );
+
+    adminPanelButton.addEventListener(
+      "click",
+      () => {
+        window.location.href =
+          "admin-products.html";
+      }
+    );
+  }
+
+
+  const notificationToggle =
+    document.getElementById(
+      "notificationToggle"
+    );
+
+
+  if (
+    profile &&
+    profile.email_notifications !== null &&
+    profile.email_notifications !== undefined
+  ) {
+
+    notificationToggle.checked =
+      Boolean(
+        profile.email_notifications
+      );
+
+  }
+
+}
+
+
+// =====================================================
+// SAVE PROFILE
+// =====================================================
+
+profileForm.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+
+    saveButton.disabled =
+      true;
+
+    saveButton.textContent =
+      "Saving...";
+
+
+    const user =
+      await getCurrentUser();
+
+
+    if (!user) {
+
+      window.location.href =
+        "login.html";
+
+      return;
+
+    }
+
+
+    const fullName =
+      fullNameInput.value.trim();
+
+
+    const phone =
+      phoneInput.value.trim();
+
+
+    const notificationToggle =
+      document.getElementById(
+        "notificationToggle"
+      );
+
+
+    const {
+      error
+    } =
+      await supabase
+        .from("profiles")
+        .upsert(
+          {
+            id:
+              user.id,
+
+            full_name:
+              fullName,
+
+            phone:
+              phone,
+
+            email_notifications:
+              notificationToggle.checked,
+
+            updated_at:
+              new Date().toISOString()
+
+          },
+          {
+            onConflict: "id"
+          }
+        );
+
+
+    if (error) {
+
+      console.error(
+        "Profile update error:",
+        error
+      );
+
+
+      showMessage(
+        profileMessage,
+        error.message
+      );
+
+    } else {
+
+      showMessage(
+        profileMessage,
+        "Profile updated successfully.",
+        "success"
+      );
+
+
+      memberName.textContent =
+        fullName ||
+        "FUNDZ Member";
+
+
+      initials.textContent =
+        getInitials(
+          fullName
+        );
+
+
+      welcomeTitle.textContent =
+        fullName
+          ? `Welcome, ${fullName.split(" ")[0]}`
+          : "My Account";
+
+
+      showToast(
+        "Profile updated."
+      );
+
+    }
+
+
+    saveButton.disabled =
+      false;
+
+    saveButton.textContent =
+      "Save Changes";
+
+  }
+);
+
+
+// =====================================================
+// LOGOUT
+// =====================================================
+
+async function handleLogout() {
+
+  const result =
+    await logout();
+
+
+  if (!result.success) {
+
+    showToast(
+      result.message ||
+      "Unable to log out."
+    );
+
+    return;
+
+  }
+
+
+  window.location.href =
+    "index.html";
+
+}
+
+
+document
+  .getElementById(
+    "logoutButton"
+  )
+  .addEventListener(
+    "click",
+    handleLogout
+  );
+
+
+document
+  .getElementById(
+    "logoutTopButton"
+  )
+  .addEventListener(
+    "click",
+    handleLogout
+  );
+
+
+// =====================================================
+// AUTH STATE
+// =====================================================
+
+supabase.auth.onAuthStateChange(
+  (event, session) => {
+
+    if (
+      event === "SIGNED_OUT" ||
+      !session
+    ) {
+
+      window.location.href =
+        "login.html";
+
+    }
+
+  }
+);
+
+
+// =====================================================
+// INITIALIZE
+// =====================================================
+
+async function init() {
+
+  const session =
+    await requireAuth(
+      "login.html?redirect=account.html"
+    );
+
+
+  if (!session) {
+    return;
+  }
+
+
+  const user =
+    await getCurrentUser();
+
+
+  if (!user) {
+
+    window.location.href =
+      "login.html";
+
+    return;
+
+  }
+
+
+  await loadProfile(
+    user
+  );
+
+
+  updateCartCount();
+
+
+  loading.classList.add(
+    "hidden"
+  );
+
+  accountContent.classList.remove(
+    "hidden"
+  );
+
+}
+
+
+init();
+
+</script>
+
+<script>
+  const mobileMenuButton = document.getElementById("mobileMenuButton");
+  const mobileMenu = document.getElementById("mobileMenu");
+  const mobileMenuClose = document.getElementById("mobileMenuClose");
+
+  function openMobileMenu() {
+    mobileMenu?.classList.remove("hidden");
+  }
+
+  function closeMobileMenu() {
+    mobileMenu?.classList.add("hidden");
+  }
+
+  if (mobileMenuButton) mobileMenuButton.addEventListener("click", openMobileMenu);
+  if (mobileMenuClose) mobileMenuClose.addEventListener("click", closeMobileMenu);
+  if (mobileMenu) {
+    mobileMenu.addEventListener("click", (event) => {
+      if (event.target === mobileMenu) closeMobileMenu();
+    });
+  }
+</script>
+
+</body>
+
+</html>

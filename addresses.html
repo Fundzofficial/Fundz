@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>FUNDZ | Address</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-black text-white min-h-screen">
+
+  <!-- HEADER -->
+  <header class="sticky top-0 z-40 border-b border-white/10 bg-black/90 backdrop-blur">
+    <div class="mx-auto flex h-20 max-w-4xl items-center justify-between px-5">
+
+      <a
+        href="index.html"
+        class="text-xl font-black tracking-[0.3em]"
+      >
+        FUNDZ
+      </a>
+
+      <a
+        href="account.html"
+        class="rounded-full border border-white/10 px-4 py-2 text-xs uppercase hover:bg-white/10"
+      >
+        Account
+      </a>
+
+    </div>
+  </header>
+
+  <!-- MAIN -->
+  <main class="mx-auto max-w-3xl px-5 py-12 md:py-16">
+
+    <!-- PAGE HEADER -->
+    <div class="mb-10">
+
+      <a
+        href="account.html"
+        class="text-xs uppercase tracking-wider text-white/40 hover:text-white"
+      >
+        ← Back to Account
+      </a>
+
+      <p class="mt-8 text-xs uppercase tracking-[0.3em] text-white/30">
+        Delivery
+      </p>
+
+      <h1 class="mt-2 text-4xl font-black uppercase">
+        Your Address
+      </h1>
+
+      <p class="mt-3 text-sm leading-6 text-white/40">
+        Add your delivery information for faster checkout.
+      </p>
+
+    </div>
+
+    <!-- ADDRESS FORM -->
+    <form
+      id="addressForm"
+      class="space-y-6"
+    >
+
+      <!-- FULL NAME -->
+      <div>
+        <label
+          for="fullName"
+          class="mb-2 block text-xs font-bold uppercase tracking-wider"
+        >
+          Full Name
+        </label>
+
+        <input
+          id="fullName"
+          name="fullName"
+          type="text"
+          required
+          placeholder="Your full name"
+          class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-4 text-sm outline-none transition focus:border-white/40"
+        >
+      </div>
+
+      <!-- PHONE -->
+      <div>
+        <label
+          for="phone"
+          class="mb-2 block text-xs font-bold uppercase tracking-wider"
+        >
+          Phone Number
+        </label>
+
+        <input
+          id="phone"
+          name="phone"
+          type="tel"
+          required
+          placeholder="+234 800 000 0000"
+          class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-4 text-sm outline-none transition focus:border-white/40"
+        >
+      </div>
+
+      <!-- ADDRESS -->
+      <div>
+        <label
+          for="address"
+          class="mb-2 block text-xs font-bold uppercase tracking-wider"
+        >
+          Street Address
+        </label>
+
+        <textarea
+          id="address"
+          name="address"
+          required
+          rows="3"
+          placeholder="House number, street name, landmark..."
+          class="w-full resize-none rounded-xl border border-white/10 bg-white/5 px-4 py-4 text-sm outline-none transition focus:border-white/40"
+        ></textarea>
+      </div>
+
+      <!-- CITY + STATE -->
+      <div class="grid gap-5 md:grid-cols-2">
+
+        <div>
+          <label
+            for="city"
+            class="mb-2 block text-xs font-bold uppercase tracking-wider"
+          >
+            City
+          </label>
+
+          <input
+            id="city"
+            name="city"
+            type="text"
+            required
+            placeholder="Port Harcourt"
+            class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-4 text-sm outline-none transition focus:border-white/40"
+          >
+        </div>
+
+        <div>
+          <label
+            for="state"
+            class="mb-2 block text-xs font-bold uppercase tracking-wider"
+          >
+            State
+          </label>
+
+          <select
+            id="state"
+            name="state"
+            required
+            class="w-full rounded-xl border border-white/10 bg-black px-4 py-4 text-sm outline-none transition focus:border-white/40"
+          >
+            <option value="">Select state</option>
+            <option>Abia</option>
+            <option>Adamawa</option>
+            <option>Akwa Ibom</option>
+            <option>Anambra</option>
+            <option>Bauchi</option>
+            <option>Bayelsa</option>
+            <option>Benue</option>
+            <option>Borno</option>
+            <option>Cross River</option>
+            <option>Delta</option>
+            <option>Ebonyi</option>
+            <option>Edo</option>
+            <option>Ekiti</option>
+            <option>Enugu</option>
+            <option>Gombe</option>
+            <option>Imo</option>
+            <option>Jigawa</option>
+            <option>Kaduna</option>
+            <option>Kano</option>
+            <option>Katsina</option>
+            <option>Kebbi</option>
+            <option>Kogi</option>
+            <option>Kwara</option>
+            <option>Lagos</option>
+            <option>Nasarawa</option>
+            <option>Niger</option>
+            <option>Ogun</option>
+            <option>Ondo</option>
+            <option>Osun</option>
+            <option>Oyo</option>
+            <option>Plateau</option>
+            <option>Rivers</option>
+            <option>Sokoto</option>
+            <option>Taraba</option>
+            <option>Yobe</option>
+            <option>Zamfara</option>
+            <option>FCT</option>
+          </select>
+        </div>
+
+      </div>
+
+      <!-- COUNTRY -->
+      <div>
+        <label
+          for="country"
+          class="mb-2 block text-xs font-bold uppercase tracking-wider"
+        >
+          Country
+        </label>
+
+        <select
+          id="country"
+          name="country"
+          class="w-full rounded-xl border border-white/10 bg-black px-4 py-4 text-sm outline-none transition focus:border-white/40"
+        >
+          <option value="Nigeria">Nigeria</option>
+        </select>
+      </div>
+
+      <!-- DEFAULT ADDRESS -->
+      <label class="flex cursor-pointer items-center gap-3 rounded-xl border border-white/10 bg-white/5 p-4">
+
+        <input
+          id="isDefault"
+          type="checkbox"
+          class="h-4 w-4 accent-white"
+        >
+
+        <span>
+          <span class="block text-sm font-bold">
+            Make this my default address
+          </span>
+
+          <span class="mt-1 block text-xs text-white/40">
+            Use this address automatically during checkout.
+          </span>
+        </span>
+
+      </label>
+
+      <!-- BUTTON -->
+      <button
+        type="submit"
+        class="w-full rounded-full bg-white py-5 text-xs font-black uppercase tracking-[0.2em] text-black transition hover:bg-white/80"
+      >
+        Save Address
+      </button>
+
+    </form>
+
+    <!-- SAVED ADDRESS -->
+    <section class="mt-12 border-t border-white/10 pt-10">
+
+      <div class="flex items-center justify-between">
+
+        <div>
+          <p class="text-xs uppercase tracking-[0.3em] text-white/30">
+            Saved
+          </p>
+
+          <h2 class="mt-2 text-2xl font-black uppercase">
+            Saved Address
+          </h2>
+        </div>
+
+      </div>
+
+      <div
+        id="savedAddress"
+        class="mt-6"
+      ></div>
+
+    </section>
+
+  </main>
+
+  <!-- MESSAGE -->
+  <div
+    id="message"
+    class="fixed bottom-6 left-1/2 z-50 hidden -translate-x-1/2 rounded-full bg-white px-6 py-3 text-sm font-bold text-black shadow-2xl"
+  ></div>
+
+<script type="module" src="./addresses.js"></script>
+
+</body>
+</html>

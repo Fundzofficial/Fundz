@@ -1,0 +1,1414 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Wishlist | FUNDZ</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      background: #080808;
+      color: #f5f5f5;
+    }
+
+    html.light {
+      color-scheme: light;
+    }
+
+    html.light body {
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    html.light .glass {
+      background: rgba(255, 255, 255, 0.9) !important;
+      color: #0f172a;
+    }
+
+    html.light .text-white,
+    html.light .text-white\/50,
+    html.light .text-white\/60 {
+      color: #334155 !important;
+    }
+
+    html.light .border-white\/10 {
+      border-color: rgba(15, 23, 42, 0.12) !important;
+    }
+
+    .glass {
+      background: rgba(8, 8, 8, 0.85);
+      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(18px);
+    }
+
+    .product-card img {
+      transition: transform .6s ease;
+    }
+
+    .product-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .loader {
+      width: 28px;
+      height: 28px;
+      border: 2px solid #333;
+      border-top-color: white;
+      border-radius: 50%;
+      animation: spin .8s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<!-- NAVIGATION -->
+
+  <!-- HEADER -->
+
+  <header class="sticky top-0 z-40 border-b border-white/10 bg-black/90 backdrop-blur">
+
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-5">
+
+        <button id="mobileMenuButton" class="rounded-full border border-white/10 p-3 md:hidden">☰</button>
+
+        <a
+          href="index.html"
+          class="text-xl font-black tracking-[0.3em]"
+        >
+          FUNDZ
+        </a>
+
+      <nav class="hidden items-center gap-8 md:flex">
+
+        <a href="shop.html"
+          class="text-xs uppercase tracking-wider text-white/50 hover:text-white">
+          Shop
+        </a>
+
+        <a href="collection.html"
+          class="text-xs uppercase tracking-wider text-white/50 hover:text-white">
+          Collections
+        </a>
+
+        <a href="index.html#world"
+          class="text-xs uppercase tracking-wider text-white/50 hover:text-white">
+          FUNDZ World
+        </a>
+
+      </nav>
+
+      <div class="flex items-center gap-2">
+
+
+<!-- ACTIONS -->
+
+      <div class="flex items-center gap-2">
+
+        <button
+          type="button"
+          id="cartBtn"
+          class="rounded-full border border-white/20 px-4 py-2 text-sm hover:bg-white hover:text-black"
+        >
+          Bag
+          <span id="cartCount">0</span>
+        </button>
+
+        <a
+          id="accountBtn"
+          href="account.html"
+          class="hidden h-10 items-center rounded-full border border-white/10 px-4 text-xs uppercase sm:flex"
+        >
+          Account
+        </a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+<div
+  id="mobileMenu"
+  class="hidden fixed inset-0 z-[60] bg-black/95 px-5 py-6 backdrop-blur-lg"
+>
+  <div class="mx-auto flex h-full max-w-sm flex-col">
+    <div class="flex items-center justify-between">
+      <a href="index.html" class="text-2xl font-black tracking-[.22em]">FUNDZ</a>
+      <button
+        id="mobileMenuClose"
+        type="button"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-2xl hover:bg-white/10"
+        aria-label="Close navigation menu"
+      >
+        ×
+      </button>
+    </div>
+
+    <nav class="mt-10 flex flex-col gap-5 text-lg uppercase">
+      <a href="index.html" class="font-bold">Home</a>
+      <a href="shop.html" class="text-white/70 hover:text-white">Shop</a>
+      <a href="index.html#story" class="text-white/70 hover:text-white">Our Story</a>
+      <a href="index.html#community" class="text-white/70 hover:text-white">Community</a>
+      <a href="index.html#world" class="text-white/70 hover:text-white">FUNDZ World</a>
+    </nav>
+
+    <div class="mt-auto space-y-3">
+      <a href="account.html" class="block rounded-full border border-white/20 px-5 py-3 text-center text-sm font-bold hover:bg-white/10">Account</a>
+      <a href="wishlist.html" class="block rounded-full border border-white/20 px-5 py-3 text-center text-sm font-bold hover:bg-white/10">Wishlist</a>
+      <a href="cart.html" class="block rounded-full border border-white/20 px-5 py-3 text-center text-sm font-bold hover:bg-white/10">Bag</a>
+    </div>
+  </div>
+</div>
+
+
+<!-- MAIN -->
+
+<main class="max-w-7xl mx-auto px-5 lg:px-8 pt-36 pb-24">
+
+  <div class="mb-12">
+
+    <p class="text-xs font-bold uppercase tracking-[.35em] text-white/40">
+      Saved Pieces
+    </p>
+
+    <h1 class="mt-4 text-5xl md:text-7xl font-black uppercase tracking-tight">
+      Wishlist
+    </h1>
+
+    <p
+      id="wishlistDescription"
+      class="mt-5 text-white/50"
+    >
+      Your favorite FUNDZ pieces.
+    </p>
+
+  </div>
+
+
+  <!-- LOADING -->
+
+  <div
+    id="loading"
+    class="flex justify-center py-24"
+  >
+    <div class="loader"></div>
+  </div>
+
+
+  <!-- PRODUCTS -->
+
+  <div
+    id="wishlistGrid"
+    class="hidden grid grid-cols-2 gap-x-4 gap-y-10 md:grid-cols-3 lg:grid-cols-4"
+  ></div>
+
+
+  <!-- EMPTY -->
+
+  <div
+    id="emptyState"
+    class="hidden py-24 text-center"
+  >
+
+    <div class="text-6xl">
+      ♡
+    </div>
+
+    <h2 class="mt-6 text-2xl font-black uppercase">
+      Your wishlist is empty
+    </h2>
+
+    <p class="mx-auto mt-3 max-w-md text-sm leading-6 text-white/40">
+      Save the FUNDZ pieces you love and come back to them later.
+    </p>
+
+    <a
+      href="shop.html"
+      class="mt-8 inline-block rounded-full bg-white px-7 py-3.5 text-sm font-bold text-black"
+    >
+      Explore the Collection
+    </a>
+
+  </div>
+
+</main>
+
+
+<!-- TOAST -->
+
+<div
+  id="toast"
+  class="fixed right-5 top-5 z-[100] hidden rounded-full bg-white px-5 py-3 text-sm font-bold text-black shadow-2xl"
+></div>
+
+
+<!-- FOOTER -->
+
+<footer class="border-t border-white/10">
+
+  <div class="max-w-7xl mx-auto px-5 lg:px-8 py-14">
+
+    <div class="grid gap-10 md:grid-cols-4">
+
+      <div class="md:col-span-2">
+
+        <div class="text-2xl font-black tracking-[.22em]">
+          FUNDZ
+        </div>
+
+        <p class="mt-4 max-w-sm text-sm leading-6 text-white/40">
+          Raves Never Die. Premium clothing for the people,
+          moments and memories that matter.
+        </p>
+
+      </div>
+
+      <div>
+
+        <p class="text-xs font-bold uppercase tracking-widest text-white/40">
+          FUNDZ
+        </p>
+
+        <div class="mt-4 space-y-3 text-sm text-white/60">
+
+          <a href="index.html#story" class="block hover:text-white">
+            Our Story
+          </a>
+
+          <a href="index.html#community" class="block hover:text-white">
+            Community
+          </a>
+
+          <a href="index.html#world" class="block hover:text-white">
+            FUNDZ World
+          </a>
+
+          <a href="addresses.html" class="block hover:text-emerald-700 transition-colors">
+            Address
+          </a>
+
+        </div>
+
+      </div>
+
+      <div class="space-y-3 text-white/80">
+
+        <h4 class="font-bold uppercase tracking-wider text-[11px] text-white/60">
+          Contact
+        </h4>
+
+        <ul class="space-y-3 text-sm text-white/60">
+
+          <li>
+            <a
+              href="mailto:support@fundz.app"
+              class="flex items-start gap-2 hover:text-emerald-500 transition-colors"
+            >
+              <span class="text-emerald-500">✉</span>
+              <span>fundzstore243@gmail.com</span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="tel:+234 814 461 4604"
+              class="flex items-start gap-2 hover:text-emerald-500 transition-colors"
+            >
+              <span class="text-emerald-500">☎</span>
+              <span>+234 814 461 4604</span>
+            </a>
+          </li>
+
+          <li>
+            <a
+              href="https://wa.me/+234 814 461 4604"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="flex items-start gap-2 hover:text-emerald-500 transition-colors"
+            >
+              <span class="text-emerald-500">◉</span>
+              <span>WhatsApp</span>
+            </a>
+          </li>
+
+        </ul>
+
+      </div>
+
+      <div class="space-y-3 text-white/80">
+
+        <h4 class="font-bold uppercase tracking-wider text-[11px] text-white/60">
+          Customer Support
+        </h4>
+
+        <p class="text-sm text-white/60">Mon - Sat</p>
+        <p class="text-sm text-white/60">8:00 AM - 8:00 PM WAT</p>
+
+        <a
+          href="mailto:fundzstore243@gmail.com"
+          class="inline-block mt-2 rounded-xl bg-white px-4 py-2.5 text-sm font-bold text-black transition hover:bg-emerald-500"
+        >
+          Contact Support
+        </a>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="border-t border-white/10">
+
+    <div class="max-w-7xl mx-auto px-5 lg:px-8 py-5">
+
+      <p class="text-xs text-white/30">
+        © <span id="year"></span> FUNDZ. All rights reserved.
+      </p>
+
+    </div>
+
+  </div>
+
+</footer>
+
+
+<!-- JAVASCRIPT -->
+
+<script type="module">
+
+import { supabase } from "./supabase.js";
+
+
+// =====================================================
+// ELEMENTS
+// =====================================================
+
+const wishlistGrid =
+  document.getElementById("wishlistGrid");
+
+const loading =
+  document.getElementById("loading");
+
+const emptyState =
+  document.getElementById("emptyState");
+
+const wishlistDescription =
+  document.getElementById("wishlistDescription");
+
+const cartCount =
+  document.getElementById("cartCount");
+
+const toast =
+  document.getElementById("toast");
+
+
+// =====================================================
+// YEAR
+// =====================================================
+
+document.getElementById("year").textContent =
+  new Date().getFullYear();
+
+
+// =====================================================
+// TOAST
+// =====================================================
+
+function showToast(message) {
+
+  toast.textContent = message;
+
+  toast.classList.remove("hidden");
+
+  clearTimeout(window.toastTimer);
+
+  window.toastTimer =
+    setTimeout(() => {
+
+      toast.classList.add("hidden");
+
+    }, 3000);
+
+}
+
+
+// =====================================================
+// HTML ESCAPE
+// =====================================================
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+    .replace(/[&<>"']/g, char => {
+
+      const map = {
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#039;"
+      };
+
+      return map[char];
+
+    });
+
+}
+
+
+// =====================================================
+// MONEY
+// =====================================================
+
+function formatMoney(value) {
+
+  return new Intl.NumberFormat(
+    "en-NG",
+    {
+      style: "currency",
+      currency: "NGN",
+      maximumFractionDigits: 0
+    }
+  ).format(
+    Number(value || 0)
+  );
+
+}
+
+
+// =====================================================
+// GET WISHLIST
+// =====================================================
+
+function getWishlist() {
+
+  const candidateKeys = [
+    "fundz_wishlist",
+    "wishlist",
+    "fundz_wishlist_items",
+    "wishlist_items"
+  ];
+
+  for (const key of candidateKeys) {
+
+    try {
+
+      const saved =
+        localStorage.getItem(key);
+
+      if (!saved) {
+        continue;
+      }
+
+      const parsed =
+        JSON.parse(saved);
+
+      if (Array.isArray(parsed)) {
+
+        return parsed
+          .map(item => {
+
+            if (
+              typeof item === "string" ||
+              typeof item === "number"
+            ) {
+              return {
+                id: String(item)
+              };
+            }
+
+            if (
+              item &&
+              typeof item === "object"
+            ) {
+              return {
+                ...item,
+                id: String(
+                  item.id ??
+                  item.product_id ??
+                  item.productId ??
+                  item.slug ??
+                  ""
+                )
+              };
+            }
+
+            return {
+              id: ""
+            };
+
+          })
+          .filter(item => item.id);
+
+      }
+
+      if (
+        parsed &&
+        typeof parsed === "object" &&
+        Array.isArray(parsed.items)
+      ) {
+
+        return parsed.items
+          .map(item => {
+
+            if (
+              typeof item === "string" ||
+              typeof item === "number"
+            ) {
+              return {
+                id: String(item)
+              };
+            }
+
+            if (
+              item &&
+              typeof item === "object"
+            ) {
+              return {
+                ...item,
+                id: String(
+                  item.id ??
+                  item.product_id ??
+                  item.productId ??
+                  item.slug ??
+                  ""
+                )
+              };
+            }
+
+            return {
+              id: ""
+            };
+
+          })
+          .filter(item => item.id);
+
+      }
+
+      if (
+        typeof parsed === "string" ||
+        typeof parsed === "number"
+      ) {
+        return [
+          {
+            id: String(parsed)
+          }
+        ];
+      }
+
+    } catch {
+      continue;
+    }
+
+  }
+
+  return [];
+
+}
+
+
+// =====================================================
+// SAVE WISHLIST
+// =====================================================
+
+function saveWishlist(wishlist) {
+
+  const normalized =
+    Array.from(
+      new Map(
+        (wishlist || [])
+          .map(item => {
+
+            if (
+              typeof item === "string" ||
+              typeof item === "number"
+            ) {
+              return [
+                String(item),
+                {
+                  id: String(item)
+                }
+              ];
+            }
+
+            if (
+              item &&
+              typeof item === "object"
+            ) {
+              return [
+                String(
+                  item.id ??
+                  item.product_id ??
+                  item.productId ??
+                  item.slug ??
+                  ""
+                ),
+                {
+                  ...item,
+                  id: String(
+                    item.id ??
+                    item.product_id ??
+                    item.productId ??
+                    item.slug ??
+                    ""
+                  )
+                }
+              ];
+            }
+
+            return ["", { id: "" }];
+
+          })
+          .filter(([id]) => id)
+      ).values()
+    );
+
+  localStorage.setItem(
+    "fundz_wishlist",
+    JSON.stringify(normalized)
+  );
+
+}
+
+
+// =====================================================
+// GET CART
+// =====================================================
+
+function getCart() {
+
+  try {
+
+    const saved =
+      localStorage.getItem(
+        "fundz_cart"
+      );
+
+    const cart =
+      JSON.parse(
+        saved || "[]"
+      );
+
+    return Array.isArray(cart)
+      ? cart
+      : [];
+
+  } catch {
+
+    return [];
+
+  }
+
+}
+
+
+// =====================================================
+// UPDATE CART COUNT
+// =====================================================
+
+function updateCartCount() {
+
+  const cart =
+    getCart();
+
+  const count =
+    cart.reduce(
+      (total, item) =>
+        total +
+        Number(
+          item.quantity || 1
+        ),
+      0
+    );
+
+  cartCount.textContent =
+    count;
+
+}
+
+
+// =====================================================
+// LOAD WISHLIST PRODUCTS
+// =====================================================
+
+async function loadWishlist() {
+
+  const wishlist =
+    getWishlist();
+
+  console.log("wishlist debug", wishlist, localStorage.getItem("fundz_wishlist"));
+
+  if (wishlist.length === 0) {
+
+    showEmpty();
+
+    return;
+
+  }
+
+  const products =
+    wishlist.map(item => ({
+      ...item,
+      id: String(
+        item.id ??
+        item.product_id ??
+        item.productId ??
+        item.slug ??
+        ""
+      ),
+      name:
+        item.name ||
+        item.title ||
+        "FUNDZ Product",
+      price:
+        Number(item.price || 0),
+      image_url:
+        item.image_url ||
+        item.image ||
+        item.imageUrl ||
+        "",
+      slug:
+        item.slug ||
+        item.id ||
+        "",
+      category:
+        item.category ||
+        item.collection ||
+        "",
+      collection:
+        item.collection ||
+        ""
+    }));
+
+  renderWishlist(products);
+
+}
+
+
+// =====================================================
+// RENDER WISHLIST
+// =====================================================
+
+function renderWishlist(
+  products
+) {
+
+  loading.classList.add(
+    "hidden"
+  );
+
+  emptyState.classList.add(
+    "hidden"
+  );
+
+  wishlistGrid.classList.remove(
+    "hidden"
+  );
+
+
+  wishlistDescription.textContent =
+    `${products.length} ${
+      products.length === 1
+        ? "saved piece"
+        : "saved pieces"
+    }`;
+
+
+  wishlistGrid.innerHTML =
+    products
+      .map(
+        product =>
+          createProductCard(
+            product
+          )
+      )
+      .join("");
+
+}
+
+
+// =====================================================
+// PRODUCT CARD
+// =====================================================
+
+function createProductCard(
+  product
+) {
+
+  const image =
+    product.image_url ||
+    product.image ||
+    product.imageUrl ||
+    "https://images.unsplash.com/photo-1523398002811-999ca8dec234?auto=format&fit=crop&w=900&q=85";
+
+  const productName =
+    product.name ||
+    product.title ||
+    "FUNDZ Product";
+
+  const slug =
+    product.slug ||
+    product.id;
+
+
+  const outOfStock =
+    product.stock != null &&
+    Number(product.stock) <= 0;
+
+
+  return `
+
+    <article
+      class="product-card group"
+    >
+
+      <div class="relative">
+
+
+        <!-- IMAGE -->
+
+        <a
+          href="product.html?id=${encodeURIComponent(product.id)}"
+          class="block"
+        >
+
+          <div
+            class="relative aspect-[4/5] overflow-hidden rounded-2xl bg-white/5"
+          >
+
+            <img
+              src="${escapeHtml(image)}"
+              alt="${escapeHtml(productName)}"
+              class="h-full w-full object-cover"
+              loading="lazy"
+            />
+
+
+            ${
+              outOfStock
+                ? `
+                  <div
+                    class="absolute inset-0 flex items-center justify-center bg-black/55"
+                  >
+
+                    <span
+                      class="rounded-full bg-black px-4 py-2 text-xs font-bold uppercase tracking-wider"
+                    >
+                      Sold Out
+                    </span>
+
+                  </div>
+                `
+                : ""
+            }
+
+          </div>
+
+        </a>
+
+
+        <!-- REMOVE -->
+
+        <button
+          class="remove-wishlist absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full bg-white text-black"
+          data-product-id="${product.id}"
+          title="Remove from wishlist"
+        >
+          ♥
+        </button>
+
+      </div>
+
+
+      <!-- PRODUCT INFO -->
+
+      <div class="pt-4">
+
+        <div
+          class="flex items-start justify-between gap-3"
+        >
+
+          <div>
+
+            <a
+              href="product.html?id=${encodeURIComponent(product.id)}"
+            >
+
+              <h3 class="text-sm font-bold">
+                ${escapeHtml(productName)}
+              </h3>
+
+            </a>
+
+            ${
+              product.category || product.collection
+                ? `
+                  <p class="mt-1 text-xs text-white/40">
+                    ${escapeHtml(
+                      product.category || product.collection || ""
+                    )}
+                  </p>
+                `
+                : ""
+            }
+
+          </div>
+
+
+          <div class="text-right">
+
+            <p class="text-sm font-bold">
+              ${formatMoney(product.price)}
+            </p>
+
+            ${
+              product.compare_at_price &&
+              Number(product.compare_at_price) >
+                Number(product.price)
+                ? `
+                  <p class="text-xs text-white/30 line-through">
+                    ${formatMoney(
+                      product.compare_at_price
+                    )}
+                  </p>
+                `
+                : ""
+            }
+
+          </div>
+
+        </div>
+
+
+        <!-- ADD TO BAG -->
+
+        <button
+          class="add-to-cart mt-4 w-full rounded-full border border-white/15 py-3 text-xs font-bold uppercase tracking-wider hover:bg-white hover:text-black ${
+            outOfStock
+              ? "cursor-not-allowed opacity-40"
+              : ""
+          }"
+          data-product-id="${product.id}"
+          ${outOfStock ? "disabled" : ""}
+        >
+
+          ${
+            outOfStock
+              ? "Sold Out"
+              : "Add to Bag"
+          }
+
+        </button>
+
+      </div>
+
+    </article>
+
+  `;
+
+}
+
+
+// =====================================================
+// REMOVE FROM WISHLIST
+// =====================================================
+
+wishlistGrid.addEventListener(
+  "click",
+  event => {
+
+    const removeButton =
+      event.target.closest(
+        ".remove-wishlist"
+      );
+
+
+    if (removeButton) {
+
+      const productId =
+        removeButton.dataset.productId;
+
+      removeFromWishlist(
+        productId
+      );
+
+      return;
+
+    }
+
+
+    const addButton =
+      event.target.closest(
+        ".add-to-cart"
+      );
+
+
+    if (addButton) {
+
+      const productId =
+        addButton.dataset.productId;
+
+      addToCart(
+        productId
+      );
+
+    }
+
+  }
+);
+
+
+// =====================================================
+// REMOVE WISHLIST ITEM
+// =====================================================
+
+function removeFromWishlist(
+  productId
+) {
+
+  let wishlist =
+    getWishlist();
+
+
+  wishlist =
+    wishlist.filter(
+      id =>
+        String(id) !==
+        String(productId)
+    );
+
+
+  saveWishlist(
+    wishlist
+  );
+
+
+  showToast(
+    "Removed from wishlist."
+  );
+
+
+  loadWishlist();
+
+}
+
+
+// =====================================================
+// ADD TO CART
+// =====================================================
+
+async function addToCart(
+  productId
+) {
+
+  const {
+    data: product,
+    error
+  } = await supabase
+    .from("products")
+    .select(`
+      id,
+      name,
+      price,
+      image_url,
+      slug,
+      stock
+    `)
+    .eq("id", productId)
+    .single();
+
+
+  if (error || !product) {
+
+    showToast(
+      "Product could not be added."
+    );
+
+    return;
+
+  }
+
+
+  if (
+    Number(product.stock || 0) <= 0
+  ) {
+
+    showToast(
+      "This product is sold out."
+    );
+
+    return;
+
+  }
+
+
+  const cart =
+    getCart();
+
+
+  const existing =
+    cart.find(
+      item =>
+        String(item.id) ===
+        String(product.id)
+    );
+
+
+  if (existing) {
+
+    if (
+      existing.quantity >=
+      Number(product.stock)
+    ) {
+
+      showToast(
+        "Maximum available stock reached."
+      );
+
+      return;
+
+    }
+
+    existing.quantity += 1;
+
+  } else {
+
+    cart.push({
+
+      id:
+        product.id,
+
+      name:
+        product.name,
+
+      price:
+        Number(product.price),
+
+      image_url:
+        product.image_url,
+
+      slug:
+        product.slug,
+
+      quantity:
+        1
+
+    });
+
+  }
+
+
+  localStorage.setItem(
+    "fundz_cart",
+    JSON.stringify(cart)
+  );
+
+
+  updateCartCount();
+
+
+  showToast(
+    `${product.name} added to your bag.`
+  );
+
+}
+
+
+// =====================================================
+// CART BUTTON
+// =====================================================
+
+document
+  .getElementById("cartBtn")
+  .addEventListener(
+    "click",
+    () => {
+
+      window.location.href =
+        "cart.html";
+
+    }
+  );
+
+
+// =====================================================
+// ACCOUNT BUTTON
+// =====================================================
+
+document
+  .getElementById("accountBtn")
+  .addEventListener(
+    "click",
+    async () => {
+
+      const {
+        data
+      } =
+        await supabase.auth.getSession();
+
+
+      window.location.href =
+        data.session
+          ? "account.html"
+          : "login.html";
+
+    }
+  );
+
+
+// =====================================================
+// AUTH STATE
+// =====================================================
+
+supabase.auth.onAuthStateChange(
+  (_event, session) => {
+
+    const button =
+      document.getElementById(
+        "accountBtn"
+      );
+
+    if (!button) {
+      return;
+    }
+
+    button.textContent =
+      session
+        ? "My Account"
+        : "Account";
+
+  }
+);
+
+const mobileMenuButton =
+  document.getElementById(
+    "mobileMenuButton"
+  );
+
+const mobileMenuClose =
+  document.getElementById(
+    "mobileMenuClose"
+  );
+
+const mobileMenu =
+  document.getElementById(
+    "mobileMenu"
+  );
+
+const mobileMenuOverlay =
+  document.getElementById(
+    "mobileMenuOverlay"
+  );
+
+function closeMobileMenu() {
+  mobileMenu?.classList.add("hidden");
+  mobileMenuOverlay?.classList.add("hidden");
+}
+
+mobileMenuButton?.addEventListener(
+  "click",
+  () => {
+    mobileMenu?.classList.remove("hidden");
+    mobileMenuOverlay?.classList.remove("hidden");
+  }
+);
+
+mobileMenuClose?.addEventListener(
+  "click",
+  closeMobileMenu
+);
+
+mobileMenuOverlay?.addEventListener(
+  "click",
+  closeMobileMenu
+);
+
+
+// =====================================================
+// REALTIME
+// =====================================================
+
+supabase
+  .channel(
+    "fundz-wishlist-products"
+  )
+  .on(
+    "postgres_changes",
+    {
+      event: "*",
+      schema: "public",
+      table: "products"
+    },
+    () => {
+
+      loadWishlist();
+
+    }
+  )
+  .subscribe();
+
+
+// =====================================================
+// EMPTY STATE
+// =====================================================
+
+function showEmpty() {
+
+  loading.classList.add(
+    "hidden"
+  );
+
+  wishlistGrid.classList.add(
+    "hidden"
+  );
+
+  emptyState.classList.remove(
+    "hidden"
+  );
+
+  wishlistDescription.textContent =
+    "Your favorite FUNDZ pieces.";
+
+}
+
+
+// =====================================================
+// START
+// =====================================================
+
+updateCartCount();
+
+loadWishlist();
+
+</script>
+
+<!--Start of Tawk.to Script-->
+<script type="text/javascript">
+var Tawk_API=Tawk_API||{}, Tawk_LoadStart=new Date();
+(function(){
+var s1=document.createElement("script"),s0=document.getElementsByTagName("script")[0];
+s1.async=true;
+s1.src='https://embed.tawk.to/6a75c65766bcd71d4237749d/1jve0tjv1';
+s1.charset='UTF-8';
+s1.setAttribute('crossorigin','*');
+s0.parentNode.insertBefore(s1,s0);
+})();
+</script>
+<!--End of Tawk.to Script-->
+
+</body>
+</html>

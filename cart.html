@@ -1,0 +1,1329 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>FUNDZ | Cart</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .cart-image {
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+    }
+  </style>
+</head>
+
+<body class="bg-black text-white">
+
+  <!-- HEADER -->
+
+  <header class="sticky top-0 z-50 border-b border-white/10 bg-black/90 backdrop-blur">
+
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-5">
+
+      <a
+        href="index.html"
+        class="text-xl font-black tracking-[0.3em]"
+      >
+        FUNDZ
+      </a>
+
+      <nav class="hidden items-center gap-8 md:flex">
+
+        <a
+          href="shop.html"
+          class="text-xs uppercase tracking-wider text-white/50 hover:text-white"
+        >
+          Shop
+        </a>
+
+        <a
+          href="index.html#collections"
+          class="text-xs uppercase tracking-wider text-white/50 hover:text-white"
+        >
+          Collections
+        </a>
+
+        <a
+          href="index.html#world"
+          class="text-xs uppercase tracking-wider text-white/50 hover:text-white"
+        >
+          FUNDZ World
+        </a>
+
+      </nav>
+
+      <div class="flex items-center gap-2">
+
+        <a
+          href="wishlist.html"
+          class="flex h-10 w-10 items-center justify-center rounded-full border border-white/10"
+        >
+          ♡
+        </a>
+
+        <a
+          href="account.html"
+          class="hidden h-10 items-center rounded-full border border-white/10 px-4 text-xs uppercase sm:flex"
+        >
+          Account
+        </a>
+
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- MAIN -->
+
+  <main class="mx-auto max-w-7xl px-5 py-12 md:py-20">
+
+    <!-- TITLE -->
+
+    <div class="mb-10">
+
+      <button
+        id="backButton"
+        type="button"
+        class="mb-6 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-white transition hover:bg-white/10"
+      >
+        ← Back
+      </button>
+
+      <p class="text-xs uppercase tracking-[0.35em] text-white/30">
+        Your selection
+      </p>
+
+      <h1 class="mt-3 text-4xl font-black uppercase md:text-6xl">
+        Shopping Cart
+      </h1>
+
+    </div>
+
+
+    <!-- EMPTY CART -->
+
+    <section
+      id="emptyCart"
+      class="hidden min-h-[45vh] items-center justify-center"
+    >
+
+      <div class="text-center">
+
+        <div class="mx-auto flex h-20 w-20 items-center justify-center rounded-full border border-white/10 text-3xl">
+          🛒
+        </div>
+
+        <h2 class="mt-7 text-3xl font-black uppercase">
+          Your Cart Is Empty
+        </h2>
+
+        <p class="mx-auto mt-4 max-w-md text-sm leading-6 text-white/40">
+          Nothing has made its way into your cart yet. A tragic but easily fixable situation.
+        </p>
+
+        <a
+          href="shop.html"
+          class="mt-7 inline-block rounded-full bg-white px-8 py-4 text-xs font-black uppercase tracking-wider text-black"
+        >
+          Continue Shopping
+        </a>
+
+      </div>
+
+    </section>
+
+
+    <!-- CART CONTENT -->
+
+    <section
+      id="cartContent"
+      class="hidden"
+    >
+
+      <div class="grid gap-10 lg:grid-cols-[1fr_380px]">
+
+
+        <!-- ITEMS -->
+
+        <div>
+
+          <div
+            id="cartItems"
+            class="divide-y divide-white/10 border-y border-white/10"
+          ></div>
+
+
+          <!-- CONTINUE -->
+
+          <div class="mt-7">
+
+            <a
+              href="shop.html"
+              class="text-xs font-bold uppercase tracking-wider text-white/50 hover:text-white"
+            >
+              ← Continue Shopping
+            </a>
+
+          </div>
+
+        </div>
+
+
+        <!-- SUMMARY -->
+
+        <aside class="h-fit rounded-3xl border border-white/10 bg-white/[0.02] p-6 md:p-8">
+
+          <h2 class="text-xl font-black uppercase">
+            Order Summary
+          </h2>
+
+
+          <div class="mt-7 space-y-5">
+
+            <div class="flex justify-between text-sm">
+
+              <span class="text-white/40">
+                Subtotal
+              </span>
+
+              <span
+                id="subtotal"
+                class="font-bold"
+              >
+                ₦0
+              </span>
+
+            </div>
+
+
+            <div class="flex justify-between text-sm">
+
+              <span class="text-white/40">
+                Shipping
+              </span>
+
+              <span
+                id="shipping"
+                class="font-bold"
+              >
+                Calculated at checkout
+              </span>
+
+            </div>
+
+
+            <div class="border-t border-white/10 pt-5">
+
+              <div class="flex justify-between">
+
+                <span class="text-sm font-bold uppercase">
+                  Total
+                </span>
+
+                <span
+                  id="total"
+                  class="text-xl font-black"
+                >
+                  ₦0
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- COUPON -->
+
+          <div class="mt-7">
+
+            <label
+              for="coupon"
+              class="text-xs font-bold uppercase tracking-wider"
+            >
+              Promo Code
+            </label>
+
+            <div class="mt-3 flex gap-2">
+
+              <input
+                id="coupon"
+                type="text"
+                placeholder="Enter code"
+                class="min-w-0 flex-1 rounded-full border border-white/10 bg-transparent px-5 py-3 text-xs outline-none placeholder:text-white/20 focus:border-white/40"
+              >
+
+              <button
+                id="applyCoupon"
+                class="rounded-full border border-white/10 px-5 py-3 text-xs font-bold uppercase"
+              >
+                Apply
+              </button>
+
+            </div>
+
+            <p
+              id="couponMessage"
+              class="mt-2 hidden text-xs"
+            ></p>
+
+          </div>
+
+
+          <!-- CHECKOUT -->
+
+          <button
+            id="checkoutButton"
+            class="mt-8 w-full rounded-full bg-white py-5 text-xs font-black uppercase tracking-[0.2em] text-black transition hover:bg-white/80"
+          >
+            Proceed to Checkout
+          </button>
+
+
+          <div class="mt-6 text-center">
+
+            <p class="text-[10px] uppercase tracking-wider text-white/20">
+              Secure checkout
+            </p>
+
+          </div>
+
+        </aside>
+
+      </div>
+
+    </section>
+
+  </main>
+
+
+  <!-- TOAST -->
+
+  <div
+    id="toast"
+    class="fixed bottom-6 left-1/2 z-[100] hidden -translate-x-1/2 rounded-full bg-white px-6 py-3 text-sm font-bold text-black shadow-2xl"
+  ></div>
+
+
+  <script type="module">
+
+    import {
+      supabase
+    } from "./supabase.js";
+
+
+    /* =====================================================
+       STATE
+       ===================================================== */
+
+    let cart = [];
+
+    let couponDiscount = 0;
+
+    let appliedCoupon = null;
+
+
+    /* =====================================================
+       CART STORAGE
+       ===================================================== */
+
+    function getCart() {
+
+      try {
+
+        const saved =
+          localStorage.getItem(
+            "fundz_cart"
+          );
+
+        const parsed =
+          JSON.parse(
+            saved || "[]"
+          );
+
+        return Array.isArray(parsed)
+          ? parsed
+          : [];
+
+      } catch (error) {
+
+        console.error(
+          "Unable to read cart:",
+          error
+        );
+
+        return [];
+
+      }
+
+    }
+
+
+    function saveCart() {
+
+      localStorage.setItem(
+        "fundz_cart",
+        JSON.stringify(
+          cart
+        )
+      );
+
+    }
+
+
+    /* =====================================================
+       RENDER CART
+       ===================================================== */
+
+    function renderCart() {
+
+      const empty =
+        document.getElementById(
+          "emptyCart"
+        );
+
+      const content =
+        document.getElementById(
+          "cartContent"
+        );
+
+      const items =
+        document.getElementById(
+          "cartItems"
+        );
+
+
+      if (!cart.length) {
+
+        content.classList.add(
+          "hidden"
+        );
+
+        empty.classList.remove(
+          "hidden"
+        );
+
+        empty.classList.add(
+          "flex"
+        );
+
+        return;
+
+      }
+
+
+      empty.classList.add(
+        "hidden"
+      );
+
+      empty.classList.remove(
+        "flex"
+      );
+
+      content.classList.remove(
+        "hidden"
+      );
+
+
+      items.innerHTML =
+        cart
+          .map(
+            (
+              item,
+              index
+            ) =>
+              renderCartItem(
+                item,
+                index
+              )
+          )
+          .join("");
+
+
+      attachItemEvents();
+
+      updateSummary();
+
+    }
+
+
+    /* =====================================================
+       CART ITEM
+       ===================================================== */
+
+    function renderCartItem(
+      item,
+      index
+    ) {
+
+      const image =
+        item.image_url ||
+        "https://placehold.co/600x600/111111/FFFFFF?text=FUNDZ";
+
+
+      const quantity =
+        Math.max(
+          1,
+          Number(
+            item.quantity || 1
+          )
+        );
+
+
+      return `
+
+        <article
+          class="flex gap-4 py-6 sm:gap-6"
+          data-index="${index}"
+        >
+
+          <!-- IMAGE -->
+
+          <a
+            href="product.html?id=${encodeURIComponent(
+              item.product_id
+            )}"
+            class="block w-28 shrink-0 overflow-hidden rounded-2xl bg-white/[0.03] sm:w-36"
+          >
+
+            <img
+              src="${escapeHTML(
+                image
+              )}"
+              alt="${escapeHTML(
+                item.name
+              )}"
+              class="cart-image w-full"
+            >
+
+          </a>
+
+
+          <!-- INFO -->
+
+          <div class="flex min-w-0 flex-1 flex-col justify-between">
+
+            <div>
+
+              <div class="flex items-start justify-between gap-3">
+
+                <a
+                  href="product.html?id=${encodeURIComponent(
+                    item.product_id
+                  )}"
+                  class="text-sm font-black uppercase hover:text-white/60"
+                >
+                  ${escapeHTML(
+                    item.name
+                  )}
+                </a>
+
+
+                <button
+                  type="button"
+                  data-remove="${index}"
+                  class="text-xl leading-none text-white/30 hover:text-white"
+                  aria-label="Remove item"
+                >
+                  ×
+                </button>
+
+              </div>
+
+
+              <p class="mt-2 text-sm font-bold">
+                ${formatMoney(
+                  item.price
+                )}
+              </p>
+
+
+              ${
+                item.size
+                  ? `
+                    <p class="mt-3 text-xs text-white/40">
+                      Size:
+                      <span class="text-white">
+                        ${escapeHTML(
+                          item.size
+                        )}
+                      </span>
+                    </p>
+                  `
+                  : ""
+              }
+
+
+              ${
+                item.color
+                  ? `
+                    <p class="mt-1 text-xs text-white/40">
+                      Color:
+                      <span class="text-white">
+                        ${escapeHTML(
+                          item.color
+                        )}
+                      </span>
+                    </p>
+                  `
+                  : ""
+              }
+
+            </div>
+
+
+            <!-- QUANTITY -->
+
+            <div class="mt-5 flex items-center justify-between gap-4">
+
+              <div class="flex items-center overflow-hidden rounded-full border border-white/10">
+
+                <button
+                  type="button"
+                  data-minus="${index}"
+                  class="flex h-9 w-9 items-center justify-center text-sm"
+                >
+                  −
+                </button>
+
+                <span
+                  class="w-8 text-center text-xs font-bold"
+                >
+                  ${quantity}
+                </span>
+
+                <button
+                  type="button"
+                  data-plus="${index}"
+                  class="flex h-9 w-9 items-center justify-center text-sm"
+                >
+                  +
+                </button>
+
+              </div>
+
+
+              <p class="text-sm font-black">
+
+                ${formatMoney(
+                  Number(
+                    item.price
+                  ) *
+                  quantity
+                )}
+
+              </p>
+
+            </div>
+
+          </div>
+
+        </article>
+
+      `;
+
+    }
+
+
+    /* =====================================================
+       EVENTS
+       ===================================================== */
+
+    function attachItemEvents() {
+
+      document
+        .querySelectorAll(
+          "[data-minus]"
+        )
+        .forEach(
+          button => {
+
+            button.addEventListener(
+              "click",
+              () => {
+
+                const index =
+                  Number(
+                    button.dataset.minus
+                  );
+
+
+                if (
+                  cart[index]
+                ) {
+
+                  cart[index].quantity =
+                    Math.max(
+                      1,
+                      Number(
+                        cart[index]
+                          .quantity
+                      ) - 1
+                    );
+
+
+                  saveCart();
+
+                  renderCart();
+
+                }
+
+              }
+            );
+
+          }
+        );
+
+
+      document
+        .querySelectorAll(
+          "[data-plus]"
+        )
+        .forEach(
+          button => {
+
+            button.addEventListener(
+              "click",
+              () => {
+
+                const index =
+                  Number(
+                    button.dataset.plus
+                  );
+
+
+                if (
+                  cart[index]
+                ) {
+
+                  cart[index].quantity =
+                    Number(
+                      cart[index]
+                        .quantity
+                    ) + 1;
+
+
+                  saveCart();
+
+                  renderCart();
+
+                }
+
+              }
+            );
+
+          }
+        );
+
+
+      document
+        .querySelectorAll(
+          "[data-remove]"
+        )
+        .forEach(
+          button => {
+
+            button.addEventListener(
+              "click",
+              () => {
+
+                const index =
+                  Number(
+                    button.dataset.remove
+                  );
+
+
+                cart.splice(
+                  index,
+                  1
+                );
+
+
+                saveCart();
+
+                showToast(
+                  "Item removed."
+                );
+
+                renderCart();
+
+              }
+            );
+
+          }
+        );
+
+    }
+
+
+    /* =====================================================
+       SUMMARY
+       ===================================================== */
+
+    function updateSummary() {
+
+      const subtotal =
+        cart.reduce(
+          (
+            total,
+            item
+          ) =>
+            total +
+            Number(
+              item.price || 0
+            ) *
+            Number(
+              item.quantity || 1
+            ),
+          0
+        );
+
+
+      const discount =
+        Math.min(
+          couponDiscount,
+          subtotal
+        );
+
+
+      const total =
+        subtotal -
+        discount;
+
+
+      document
+        .getElementById(
+          "subtotal"
+        )
+        .textContent =
+        formatMoney(
+          subtotal
+        );
+
+
+      document
+        .getElementById(
+          "total"
+        )
+        .textContent =
+        formatMoney(
+          total
+        );
+
+
+      const shipping =
+        document.getElementById(
+          "shipping"
+        );
+
+
+      shipping.textContent =
+        "Calculated at checkout";
+
+
+      /*
+        Display discount if coupon exists.
+      */
+
+      let discountRow =
+        document.getElementById(
+          "discountRow"
+        );
+
+
+      if (
+        discount > 0
+      ) {
+
+        if (!discountRow) {
+
+          discountRow =
+            document.createElement(
+              "div"
+            );
+
+          discountRow.id =
+            "discountRow";
+
+          discountRow.className =
+            "flex justify-between text-sm";
+
+
+          const summary =
+            document
+              .getElementById(
+                "subtotal"
+              )
+              .parentElement
+              .parentElement;
+
+
+          summary.insertBefore(
+            discountRow,
+            summary
+              .querySelector(
+                ".border-t"
+              )
+          );
+
+        }
+
+
+        discountRow.innerHTML = `
+
+          <span class="text-white/40">
+            Discount
+          </span>
+
+          <span class="font-bold">
+            -${formatMoney(
+              discount
+            )}
+          </span>
+
+        `;
+
+      } else if (
+        discountRow
+      ) {
+
+        discountRow.remove();
+
+      }
+
+    }
+
+
+    /* =====================================================
+       COUPON
+       ===================================================== */
+
+    document
+      .getElementById(
+        "applyCoupon"
+      )
+      .addEventListener(
+        "click",
+        applyCoupon
+      );
+
+
+    async function applyCoupon() {
+
+      const input =
+        document.getElementById(
+          "coupon"
+        );
+
+
+      const message =
+        document.getElementById(
+          "couponMessage"
+        );
+
+
+      const code =
+        input.value
+          .trim()
+          .toUpperCase();
+
+
+      if (!code) {
+
+        showCouponMessage(
+          "Enter a coupon code.",
+          false
+        );
+
+        return;
+
+      }
+
+
+      /*
+        Expected coupons table:
+
+        coupons
+        - id
+        - code
+        - discount_type
+        - discount_value
+        - is_active
+        - expires_at
+      */
+
+      const {
+        data,
+        error
+      } =
+        await supabase
+          .from("coupons")
+          .select("*")
+          .eq(
+            "code",
+            code
+          )
+          .eq(
+            "is_active",
+            true
+          )
+          .maybeSingle();
+
+
+      if (
+        error
+      ) {
+
+        console.error(
+          error
+        );
+
+        showCouponMessage(
+          "Unable to validate coupon.",
+          false
+        );
+
+        return;
+
+      }
+
+
+      if (!data) {
+
+        showCouponMessage(
+          "Invalid or inactive coupon.",
+          false
+        );
+
+        return;
+
+      }
+
+
+      if (
+        data.expires_at &&
+        new Date(
+          data.expires_at
+        ) <
+          new Date()
+      ) {
+
+        showCouponMessage(
+          "This coupon has expired.",
+          false
+        );
+
+        return;
+
+      }
+
+
+      const subtotal =
+        cart.reduce(
+          (
+            total,
+            item
+          ) =>
+            total +
+            Number(
+              item.price || 0
+            ) *
+            Number(
+              item.quantity || 1
+            ),
+          0
+        );
+
+
+      if (
+        data.discount_type ===
+        "percentage"
+      ) {
+
+        couponDiscount =
+          subtotal *
+          (
+            Number(
+              data.discount_value
+            ) / 100
+          );
+
+      } else {
+
+        couponDiscount =
+          Number(
+            data.discount_value
+          );
+
+      }
+
+
+      appliedCoupon =
+        data;
+
+
+      showCouponMessage(
+        `Coupon ${code} applied.`,
+        true
+      );
+
+
+      updateSummary();
+
+    }
+
+
+    function showCouponMessage(
+      text,
+      success
+    ) {
+
+      const message =
+        document.getElementById(
+          "couponMessage"
+        );
+
+
+      message.textContent =
+        text;
+
+
+      message.classList.remove(
+        "hidden",
+        "text-red-400",
+        "text-green-400"
+      );
+
+
+      message.classList.add(
+        success
+          ? "text-green-400"
+          : "text-red-400"
+      );
+
+    }
+
+
+    /* =====================================================
+       CHECKOUT
+       ===================================================== */
+
+    document
+      .getElementById(
+        "checkoutButton"
+      )
+      .addEventListener(
+        "click",
+        async () => {
+
+          if (!cart.length) {
+
+            showToast(
+              "Your cart is empty."
+            );
+
+            return;
+
+          }
+
+
+          /*
+            FUNDZ requires customers
+            to have an account before
+            buying.
+          */
+
+          const {
+            data: {
+              user
+            }
+          } =
+            await supabase.auth.getUser();
+
+
+          if (!user) {
+
+            window.location.href =
+              "login.html?redirect=checkout.html";
+
+            return;
+
+          }
+
+
+          /*
+            Store coupon information
+            temporarily for checkout.
+          */
+
+          if (
+            appliedCoupon
+          ) {
+
+            sessionStorage.setItem(
+              "fundz_coupon",
+              JSON.stringify({
+                id:
+                  appliedCoupon.id,
+
+                code:
+                  appliedCoupon.code,
+
+                discount:
+                  couponDiscount
+              })
+            );
+
+          } else {
+
+            sessionStorage.removeItem(
+              "fundz_coupon"
+            );
+
+          }
+
+
+          /*
+            Go to checkout.
+          */
+
+          window.location.href =
+            "checkout.html";
+
+        }
+      );
+
+
+    /* =====================================================
+       HELPERS
+       ===================================================== */
+
+    function formatMoney(
+      amount
+    ) {
+
+      return `₦${Number(
+        amount || 0
+      ).toLocaleString()}`;
+
+    }
+
+
+    function showToast(
+      text
+    ) {
+
+      const toast =
+        document.getElementById(
+          "toast"
+        );
+
+
+      toast.textContent =
+        text;
+
+
+      toast.classList.remove(
+        "hidden"
+      );
+
+
+      clearTimeout(
+        window.toastTimer
+      );
+
+
+      window.toastTimer =
+        setTimeout(
+          () => {
+
+            toast.classList.add(
+              "hidden"
+            );
+
+          },
+          2500
+        );
+
+    }
+
+
+    function escapeHTML(
+      value
+    ) {
+
+      return String(
+        value ?? ""
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+    function attachBackButton() {
+      const backButton =
+        document.getElementById(
+          "backButton"
+        );
+
+      if (!backButton) {
+        return;
+      }
+
+      backButton.addEventListener(
+        "click",
+        () => {
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            window.location.href = "shop.html";
+          }
+        }
+      );
+    }
+
+
+    /* =====================================================
+       START
+       ===================================================== */
+
+    cart =
+      getCart();
+
+    renderCart();
+
+    attachBackButton();
+
+  </script>
+
+</body>
+</html>

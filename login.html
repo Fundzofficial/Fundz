@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Login | FUNDZ</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+
+    body {
+      background: #080808;
+      color: #f5f5f5;
+    }
+
+    html.light {
+      color-scheme: light;
+    }
+
+    html.light body {
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    html.light .glass {
+      background: rgba(255, 255, 255, 0.9) !important;
+      color: #0f172a;
+    }
+
+    html.light .text-white,
+    html.light .text-white\/50,
+    html.light .text-white\/60 {
+      color: #334155 !important;
+    }
+
+    html.light .border-white\/10 {
+      border-color: rgba(15, 23, 42, 0.12) !important;
+    }
+
+    .glass {
+      background: rgba(8, 8, 8, .82);
+      -webkit-backdrop-filter: blur(18px);
+      backdrop-filter: blur(18px);
+    }
+
+    .loader {
+      width: 18px;
+      height: 18px;
+      border: 2px solid rgba(0,0,0,.3);
+      border-top-color: #000;
+      border-radius: 50%;
+      animation: spin .7s linear infinite;
+    }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+  </style>
+
+</head>
+
+
+<body>
+
+
+<!-- NAV -->
+
+<header class="fixed top-0 left-0 right-0 z-50 border-b border-white/10 glass">
+
+  <nav class="max-w-7xl mx-auto px-5 py-4">
+
+    <div class="flex items-center justify-between">
+
+      <a
+        href="index.html"
+        class="text-2xl font-black tracking-[.22em]"
+      >
+        FUNDZ
+      </a>
+
+      <a
+        id="topJoinLink"
+        href="signup.html"
+        class="rounded-full border border-white/20 px-5 py-2.5 text-sm hover:bg-white hover:text-black"
+      >
+        Join the Family
+      </a>
+
+    </div>
+
+  </nav>
+
+</header>
+
+
+<!-- LOGIN -->
+
+<main class="min-h-screen flex items-center justify-center px-5 pt-24 pb-16">
+
+  <div class="w-full max-w-md">
+
+
+    <div class="mb-10 text-center">
+
+      <p class="text-xs font-bold uppercase tracking-[.35em] text-white/40">
+        Welcome Back
+      </p>
+
+      <h1 class="mt-4 text-4xl font-black uppercase">
+        Login
+      </h1>
+
+      <p class="mt-3 text-sm text-white/40">
+        Access your FUNDZ account.
+      </p>
+
+    </div>
+
+
+    <form
+      id="loginForm"
+      class="rounded-3xl border border-white/10 bg-white/[.03] p-6 sm:p-8"
+    >
+
+
+      <!-- EMAIL -->
+
+      <label class="block">
+
+        <span class="text-xs font-bold uppercase tracking-wider text-white/50">
+          Email
+        </span>
+
+        <input
+          id="email"
+          type="email"
+          autocomplete="email"
+          required
+          class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 outline-none placeholder:text-white/20 focus:border-white/40"
+          placeholder="you@example.com"
+        >
+
+      </label>
+
+
+      <!-- PASSWORD -->
+
+      <label class="mt-5 block">
+
+        <div class="flex items-center justify-between">
+
+          <span class="text-xs font-bold uppercase tracking-wider text-white/50">
+            Password
+          </span>
+
+          <a
+            href="forgot-password.html"
+            class="text-xs text-white/50 hover:text-white"
+          >
+            Forgot password?
+          </a>
+
+        </div>
+
+        <input
+          id="password"
+          type="password"
+          autocomplete="current-password"
+          required
+          class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 outline-none placeholder:text-white/20 focus:border-white/40"
+          placeholder="Your password"
+        >
+
+      </label>
+
+
+      <!-- MESSAGE -->
+
+      <div
+        id="message"
+        class="mt-5 hidden text-sm leading-6"
+      ></div>
+
+
+      <!-- BUTTON -->
+
+      <button
+        id="loginButton"
+        type="submit"
+        class="mt-6 flex w-full items-center justify-center gap-3 rounded-full bg-white py-4 text-sm font-black uppercase tracking-wider text-black hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+
+        <span id="buttonText">
+          Login
+        </span>
+
+        <span
+          id="loader"
+          class="loader hidden"
+        ></span>
+
+      </button>
+
+
+      <!-- DIVIDER -->
+
+      <div class="my-7 flex items-center gap-4">
+
+        <div class="h-px flex-1 bg-white/10"></div>
+
+        <span class="text-xs text-white/30">
+          OR
+        </span>
+
+        <div class="h-px flex-1 bg-white/10"></div>
+
+      </div>
+
+
+      <!-- SIGNUP -->
+
+      <a
+        href="signup.html"
+        class="block w-full rounded-full border border-white/15 py-4 text-center text-sm font-bold uppercase tracking-wider hover:bg-white hover:text-black"
+      >
+        Create Account
+      </a>
+
+    </form>
+
+
+    <p class="mt-8 text-center text-xs text-white/30">
+      Raves Never Die.
+    </p>
+
+  </div>
+
+</main>
+
+
+<script type="module">
+
+import { supabase } from "./supabase.js";
+import {
+  login,
+  showMessage,
+  getRedirectUrl,
+  getSafeRedirect
+} from "./auth.js";
+
+async function redirectIfLoggedIn() {
+  const { data, error } = await supabase.auth.getSession();
+  if (error) {
+    console.error("Auth session check failed:", error);
+    return;
+  }
+
+  if (data?.session) {
+    window.location.href = getSafeRedirect("account.html");
+  }
+}
+
+redirectIfLoggedIn();
+
+
+const form =
+  document.getElementById(
+    "loginForm"
+  );
+
+const message =
+  document.getElementById(
+    "message"
+  );
+
+const button =
+  document.getElementById(
+    "loginButton"
+  );
+
+const buttonText =
+  document.getElementById(
+    "buttonText"
+  );
+
+const loader =
+  document.getElementById(
+    "loader"
+  );
+
+
+form.addEventListener(
+  "submit",
+  async event => {
+
+    event.preventDefault();
+
+
+    const email =
+      document
+        .getElementById("email")
+        .value;
+
+    const password =
+      document
+        .getElementById("password")
+        .value;
+
+
+    button.disabled = true;
+
+    buttonText.textContent =
+      "Logging In...";
+
+    loader.classList.remove(
+      "hidden"
+    );
+
+
+    const result =
+      await login(
+        email,
+        password
+      );
+
+
+    button.disabled = false;
+
+    buttonText.textContent =
+      "Login";
+
+    loader.classList.add(
+      "hidden"
+    );
+
+
+    if (!result.success) {
+
+      showMessage(
+        message,
+        result.message
+      );
+
+      return;
+
+    }
+
+
+    showMessage(
+      message,
+      "Login successful.",
+      "success"
+    );
+
+
+    /*
+      Send the customer back to
+      the page that required login.
+
+      Example:
+
+      login.html?redirect=checkout.html
+
+      becomes:
+
+      checkout.html
+    */
+
+    const redirect =
+      getSafeRedirect(
+        getRedirectUrl()
+      );
+
+
+    setTimeout(() => {
+
+      window.location.href =
+        redirect;
+
+    }, 500);
+
+  }
+);
+
+</script>
+
+</body>
+</html>

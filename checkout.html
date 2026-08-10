@@ -1,0 +1,1745 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>FUNDZ | Checkout</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <!-- Paystack Popup V2 -->
+  <script src="https://js.paystack.co/v2/inline.js"></script>
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    input,
+    select {
+      outline: none;
+    }
+  </style>
+</head>
+
+<body class="bg-black text-white">
+
+  <!-- HEADER -->
+
+  <header class="border-b border-white/10 bg-black">
+
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-5">
+
+      <a
+        href="index.html"
+        class="text-xl font-black tracking-[0.3em]"
+      >
+        FUNDZ
+      </a>
+
+      <div class="text-xs uppercase tracking-[0.2em] text-white/30">
+        Secure Checkout
+      </div>
+
+    </div>
+
+  </header>
+
+
+  <!-- LOADING -->
+
+  <div
+    id="loading"
+    class="flex min-h-[70vh] items-center justify-center"
+  >
+
+    <div class="text-center">
+
+      <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-white"></div>
+
+      <p class="mt-4 text-xs uppercase tracking-[0.3em] text-white/30">
+        Loading checkout
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- CHECKOUT -->
+
+  <main
+    id="checkout"
+    class="mx-auto hidden max-w-7xl px-5 py-12 md:py-20"
+  >
+
+    <button
+      id="backButton"
+      type="button"
+      class="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-white transition hover:bg-white/10"
+    >
+      ← Back
+    </button>
+
+    <div class="mb-10">
+
+      <p class="text-xs uppercase tracking-[0.35em] text-white/30">
+        FUNDZ
+      </p>
+
+      <h1 class="mt-3 text-4xl font-black uppercase md:text-6xl">
+        Checkout
+      </h1>
+
+    </div>
+
+
+    <div class="grid gap-10 lg:grid-cols-[1fr_420px]">
+
+
+      <!-- LEFT -->
+
+      <div class="space-y-8">
+
+
+        <!-- CONTACT -->
+
+        <section class="rounded-3xl border border-white/10 p-6 md:p-8">
+
+          <div class="mb-7">
+
+            <p class="text-xs uppercase tracking-[0.3em] text-white/30">
+              Step 01
+            </p>
+
+            <h2 class="mt-2 text-2xl font-black uppercase">
+              Contact Information
+            </h2>
+
+          </div>
+
+
+          <div class="grid gap-5 md:grid-cols-2">
+
+            <div>
+
+              <label
+                for="firstName"
+                class="text-xs font-bold uppercase tracking-wider"
+              >
+                First Name
+              </label>
+
+              <input
+                id="firstName"
+                type="text"
+                autocomplete="given-name"
+                class="mt-3 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 text-sm focus:border-white/40"
+                placeholder="First name"
+              >
+
+            </div>
+
+
+            <div>
+
+              <label
+                for="lastName"
+                class="text-xs font-bold uppercase tracking-wider"
+              >
+                Last Name
+              </label>
+
+              <input
+                id="lastName"
+                type="text"
+                autocomplete="family-name"
+                class="mt-3 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 text-sm focus:border-white/40"
+                placeholder="Last name"
+              >
+
+            </div>
+
+
+            <div class="md:col-span-2">
+
+              <label
+                for="email"
+                class="text-xs font-bold uppercase tracking-wider"
+              >
+                Email
+              </label>
+
+              <input
+                id="email"
+                type="email"
+                autocomplete="email"
+                readonly
+                class="mt-3 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 text-sm text-white/50"
+              >
+
+            </div>
+
+
+            <div class="md:col-span-2">
+
+              <label
+                for="phone"
+                class="text-xs font-bold uppercase tracking-wider"
+              >
+                Phone Number
+              </label>
+
+              <input
+                id="phone"
+                type="tel"
+                autocomplete="tel"
+                class="mt-3 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 text-sm focus:border-white/40"
+                placeholder="+234..."
+              >
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- SHIPPING -->
+
+        <section class="rounded-3xl border border-white/10 p-6 md:p-8">
+
+          <div class="mb-7">
+
+            <p class="text-xs uppercase tracking-[0.3em] text-white/30">
+              Step 02
+            </p>
+
+            <h2 class="mt-2 text-2xl font-black uppercase">
+              Shipping Address
+            </h2>
+
+          </div>
+
+
+          <div class="space-y-5">
+
+            <div>
+
+              <label
+                for="country"
+                class="text-xs font-bold uppercase tracking-wider"
+              >
+                Country
+              </label>
+
+              <select
+                id="country"
+                class="mt-3 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 text-sm"
+              >
+
+                <option value="NG">
+                  Nigeria
+                </option>
+
+              </select>
+
+            </div>
+
+
+            <div>
+
+              <label
+                for="address"
+                class="text-xs font-bold uppercase tracking-wider"
+              >
+                Address
+              </label>
+
+              <input
+                id="address"
+                type="text"
+                autocomplete="street-address"
+                class="mt-3 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 text-sm focus:border-white/40"
+                placeholder="Street address"
+              >
+
+            </div>
+
+
+            <div class="grid gap-5 md:grid-cols-2">
+
+              <div>
+
+                <label
+                  for="city"
+                  class="text-xs font-bold uppercase tracking-wider"
+                >
+                  City
+                </label>
+
+                <input
+                  id="city"
+                  type="text"
+                  autocomplete="address-level2"
+                  class="mt-3 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 text-sm"
+                  placeholder="City"
+                >
+
+              </div>
+
+
+              <div>
+
+                <label
+                  for="state"
+                  class="text-xs font-bold uppercase tracking-wider"
+                >
+                  State
+                </label>
+
+                <input
+                  id="state"
+                  type="text"
+                  autocomplete="address-level1"
+                  class="mt-3 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 text-sm"
+                  placeholder="State"
+                >
+
+              </div>
+
+            </div>
+
+
+            <div>
+
+              <label
+                for="postalCode"
+                class="text-xs font-bold uppercase tracking-wider"
+              >
+                Postal Code
+              </label>
+
+              <input
+                id="postalCode"
+                type="text"
+                autocomplete="postal-code"
+                class="mt-3 w-full rounded-2xl border border-white/10 bg-white/[0.03] px-5 py-4 text-sm"
+                placeholder="Postal code"
+              >
+
+            </div>
+
+          </div>
+
+        </section>
+
+
+        <!-- PAYMENT -->
+
+        <section class="rounded-3xl border border-white/10 p-6 md:p-8">
+
+          <div class="mb-7">
+
+            <p class="text-xs uppercase tracking-[0.3em] text-white/30">
+              Step 03
+            </p>
+
+            <h2 class="mt-2 text-2xl font-black uppercase">
+              Payment
+            </h2>
+
+          </div>
+
+
+          <div class="rounded-2xl border border-white/10 bg-white/[0.02] p-5">
+
+            <div class="flex items-start gap-4">
+
+              <div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-white text-black">
+                ₦
+              </div>
+
+              <div>
+
+                <p class="text-sm font-black uppercase">
+                  Paystack
+                </p>
+
+                <p class="mt-1 text-xs leading-5 text-white/40">
+                  Pay securely with card, bank transfer and other available Paystack payment channels.
+                </p>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </section>
+
+      </div>
+
+
+      <!-- RIGHT -->
+
+      <aside class="h-fit rounded-3xl border border-white/10 bg-white/[0.02] p-6 md:p-8 lg:sticky lg:top-8">
+
+        <h2 class="text-xl font-black uppercase">
+          Your Order
+        </h2>
+
+
+        <!-- ITEMS -->
+
+        <div
+          id="orderItems"
+          class="mt-7 space-y-5"
+        ></div>
+
+
+        <div class="mt-7 border-t border-white/10 pt-7 space-y-4">
+
+          <div class="flex justify-between text-sm">
+
+            <span class="text-white/40">
+              Subtotal
+            </span>
+
+            <span
+              id="subtotal"
+              class="font-bold"
+            >
+              ₦0
+            </span>
+
+          </div>
+
+
+          <div class="flex justify-between text-sm">
+
+            <span class="text-white/40">
+              Discount
+            </span>
+
+            <span
+              id="discount"
+              class="font-bold"
+            >
+              ₦0
+            </span>
+
+          </div>
+
+
+          <div class="flex justify-between text-sm">
+
+            <span class="text-white/40">
+              Shipping
+            </span>
+
+            <span
+              id="shipping"
+              class="font-bold"
+            >
+              ₦0
+            </span>
+
+          </div>
+
+
+          <div class="border-t border-white/10 pt-5">
+
+            <div class="flex justify-between">
+
+              <span class="text-sm font-bold uppercase">
+                Total
+              </span>
+
+              <span
+                id="total"
+                class="text-2xl font-black"
+              >
+                ₦0
+              </span>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- PAY BUTTON -->
+
+        <button
+          id="payButton"
+          class="mt-8 w-full rounded-full bg-white py-5 text-xs font-black uppercase tracking-[0.2em] text-black transition hover:bg-white/80 disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Pay with Paystack
+        </button>
+
+
+        <p class="mt-5 text-center text-[10px] leading-5 text-white/20">
+          By placing your order, you agree to FUNDZ's terms and conditions.
+        </p>
+
+      </aside>
+
+    </div>
+
+  </main>
+
+
+  <!-- ERROR -->
+
+  <section
+    id="error"
+    class="hidden min-h-[70vh] items-center justify-center px-5"
+  >
+
+    <div class="text-center">
+
+      <h1 class="text-4xl font-black uppercase">
+        Unable to Load Checkout
+      </h1>
+
+      <p class="mt-4 text-sm text-white/40">
+        Please return to your cart and try again.
+      </p>
+
+      <a
+        href="cart.html"
+        class="mt-7 inline-block rounded-full bg-white px-8 py-4 text-xs font-black uppercase text-black"
+      >
+        Back to Cart
+      </a>
+
+    </div>
+
+  </section>
+
+
+  <!-- TOAST -->
+
+  <div
+    id="toast"
+    class="fixed bottom-6 left-1/2 z-[200] hidden -translate-x-1/2 rounded-full bg-white px-6 py-3 text-sm font-bold text-black shadow-2xl"
+  ></div>
+
+
+  <script type="module">
+
+    import {
+      supabase
+    } from "./supabase.js";
+
+
+    /* =====================================================
+       PAYSTACK PUBLIC KEY
+       =====================================================
+
+       IMPORTANT:
+       Replace this with your Paystack PUBLIC key.
+
+       NEVER put your Paystack SECRET key here.
+    */
+
+    const PAYSTACK_PUBLIC_KEY =
+      "pk_live_2a2773dcd0c8f4efba2ce305168fe56699545e61";
+
+
+    /* =====================================================
+       STATE
+       ===================================================== */
+
+    let user = null;
+
+    let cart = [];
+
+    let coupon = null;
+
+    let subtotal = 0;
+
+    let discount = 0;
+
+    let shipping = 0;
+
+    let total = 0;
+
+
+    /* =====================================================
+       START
+       ===================================================== */
+
+    init();
+
+
+    async function init() {
+
+      /*
+        Customer must be logged in.
+      */
+
+      const {
+        data
+      } =
+        await supabase.auth.getUser();
+
+
+      user =
+        data?.user;
+
+
+      if (!user) {
+
+        window.location.href =
+          "login.html?redirect=checkout.html";
+
+        return;
+
+      }
+
+
+      /*
+        Load cart.
+      */
+
+      try {
+
+        cart =
+          JSON.parse(
+            localStorage.getItem(
+              "fundz_cart"
+            ) || "[]"
+          );
+
+      } catch {
+
+        cart = [];
+
+      }
+
+
+      if (!cart.length) {
+
+        window.location.href =
+          "cart.html";
+
+        return;
+
+      }
+
+
+      /*
+        Load coupon.
+      */
+
+      try {
+
+        const savedCoupon =
+          sessionStorage.getItem(
+            "fundz_coupon"
+          );
+
+
+        if (
+          savedCoupon
+        ) {
+
+          coupon =
+            JSON.parse(
+              savedCoupon
+            );
+
+        }
+
+      } catch {
+
+        coupon = null;
+
+      }
+
+
+      /*
+        Load user information.
+      */
+
+      await loadProfile();
+
+
+      /*
+        Render order.
+      */
+
+      renderOrder();
+
+
+      /*
+        Show page.
+      */
+
+      document
+        .getElementById(
+          "loading"
+        )
+        .classList.add(
+          "hidden"
+        );
+
+
+      document
+        .getElementById(
+          "checkout"
+        )
+        .classList.remove(
+          "hidden"
+        );
+
+    }
+
+
+    /* =====================================================
+       PROFILE
+       ===================================================== */
+
+    async function loadProfile() {
+
+      document
+        .getElementById(
+          "email"
+        )
+        .value =
+        user.email || "";
+
+
+      /*
+        Adjust this query if your
+        profile table uses different
+        column names.
+      */
+
+      const {
+        data
+      } =
+        await supabase
+          .from("profiles")
+          .select("*")
+          .eq(
+            "id",
+            user.id
+          )
+          .maybeSingle();
+
+
+      if (!data) {
+
+        return;
+
+      }
+
+
+      document
+        .getElementById(
+          "firstName"
+        )
+        .value =
+        data.first_name ||
+        "";
+
+
+      document
+        .getElementById(
+          "lastName"
+        )
+        .value =
+        data.last_name ||
+        "";
+
+
+      document
+        .getElementById(
+          "phone"
+        )
+        .value =
+        data.phone ||
+        "";
+
+    }
+
+
+    /* =====================================================
+       RENDER ORDER
+       ===================================================== */
+
+    function renderOrder() {
+
+      const container =
+        document.getElementById(
+          "orderItems"
+        );
+
+
+      container.innerHTML =
+        cart
+          .map(
+            item => `
+
+              <div class="flex gap-4">
+
+                <div class="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-white/[0.03]">
+
+                  <img
+                    src="${escapeHTML(
+                      item.image_url ||
+                      "https://placehold.co/400x400/111111/FFFFFF?text=FUNDZ"
+                    )}"
+                    alt="${escapeHTML(
+                      item.name
+                    )}"
+                    class="h-full w-full object-cover"
+                  >
+
+                  <span class="absolute right-1 top-1 flex h-5 min-w-5 items-center justify-center rounded-full bg-white px-1 text-[9px] font-black text-black">
+                    ${Number(
+                      item.quantity || 1
+                    )}
+                  </span>
+
+                </div>
+
+
+                <div class="min-w-0 flex-1">
+
+                  <p class="text-xs font-black uppercase">
+                    ${escapeHTML(
+                      item.name
+                    )}
+                  </p>
+
+
+                  ${
+                    item.size
+                      ? `
+                        <p class="mt-1 text-[10px] text-white/30">
+                          Size: ${escapeHTML(
+                            item.size
+                          )}
+                        </p>
+                      `
+                      : ""
+                  }
+
+
+                  ${
+                    item.color
+                      ? `
+                        <p class="text-[10px] text-white/30">
+                          Color: ${escapeHTML(
+                            item.color
+                          )}
+                        </p>
+                      `
+                      : ""
+                  }
+
+                </div>
+
+
+                <p class="text-xs font-bold">
+                  ${formatMoney(
+                    Number(
+                      item.price
+                    ) *
+                    Number(
+                      item.quantity || 1
+                    )
+                  )}
+                </p>
+
+              </div>
+
+            `
+          )
+          .join("");
+
+
+      /*
+        Calculate totals.
+      */
+
+      subtotal =
+        cart.reduce(
+          (
+            sum,
+            item
+          ) =>
+            sum +
+            Number(
+              item.price || 0
+            ) *
+            Number(
+              item.quantity || 1
+            ),
+          0
+        );
+
+
+      discount =
+        Math.min(
+          Number(
+            coupon?.discount || 0
+          ),
+          subtotal
+        );
+
+
+      /*
+        Shipping is set to zero here.
+
+        You can later calculate this
+        from the customer's address,
+        shipping zones or admin settings.
+      */
+
+      shipping = 0;
+
+
+      total =
+        Math.max(
+          0,
+          subtotal -
+          discount +
+          shipping
+        );
+
+
+      document
+        .getElementById(
+          "subtotal"
+        )
+        .textContent =
+        formatMoney(
+          subtotal
+        );
+
+
+      document
+        .getElementById(
+          "discount"
+        )
+        .textContent =
+        discount > 0
+          ? "-" +
+            formatMoney(
+              discount
+            )
+          : formatMoney(
+              0
+            );
+
+
+      document
+        .getElementById(
+          "shipping"
+        )
+        .textContent =
+        shipping > 0
+          ? formatMoney(
+              shipping
+            )
+          : "Free";
+
+
+      document
+        .getElementById(
+          "total"
+        )
+        .textContent =
+        formatMoney(
+          total
+        );
+
+    }
+
+
+    /* =====================================================
+       VALIDATE FORM
+       ===================================================== */
+
+    function validateForm() {
+
+      const firstName =
+        document
+          .getElementById(
+            "firstName"
+          )
+          .value
+          .trim();
+
+
+      const lastName =
+        document
+          .getElementById(
+            "lastName"
+          )
+          .value
+          .trim();
+
+
+      const phone =
+        document
+          .getElementById(
+            "phone"
+          )
+          .value
+          .trim();
+
+
+      const address =
+        document
+          .getElementById(
+            "address"
+          )
+          .value
+          .trim();
+
+
+      const city =
+        document
+          .getElementById(
+            "city"
+          )
+          .value
+          .trim();
+
+
+      const state =
+        document
+          .getElementById(
+            "state"
+          )
+          .value
+          .trim();
+
+
+      if (!firstName) {
+
+        showToast(
+          "Enter your first name."
+        );
+
+        return false;
+
+      }
+
+
+      if (!lastName) {
+
+        showToast(
+          "Enter your last name."
+        );
+
+        return false;
+
+      }
+
+
+      if (!phone) {
+
+        showToast(
+          "Enter your phone number."
+        );
+
+        return false;
+
+      }
+
+
+      if (!address) {
+
+        showToast(
+          "Enter your shipping address."
+        );
+
+        return false;
+
+      }
+
+
+      if (!city) {
+
+        showToast(
+          "Enter your city."
+        );
+
+        return false;
+
+      }
+
+
+      if (!state) {
+
+        showToast(
+          "Enter your state."
+        );
+
+        return false;
+
+      }
+
+
+      return true;
+
+    }
+
+
+    /* =====================================================
+       PAYSTACK
+       ===================================================== */
+
+    document
+      .getElementById(
+        "payButton"
+      )
+      .addEventListener(
+        "click",
+        startPayment
+      );
+
+
+    async function startPayment() {
+
+      if (
+        !validateForm()
+      ) {
+
+        return;
+
+      }
+
+
+      if (
+        !PAYSTACK_PUBLIC_KEY ||
+        PAYSTACK_PUBLIC_KEY.includes(
+          "REPLACE"
+        )
+      ) {
+
+        showToast(
+          "Add your Paystack public key first."
+        );
+
+        return;
+
+      }
+
+
+      const button =
+        document.getElementById(
+          "payButton"
+        );
+
+
+      button.disabled =
+        true;
+
+
+      button.textContent =
+        "Opening Paystack...";
+
+
+      /*
+        Generate a unique reference.
+
+        The real transaction should
+        ultimately be verified server-side.
+      */
+
+      const reference =
+        generateReference();
+
+
+      /*
+        Save checkout information temporarily.
+
+        The Edge Function can use the
+        same reference after payment.
+      */
+
+      const checkoutData = {
+
+        reference,
+
+        user_id:
+          user.id,
+
+        email:
+          user.email,
+
+        first_name:
+          document
+            .getElementById(
+              "firstName"
+            )
+            .value
+            .trim(),
+
+        last_name:
+          document
+            .getElementById(
+              "lastName"
+            )
+            .value
+            .trim(),
+
+        phone:
+          document
+            .getElementById(
+              "phone"
+            )
+            .value
+            .trim(),
+
+        shipping_address: {
+
+          country:
+            document
+              .getElementById(
+                "country"
+              )
+              .value,
+
+          address:
+            document
+              .getElementById(
+                "address"
+              )
+              .value
+              .trim(),
+
+          city:
+            document
+              .getElementById(
+                "city"
+              )
+              .value
+              .trim(),
+
+          state:
+            document
+              .getElementById(
+                "state"
+              )
+              .value
+              .trim(),
+
+          postal_code:
+            document
+              .getElementById(
+                "postalCode"
+              )
+              .value
+              .trim()
+
+        },
+
+        cart,
+
+        subtotal,
+
+        discount,
+
+        shipping,
+
+        total,
+
+        coupon_id:
+          coupon?.id ||
+          null
+
+      };
+
+
+      sessionStorage.setItem(
+        "fundz_checkout",
+        JSON.stringify(
+          checkoutData
+        )
+      );
+
+
+      /*
+        Paystack amount is in kobo.
+
+        ₦10,000 = 1,000,000 kobo.
+      */
+
+      const amountInKobo =
+        Math.round(
+          total * 100
+        );
+
+
+      try {
+
+        const paystack =
+          new PaystackPop();
+
+
+        paystack.newTransaction({
+
+          key:
+            PAYSTACK_PUBLIC_KEY,
+
+          email:
+            user.email,
+
+          amount:
+            amountInKobo,
+
+          currency:
+            "NGN",
+
+          reference,
+
+          firstName:
+            checkoutData.first_name,
+
+          lastName:
+            checkoutData.last_name,
+
+          phone:
+            checkoutData.phone,
+
+          channels: [
+            "card",
+            "bank_transfer",
+            "bank",
+            "ussd",
+            "qr"
+          ],
+
+          metadata: {
+
+            user_id:
+              user.id,
+
+            reference,
+
+            custom_fields: [
+
+              {
+                display_name:
+                  "Customer",
+
+                variable_name:
+                  "customer",
+
+                value:
+                  `${checkoutData.first_name} ${checkoutData.last_name}`
+              }
+
+            ]
+
+          },
+
+
+          onLoad:
+            () => {
+
+              button.textContent =
+                "Pay with Paystack";
+
+            },
+
+
+          onSuccess:
+            async transaction => {
+
+              console.log(
+                "Paystack success:",
+                transaction
+              );
+
+
+              button.textContent =
+                "Verifying payment...";
+
+
+              /*
+                DO NOT simply trust
+                the browser callback.
+
+                Send the reference to
+                your Supabase Edge Function.
+              */
+
+              await verifyPayment(
+                transaction.reference ||
+                reference
+              );
+
+            },
+
+
+          onCancel:
+            () => {
+
+              button.disabled =
+                false;
+
+              button.textContent =
+                "Pay with Paystack";
+
+              showToast(
+                "Payment cancelled."
+              );
+
+            },
+
+
+          onError:
+            error => {
+
+              console.error(
+                error
+              );
+
+
+              button.disabled =
+                false;
+
+              button.textContent =
+                "Pay with Paystack";
+
+
+              showToast(
+                error?.message ||
+                "Unable to open Paystack."
+              );
+
+            }
+
+        });
+
+      } catch (
+        error
+      ) {
+
+        console.error(
+          error
+        );
+
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Pay with Paystack";
+
+
+        showToast(
+          "Unable to start payment."
+        );
+
+      }
+
+    }
+
+
+    /* =====================================================
+       VERIFY PAYMENT
+       ===================================================== */
+
+    async function verifyPayment(
+      reference
+    ) {
+
+      /*
+        IMPORTANT:
+
+        Create this Supabase Edge Function:
+
+        verify-paystack-payment
+
+        It should:
+
+        1. Receive reference.
+        2. Get the authenticated user.
+        3. Call Paystack's
+           /transaction/verify/:reference
+           endpoint using the SECRET KEY.
+        4. Confirm status === "success".
+        5. Confirm amount matches
+           the expected order amount.
+        6. Create the order.
+        7. Create order_items.
+        8. Record payment.
+        9. Update stock.
+        10. Return success.
+      */
+
+      const checkoutData =
+        JSON.parse(
+          sessionStorage.getItem(
+            "fundz_checkout"
+          ) || "{}"
+        );
+
+
+      const {
+        data,
+        error
+      } =
+        await supabase.functions.invoke(
+          "verify-paystack-payment",
+          {
+            body: {
+
+              reference,
+
+              checkout:
+                checkoutData
+
+            }
+          }
+        );
+
+
+      if (
+        error
+      ) {
+
+        console.error(
+          error
+        );
+
+
+        showToast(
+          "Payment verification failed."
+        );
+
+
+        const button =
+          document.getElementById(
+            "payButton"
+          );
+
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Pay with Paystack";
+
+
+        return;
+
+      }
+
+
+      if (
+        !data?.success
+      ) {
+
+        showToast(
+          data?.message ||
+          "Payment could not be verified."
+        );
+
+
+        const button =
+          document.getElementById(
+            "payButton"
+          );
+
+
+        button.disabled =
+          false;
+
+        button.textContent =
+          "Pay with Paystack";
+
+
+        return;
+
+      }
+
+
+      /*
+        Payment verified.
+
+        Clear cart.
+      */
+
+      localStorage.removeItem(
+        "fundz_cart"
+      );
+
+
+      sessionStorage.removeItem(
+        "fundz_checkout"
+      );
+
+
+      sessionStorage.removeItem(
+        "fundz_coupon"
+      );
+
+
+      /*
+        Send customer to
+        order confirmation.
+      */
+
+      window.location.href =
+        `order-confirmation.html?order=${encodeURIComponent(
+          data.order_id
+        )}`;
+
+    }
+
+
+    /* =====================================================
+       REFERENCE
+       ===================================================== */
+
+    function generateReference() {
+
+      return (
+        "FUNDZ-" +
+        Date.now() +
+        "-" +
+        Math.random()
+          .toString(36)
+          .substring(
+            2,
+            9
+          )
+          .toUpperCase()
+      );
+
+    }
+
+
+    /* =====================================================
+       MONEY
+       ===================================================== */
+
+    function formatMoney(
+      amount
+    ) {
+
+      return `₦${Number(
+        amount || 0
+      ).toLocaleString(
+        "en-NG"
+      )}`;
+
+    }
+
+
+    /* =====================================================
+       TOAST
+       ===================================================== */
+
+    function showToast(
+      message
+    ) {
+
+      const toast =
+        document.getElementById(
+          "toast"
+        );
+
+
+      toast.textContent =
+        message;
+
+
+      toast.classList.remove(
+        "hidden"
+      );
+
+
+      clearTimeout(
+        window.toastTimer
+      );
+
+
+      window.toastTimer =
+        setTimeout(
+          () => {
+
+            toast.classList.add(
+              "hidden"
+            );
+
+          },
+          3000
+        );
+
+    }
+
+
+    /* =====================================================
+       ESCAPE HTML
+       ===================================================== */
+
+    function escapeHTML(
+      value
+    ) {
+
+      return String(
+        value ?? ""
+      )
+        .replace(
+          /&/g,
+          "&amp;"
+        )
+        .replace(
+          /</g,
+          "&lt;"
+        )
+        .replace(
+          />/g,
+          "&gt;"
+        )
+        .replace(
+          /"/g,
+          "&quot;"
+        )
+        .replace(
+          /'/g,
+          "&#039;"
+        );
+
+    }
+
+    const backButton =
+      document.getElementById(
+        "backButton"
+      );
+
+    if (backButton) {
+      backButton.addEventListener(
+        "click",
+        () => {
+          if (window.history.length > 1) {
+            window.history.back();
+          } else {
+            window.location.href = "cart.html";
+          }
+        }
+      );
+    }
+
+  </script>
+
+</body>
+</html>

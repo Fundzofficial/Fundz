@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>FUNDZ | Product</title>
+
+  <script src="https://cdn.tailwindcss.com"></script>
+
+  <style>
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
+
+    .thumb-active {
+      border-color: white !important;
+      opacity: 1 !important;
+    }
+
+    .size-active,
+    .color-active {
+      background: white;
+      color: black;
+      border-color: white;
+    }
+  </style>
+</head>
+
+<body class="bg-black text-white">
+
+  <!-- HEADER -->
+
+  <header class="sticky top-0 z-40 border-b border-white/10 bg-black/90 backdrop-blur">
+
+    <div class="mx-auto flex h-20 max-w-7xl items-center justify-between px-5">
+
+              <button
+        id="mobileMenuButton"
+        type="button"
+        class="inline-flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-xl text-white/80 hover:bg-white/10 md:hidden"
+        aria-label="Open navigation menu"
+      >
+        ☰
+      </button>
+
+      <a
+        href="index.html"
+        class="text-xl font-black tracking-[0.3em]"
+      >
+        FUNDZ
+      </a>
+
+      <!-- DESKTOP NAV -->
+
+      <div class="hidden md:flex items-center gap-8 text-sm">
+
+        <a
+          href="index.html"
+          class="text-white/60 hover:text-white"
+        >
+          Home
+        </a>
+
+        <a
+          href="shop.html"
+          class="text-white/60 hover:text-white"
+        >
+          Shop
+        </a>
+
+        <a
+          href="index.html#story"
+          class="text-white/60 hover:text-white"
+        >
+          Our Story
+        </a>
+
+        <a
+          href="index.html#community"
+          class="text-white/60 hover:text-white"
+        >
+          Community
+        </a>
+
+        <a
+          href="index.html#world"
+          class="text-white/60 hover:text-white"
+        >
+          FUNDZ World
+        </a>
+
+      </div>
+
+
+      <!-- ACTIONS -->
+
+      <div class="flex items-center gap-2">
+
+        <button
+          type="button"
+          id="wishlistBtn"
+          class="rounded-full border border-white/20 px-4 py-2 text-sm hover:bg-white hover:text-black"
+        >
+          ♡
+          <span id="wishlistCount">0</span>
+        </button>
+
+        <button
+          type="button"
+          id="cartBtn"
+          class="rounded-full border border-white/20 px-4 py-2 text-sm hover:bg-white hover:text-black"
+        >
+          Bag
+          <span id="cartCount">0</span>
+        </button>
+
+        <a
+          id="accountBtn"
+          href="account.html"
+          class="hidden h-10 items-center rounded-full border border-white/10 px-4 text-xs uppercase sm:flex"
+        >
+          Account
+        </a>
+
+      </div>
+
+    </div>
+
+  </nav>
+
+</header>
+
+<div
+  id="mobileMenu"
+  class="hidden fixed inset-0 z-[60] bg-black/95 px-5 py-6 backdrop-blur-lg"
+>
+  <div class="mx-auto flex h-full max-w-sm flex-col">
+    <div class="flex items-center justify-between">
+      <a href="index.html" class="text-2xl font-black tracking-[.22em]">FUNDZ</a>
+      <button
+        id="mobileMenuClose"
+        type="button"
+        class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-2xl hover:bg-white/10"
+        aria-label="Close navigation menu"
+      >
+        ×
+      </button>
+    </div>
+
+    <nav class="mt-10 flex flex-col gap-5 text-lg uppercase">
+      <a href="index.html" class="font-bold">Home</a>
+      <a href="shop.html" class="text-white/70 hover:text-white">Shop</a>
+      <a href="index.html#story" class="text-white/70 hover:text-white">Our Story</a>
+      <a href="index.html#community" class="text-white/70 hover:text-white">Community</a>
+      <a href="index.html#world" class="text-white/70 hover:text-white">FUNDZ World</a>
+    </nav>
+
+    <div class="mt-auto space-y-3">
+      <a href="account.html" class="block rounded-full border border-white/20 px-5 py-3 text-center text-sm font-bold hover:bg-white/10">Account</a>
+      <a href="wishlist.html" class="block rounded-full border border-white/20 px-5 py-3 text-center text-sm font-bold hover:bg-white/10">Wishlist</a>
+      <a href="cart.html" class="block rounded-full border border-white/20 px-5 py-3 text-center text-sm font-bold hover:bg-white/10">Bag</a>
+    </div>
+  </div>
+</div>
+
+
+  <!-- LOADING -->
+
+  <div
+    id="loading"
+    class="flex min-h-[70vh] items-center justify-center"
+  >
+
+    <div class="text-center">
+
+      <div class="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-white/20 border-t-white"></div>
+
+      <p class="mt-4 text-xs uppercase tracking-widest text-white/30">
+        Loading product
+      </p>
+
+    </div>
+
+  </div>
+
+
+  <!-- PRODUCT -->
+
+  <main
+    id="productPage"
+    class="mx-auto hidden max-w-7xl px-5 py-10 md:py-16"
+  >
+
+    <div class="mb-6">
+      <button
+        id="backButton"
+        type="button"
+        class="inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-3 text-xs font-black uppercase tracking-[0.2em] text-white transition hover:bg-white/10"
+      >
+        ← Back
+      </button>
+    </div>
+
+    <!-- BREADCRUMB -->
+
+    <div class="mb-8 text-xs text-white/30">
+
+      <a href="shop.html" class="hover:text-white">
+        Shop
+      </a>
+
+      <span class="mx-2">/</span>
+
+      <span id="breadcrumbCategory">
+        Product
+      </span>
+
+    </div>
+
+
+    <div class="grid gap-10 lg:grid-cols-2 lg:gap-16">
+
+
+      <!-- =========================================
+           IMAGE GALLERY
+           ========================================= -->
+
+      <section>
+
+        <div class="relative overflow-hidden rounded-3xl bg-white/[0.03]">
+
+          <img
+            id="mainImage"
+            src=""
+            alt=""
+            class="aspect-square w-full object-cover"
+          >
+
+          <button
+            id="prevImage"
+            class="absolute left-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/60 backdrop-blur"
+          >
+            ‹
+          </button>
+
+          <button
+            id="nextImage"
+            class="absolute right-4 top-1/2 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/60 backdrop-blur"
+          >
+            ›
+          </button>
+
+          <button
+            id="zoomButton"
+            class="absolute bottom-4 right-4 rounded-full border border-white/10 bg-black/70 px-4 py-2 text-xs backdrop-blur"
+          >
+            Zoom
+          </button>
+
+        </div>
+
+
+        <div
+          id="thumbnails"
+          class="mt-4 grid grid-cols-4 gap-3"
+        ></div>
+
+      </section>
+
+
+      <!-- =========================================
+           PRODUCT INFORMATION
+           ========================================= -->
+
+      <section class="lg:pt-5">
+
+        <p
+          id="productCategory"
+          class="text-xs uppercase tracking-[0.3em] text-white/30"
+        >
+          Category
+        </p>
+
+
+        <div class="mt-3 flex items-start justify-between gap-5">
+
+          <h1
+            id="productName"
+            class="text-3xl font-black uppercase leading-tight md:text-5xl"
+          >
+            Product
+          </h1>
+
+          <button
+            id="wishlistButton"
+            class="flex h-12 w-12 shrink-0 items-center justify-center rounded-full border border-white/10 text-2xl"
+            aria-label="Add to wishlist"
+          >
+            ♡
+          </button>
+
+        </div>
+
+
+        <!-- REVIEWS -->
+
+        <div class="mt-5 flex items-center gap-3">
+
+          <div
+            id="stars"
+            class="text-sm tracking-widest"
+          >
+            ☆☆☆☆☆
+          </div>
+
+          <span
+            id="reviewCount"
+            class="text-xs text-white/30"
+          >
+            No reviews
+          </span>
+
+        </div>
+
+
+        <!-- PRICE -->
+
+        <div class="mt-6">
+
+          <span
+            id="productPrice"
+            class="text-2xl font-black"
+          >
+            ₦0
+          </span>
+
+        </div>
+
+
+        <!-- DESCRIPTION -->
+
+        <div class="mt-8 border-t border-white/10 pt-7">
+
+          <p
+            id="productDescription"
+            class="whitespace-pre-line text-sm leading-7 text-white/50"
+          ></p>
+
+        </div>
+
+
+        <!-- STOCK -->
+
+        <div class="mt-7">
+
+          <p
+            id="stockText"
+            class="text-xs font-bold uppercase tracking-wider"
+          ></p>
+
+        </div>
+
+
+        <!-- SIZE -->
+
+        <div class="mt-7">
+
+          <div class="mb-3 flex justify-between">
+
+            <p class="text-xs font-bold uppercase tracking-wider">
+              Size
+            </p>
+
+            <button
+              class="text-xs text-white/40 underline"
+              type="button"
+            >
+              Size Guide
+            </button>
+
+          </div>
+
+
+          <div
+            id="sizes"
+            class="flex flex-wrap gap-2"
+          >
+
+            <button data-size="XS"
+              class="size-button rounded-full border border-white/10 px-5 py-3 text-xs">
+              XS
+            </button>
+
+            <button data-size="S"
+              class="size-button rounded-full border border-white/10 px-5 py-3 text-xs">
+              S
+            </button>
+
+            <button data-size="M"
+              class="size-button rounded-full border border-white/10 px-5 py-3 text-xs">
+              M
+            </button>
+
+            <button data-size="L"
+              class="size-button rounded-full border border-white/10 px-5 py-3 text-xs">
+              L
+            </button>
+
+            <button data-size="XL"
+              class="size-button rounded-full border border-white/10 px-5 py-3 text-xs">
+              XL
+            </button>
+
+            <button data-size="XXL"
+              class="size-button rounded-full border border-white/10 px-5 py-3 text-xs">
+              XXL
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- COLORS -->
+
+        <div class="mt-7">
+
+          <p class="mb-3 text-xs font-bold uppercase tracking-wider">
+            Color
+          </p>
+
+          <div
+            id="colors"
+            class="flex flex-wrap gap-2"
+          >
+
+            <button data-color="Black"
+              class="color-button rounded-full border border-white/10 px-5 py-3 text-xs">
+              Black
+            </button>
+
+            <button data-color="White"
+              class="color-button rounded-full border border-white/10 px-5 py-3 text-xs">
+              White
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- QUANTITY -->
+
+        <div class="mt-7">
+
+          <p class="mb-3 text-xs font-bold uppercase tracking-wider">
+            Quantity
+          </p>
+
+          <div class="flex w-fit items-center overflow-hidden rounded-full border border-white/10">
+
+            <button
+              id="minusQuantity"
+              class="h-12 w-12 text-lg"
+            >
+              −
+            </button>
+
+            <span
+              id="quantity"
+              class="w-12 text-center text-sm font-bold"
+            >
+              1
+            </span>
+
+            <button
+              id="plusQuantity"
+              class="h-12 w-12 text-lg"
+            >
+              +
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- ADD TO CART -->
+
+        <button
+          id="addToCart"
+          class="mt-8 w-full rounded-full bg-white py-5 text-xs font-black uppercase tracking-[0.2em] text-black transition hover:bg-white/80 disabled:cursor-not-allowed disabled:opacity-30"
+        >
+          Add to Cart
+        </button>
+
+
+        <!-- BUY NOW -->
+
+        <button
+          id="buyNow"
+          class="mt-3 w-full rounded-full border border-white/20 py-5 text-xs font-black uppercase tracking-[0.2em]"
+        >
+          Buy Now
+        </button>
+
+
+        <!-- SHIPPING INFO -->
+
+        <div class="mt-8 grid grid-cols-2 gap-3">
+
+          <div class="rounded-2xl border border-white/10 p-5">
+
+            <p class="text-xs font-bold uppercase">
+              Shipping
+            </p>
+
+            <p class="mt-2 text-xs leading-5 text-white/40">
+              Worldwide delivery available.
+            </p>
+
+          </div>
+
+
+          <div class="rounded-2xl border border-white/10 p-5">
+
+            <p class="text-xs font-bold uppercase">
+              Returns
+            </p>
+
+            <p class="mt-2 text-xs leading-5 text-white/40">
+              Easy returns subject to our policy.
+            </p>
+
+          </div>
+
+        </div>
+
+      </section>
+
+    </div>
+
+
+    <!-- =========================================
+         REVIEWS
+         ========================================= -->
+
+    <section class="mt-20 border-t border-white/10 pt-12">
+
+      <div class="flex flex-col justify-between gap-5 md:flex-row md:items-end">
+
+        <div>
+
+          <p class="text-xs uppercase tracking-[0.3em] text-white/30">
+            Community
+          </p>
+
+          <h2 class="mt-2 text-3xl font-black uppercase">
+            Customer Reviews
+          </h2>
+
+        </div>
+
+
+        <button
+          id="reviewButton"
+          class="rounded-full border border-white/10 px-6 py-3 text-xs font-bold uppercase"
+        >
+          Write a Review
+        </button>
+
+      </div>
+
+
+      <div
+        id="reviewFormContainer"
+        class="mt-8 hidden"
+      >
+        <form
+          id="reviewForm"
+          class="rounded-2xl border border-white/10 bg-white/[.02] p-6 space-y-5"
+        >
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-white/30">
+              Leave a review
+            </p>
+
+            <div
+              id="reviewRatingButtons"
+              class="mt-4 flex gap-2"
+            >
+              <button
+                type="button"
+                data-rating="1"
+                class="review-rating-btn rounded-full border border-white/10 px-4 py-3 text-sm"
+              >★</button>
+              <button
+                type="button"
+                data-rating="2"
+                class="review-rating-btn rounded-full border border-white/10 px-4 py-3 text-sm"
+              >★</button>
+              <button
+                type="button"
+                data-rating="3"
+                class="review-rating-btn rounded-full border border-white/10 px-4 py-3 text-sm"
+              >★</button>
+              <button
+                type="button"
+                data-rating="4"
+                class="review-rating-btn rounded-full border border-white/10 px-4 py-3 text-sm"
+              >★</button>
+              <button
+                type="button"
+                data-rating="5"
+                class="review-rating-btn rounded-full border border-white/10 px-4 py-3 text-sm"
+              >★</button>
+            </div>
+
+            <p
+              id="reviewFormRatingText"
+              class="mt-3 text-xs text-white/40"
+            >
+              Select a rating.
+            </p>
+          </div>
+
+          <div>
+            <label
+              for="reviewComment"
+              class="text-xs uppercase tracking-[0.3em] text-white/30"
+            >
+              Review
+            </label>
+
+            <textarea
+              id="reviewComment"
+              rows="4"
+              class="mt-2 w-full rounded-2xl border border-white/10 bg-black/70 p-4 text-sm text-white outline-none focus:border-white"
+              placeholder="Write your thoughts about this product..."
+            ></textarea>
+          </div>
+
+          <div class="flex flex-wrap gap-3">
+            <button
+              id="submitReview"
+              type="submit"
+              class="rounded-full bg-white px-6 py-3 text-xs font-black uppercase tracking-[0.2em] text-black"
+            >
+              Submit Review
+            </button>
+
+            <button
+              id="cancelReview"
+              type="button"
+              class="rounded-full border border-white/10 px-6 py-3 text-xs font-bold uppercase tracking-[0.2em]"
+            >
+              Cancel
+            </button>
+          </div>
+
+          <p
+            id="reviewFormError"
+            class="text-xs text-red-400 hidden"
+          ></p>
+        </form>
+      </div>
+
+      <div
+        id="reviews"
+        class="mt-8 grid gap-4 md:grid-cols-2 lg:grid-cols-3"
+      ></div>
+
+    </section>
+
+
+    <!-- =========================================
+         RELATED PRODUCTS
+         ========================================= -->
+
+    <section class="mt-20 border-t border-white/10 pt-12">
+
+      <div>
+
+        <p class="text-xs uppercase tracking-[0.3em] text-white/30">
+          You May Also Like
+        </p>
+
+        <h2 class="mt-2 text-3xl font-black uppercase">
+          Related Products
+        </h2>
+
+      </div>
+
+
+      <div
+        id="relatedProducts"
+        class="mt-8 grid grid-cols-2 gap-4 md:grid-cols-3 lg:grid-cols-4"
+      ></div>
+
+    </section>
+
+  </main>
+
+
+  <!-- ERROR -->
+
+  <div
+    id="errorPage"
+    class="hidden min-h-[70vh] items-center justify-center px-5"
+  >
+
+    <div class="text-center">
+
+      <h1 class="text-5xl font-black">
+        PRODUCT NOT FOUND
+      </h1>
+
+      <p class="mt-4 text-sm text-white/40">
+        This product may have been removed or doesn't exist.
+      </p>
+
+      <a
+        href="shop.html"
+        class="mt-7 inline-block rounded-full bg-white px-7 py-4 text-xs font-black uppercase text-black"
+      >
+        Back to Shop
+      </a>
+
+    </div>
+
+  </div>
+
+
+  <!-- ZOOM MODAL -->
+
+  <div
+    id="zoomModal"
+    class="fixed inset-0 z-[100] hidden items-center justify-center bg-black/95 p-5"
+  >
+
+    <button
+      id="closeZoom"
+      class="absolute right-5 top-5 flex h-12 w-12 items-center justify-center rounded-full border border-white/10 text-2xl"
+    >
+      ×
+    </button>
+
+    <img
+      id="zoomImage"
+      src=""
+      alt=""
+      class="max-h-[90vh] max-w-full object-contain"
+    >
+
+  </div>
+
+
+  <!-- MESSAGE -->
+
+  <div
+    id="message"
+    class="fixed bottom-6 left-1/2 z-[200] hidden -translate-x-1/2 rounded-full bg-white px-6 py-3 text-sm font-bold text-black shadow-2xl"
+  ></div>
+
+
+<script src="./product.js" type="module"></script>
+
+  <script>
+    const mobileMenuButton = document.getElementById("mobileMenuButton");
+    const mobileMenu = document.getElementById("mobileMenu");
+    const mobileMenuClose = document.getElementById("mobileMenuClose");
+
+    function openMobileMenu() {
+      mobileMenu?.classList.remove("hidden");
+    }
+
+    function closeMobileMenu() {
+      mobileMenu?.classList.add("hidden");
+    }
+
+    if (mobileMenuButton) mobileMenuButton.addEventListener("click", openMobileMenu);
+    if (mobileMenuClose) mobileMenuClose.addEventListener("click", closeMobileMenu);
+    if (mobileMenu) {
+      mobileMenu.addEventListener("click", (event) => {
+        if (event.target === mobileMenu) closeMobileMenu();
+      });
+    }
+  </script>
+
+</body>
+</html>
