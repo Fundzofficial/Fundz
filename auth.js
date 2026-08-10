@@ -75,7 +75,7 @@ export function getSafeRedirect(url) {
       window.location.origin
     ) {
 
-      return "account.html";
+      return "Fundz/account.html";
 
     }
 
@@ -97,11 +97,11 @@ export function getSafeRedirect(url) {
 
   } catch {
 
-    return "account.html";
+    return "Fundz/account.html";
 
   }
 
-  return "account.html";
+  return "Fundz/account.html";
 
 }
 
