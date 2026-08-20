@@ -94,191 +94,40 @@
 
   <!-- SIDEBAR -->
 
-  <aside
-    id="sidebar"
-    class="fixed inset-y-0 left-0 z-50 w-72 -translate-x-full border-r border-white/10 bg-black transition-transform duration-300 lg:translate-x-0"
-  >
-
+    <aside id="sidebar" class="fixed inset-y-0 left-0 z-50 w-72 -translate-x-full border-r border-white/10 bg-black transition-transform duration-300 lg:translate-x-0">
     <div class="flex h-full flex-col">
-
-      <!-- LOGO -->
-
       <div class="border-b border-white/10 p-6">
-
-        <h1 class="text-2xl font-black tracking-[0.3em]">
-          FUNDZ
-        </h1>
-
-        <p class="mt-2 text-[10px] uppercase tracking-[0.3em] text-white/30">
-          Administration
-        </p>
-
+        <h1 class="text-2xl font-black tracking-[0.3em]">FUNDZ</h1>
+        <p class="mt-2 text-[10px] uppercase tracking-[0.3em] text-white/30">Admin</p>
       </div>
-
-
-      <!-- NAVIGATION -->
-
       <nav class="flex-1 space-y-1 overflow-y-auto p-4">
-
-        <a
-          href="admin.html"
-          class="flex items-center gap-3 rounded-xl bg-white px-4 py-3 text-sm font-bold text-black"
-        >
-          <span>▦</span>
-          Dashboard
-        </a>
-
-
-        <a
-          href="admin-products.html"
-          class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white"
-        >
-          <span>□</span>
-          Products
-        </a>
-
-
-        <a
-          href="admin-orders.html"
-          class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white"
-        >
-          <span>▤</span>
-          Orders
-        </a>
-
-
-        <a
-          href="admin-customers.html"
-          class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white"
-        >
-          <span>♙</span>
-          Customers
-        </a>
-
-
-        <a
-          href="admin-reviews.html"
-          class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white"
-        >
-          <span>☆</span>
-          Reviews
-        </a>
-
-
-        <a
-          href="admin-community.html"
-          class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white"
-        >
-          <span>◎</span>
-          Community
-        </a>
-
-
-        <a
-          href="admin-coupons.html"
-          class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white"
-        >
-          <span>%</span>
-          Coupons
-        </a>
-
-
-        <a
-          href="admin-analytics.html"
-          class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white"
-        >
-          <span>⌁</span>
-          Analytics
-        </a>
-
+        <a href="admin.html" class="flex items-center gap-3 rounded-xl bg-white px-4 py-3 text-sm font-bold text-black">Dashboard</a>
+        <a href="admin-products.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white">Products</a>
+        <a href="admin-orders.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white">Orders</a>
+        <a href="admin-customers.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white">Customers</a>
+        <a href="admin-reviews.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white">Reviews</a>
+        <a href="admin-community.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white">Community</a>
+        <a href="admin-coupons.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white">Coupons</a>
+        <a href="admin-analytics.html" class="flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/60 hover:bg-white/5 hover:text-white">Analytics</a>
       </nav>
-
-
-      <!-- BOTTOM -->
-
       <div class="border-t border-white/10 p-4">
-
-        <a
-          href="index.html"
-          class="mb-2 flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/50 hover:bg-white/5 hover:text-white"
-        >
-          View Website
-        </a>
-
-
-        <button
-          id="logoutButton"
-          class="w-full rounded-xl border border-red-500/20 px-4 py-3 text-left text-sm text-red-400 hover:bg-red-500/10"
-        >
-          Log Out
-        </button>
-
+        <a href="index.html" class="mb-2 flex items-center gap-3 rounded-xl px-4 py-3 text-sm text-white/50 hover:bg-white/5 hover:text-white">View Website</a>
       </div>
-
     </div>
-
   </aside>
 
-
-  <!-- MAIN -->
-
   <div class="lg:pl-72">
-
-    <!-- HEADER -->
-
     <header class="sticky top-0 z-40 border-b border-white/10 bg-black/90 backdrop-blur">
-
       <div class="flex h-20 items-center justify-between px-5 md:px-8">
-
-        <button
-          id="menuButton"
-          class="rounded-xl border border-white/10 px-4 py-2 lg:hidden"
-        >
-          ☰
-        </button>
-
-
-        <div class="hidden lg:block">
-
-          <p class="text-xs uppercase tracking-[0.3em] text-white/30">
-            FUNDZ Admin
-          </p>
-
-          <h2 class="mt-1 text-xl font-bold">
-            Dashboard
-          </h2>
-
+        <button id="menuButton" class="rounded-xl border border-white/10 px-4 py-2 lg:hidden">☰</button>
+        <div>
+          <p class="text-xs uppercase tracking-[0.3em] text-white/30">FUNDZ Admin</p>
+          <h2 class="mt-1 text-xl font-bold">Dashboard</h2>
         </div>
-
-
         <div class="flex items-center gap-4">
-
-          <div class="hidden text-right sm:block">
-
-            <p
-              id="adminEmail"
-              class="text-sm font-bold"
-            >
-              Admin
-            </p>
-
-            <p class="text-xs text-white/30">
-              Administrator
-            </p>
-
-          </div>
-
-
-          <div
-            class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-sm font-black text-black"
-          >
-            F
-          </div>
-
+          <div class="flex h-10 w-10 items-center justify-center rounded-full bg-white text-sm font-black text-black">F</div>
         </div>
-
       </div>
-
     </header>
 
 
