@@ -251,6 +251,11 @@
         class="mt-5 text-white/40"
       ></p>
 
+      <p
+        id="memberRole"
+        class="mt-3 hidden text-xs font-bold uppercase tracking-[0.35em] text-amber-300"
+      ></p>
+
       <button
         id="adminPanelButton"
         class="mt-6 hidden rounded-full border border-white/20 bg-white/5 px-5 py-3 text-sm font-bold uppercase tracking-wider text-white hover:bg-white/10"
@@ -1172,7 +1177,13 @@ async function loadProfile(
   }
 
   const role =
-    user.user_metadata?.role;
+    user.user_metadata?.role ||
+    user.app_metadata?.role ||
+    user.app_metadata?.authorization?.role ||
+    (Array.isArray(user.app_metadata?.authorization?.roles)
+      ? user.app_metadata.authorization.roles[0]
+      : null) ||
+    profile?.role;
 
   if (
     role === "admin" &&
@@ -1191,6 +1202,27 @@ async function loadProfile(
     );
   }
 
+  const memberRole =
+    document.getElementById(
+      "memberRole"
+    );
+
+  if (
+    role === "admin" &&
+    memberRole
+  ) {
+    memberRole.textContent =
+      "Admin";
+    memberRole.classList.remove(
+      "hidden"
+    );
+  } else if (
+    memberRole
+  ) {
+    memberRole.classList.add(
+      "hidden"
+    );
+  }
 
   const notificationToggle =
     document.getElementById(
