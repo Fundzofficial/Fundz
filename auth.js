@@ -44,7 +44,7 @@ export function getRedirectUrl() {
 
   return (
     params.get("redirect") ||
-    "index.html"
+    "account.html"
   );
 
 }
@@ -75,7 +75,7 @@ export function getSafeRedirect(url) {
       window.location.origin
     ) {
 
-      return "Fundz/account.html";
+      return "account.html";
 
     }
 
@@ -97,11 +97,11 @@ export function getSafeRedirect(url) {
 
   } catch {
 
-    return "Fundz/account.html";
+    return "account.html";
 
   }
 
-  return "Fundz/account.html";
+  return "account.html";
 
 }
 
