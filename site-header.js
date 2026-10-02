@@ -117,7 +117,7 @@ if (logoutButton) {
 if (document.getElementById("signupForm")) {
   document.querySelector(".logo-container")?.remove();
 }
-
+ 
 const overlay = document.createElement("div");
 overlay.id = "mobileMenuOverlay";
 overlay.className = "fixed inset-0 z-[60] hidden bg-black/70";
