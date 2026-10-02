@@ -1,426 +1,669 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Create Account | FUNDZ</title>
-
+  <title>FUNDZ - Create Account</title>
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
     body {
-      background: #080808;
-      color: #f5f5f5;
+      font-family: Arial, Helvetica, sans-serif;
+      background: #08080c;
+      color: #fff;
+      min-height: 100vh;
     }
 
-    html.light {
-      color-scheme: light;
+    .page {
+      width: 100%;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 30px 16px;
     }
 
-    html.light body {
-      background: #f8fafc;
-      color: #0f172a;
+    .signup-container {
+      width: 100%;
+      max-width: 510px;
     }
 
-    html.light .glass {
-      background: rgba(255, 255, 255, 0.9) !important;
-      color: #0f172a;
+    /* Logo */
+    .logo-container {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 38px;
     }
 
-    html.light .text-white,
-    html.light .text-white\/40,
-    html.light .text-white\/50 {
-      color: #334155 !important;
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 42px;
+      font-weight: 700;
+      letter-spacing: -1px;
     }
 
-    html.light .border-white\/10 {
-      border-color: rgba(15, 23, 42, 0.12) !important;
+    .logo-symbol {
+      width: 48px;
+      height: 48px;
+      border: 3px solid #00c765;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      font-size: 25px;
+      font-weight: 900;
     }
 
-    .glass {
-      background: rgba(8, 8, 8, .82);
-      -webkit-backdrop-filter: blur(18px);
-      backdrop-filter: blur(18px);
+    .logo span {
+      color: #fff;
+    }
+
+    /* Heading */
+    .heading {
+      margin-bottom: 28px;
+    }
+
+    .heading h1 {
+      font-size: 46px;
+      line-height: 1.05;
+      font-weight: 700;
+      margin-bottom: 12px;
+      letter-spacing: -1.5px;
+    }
+
+    .heading p {
+      color: #b8b8c2;
+      font-size: 18px;
+      line-height: 1.5;
+    }
+
+    /* Form */
+    .form {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .field {
+      width: 100%;
+    }
+
+    .field label {
+      display: block;
+      font-size: 17px;
+      color: #c6c6ce;
+      margin-bottom: 9px;
+    }
+
+    .input-wrapper {
+      position: relative;
+    }
+
+    input,
+    select {
+      width: 100%;
+      height: 58px;
+      padding: 0 16px;
+      background: #17171e;
+      border: 1px solid #3d3d49;
+      border-radius: 8px;
+      outline: none;
+      color: #fff;
+      font-size: 16px;
+      transition: 0.2s ease;
+    }
+
+    input::placeholder {
+      color: #777783;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #00c765;
+      box-shadow: 0 0 0 2px rgba(0, 199, 101, 0.12);
+    }
+
+    select {
+      appearance: none;
+      -webkit-appearance: none;
+      cursor: pointer;
+      padding-left: 16px;
+      padding-right: 45px;
+    }
+
+    select option {
+      background: #17171e;
+      color: #fff;
+    }
+
+    .select-wrapper {
+      position: relative;
+    }
+
+    .select-arrow {
+      position: absolute;
+      right: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      pointer-events: none;
+      color: #777783;
+      font-size: 20px;
+    }
+
+    /* Password */
+    .password-input {
+      padding-right: 55px;
+    }
+
+    .password-toggle {
+      position: absolute;
+      right: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: transparent;
+      border: none;
+      color: #858591;
+      cursor: pointer;
+      font-size: 20px;
+    }
+
+    /* Country */
+    .country-select {
+      position: relative;
+    }
+
+    .country-content {
+      position: absolute;
+      left: 16px;
+      top: 50%;
+      transform: translateY(-50%);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      pointer-events: none;
+      font-size: 16px;
+    }
+
+    .country-select select {
+      padding-left: 55px;
+    }
+
+    .location-status {
+      margin-top: 8px;
+      color: #a5a5b0;
+      font-size: 13px;
+    }
+
+    .flag {
+      font-size: 25px;
+    }
+
+    /* State / City */
+    .location-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    /* Map */
+    .map-label {
+      display: block;
+      color: #c6c6ce;
+      font-size: 17px;
+      margin-bottom: 9px;
+    }
+
+    .map-button {
+      width: 100%;
+      height: 66px;
+      border-radius: 9px;
+      border: 1px solid #3d3d49;
+      background: #17171e;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 18px;
+      cursor: pointer;
+      transition: 0.2s ease;
+    }
+
+    .map-button:hover {
+      border-color: #00c765;
+      background: #1a1a21;
+    }
+
+    .map-left {
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      font-size: 16px;
+      font-weight: 600;
+    }
+
+    .map-icon {
+      width: 28px;
+      height: 28px;
+      color: #00c765;
+      font-size: 25px;
+    }
+
+    .map-right {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: #00c765;
+    }
+
+    .arrow-right {
+      color: #8b8b96;
+      font-size: 25px;
+    }
+
+    /* Button */
+    .create-btn {
+      width: 100%;
+      height: 62px;
+      border: none;
+      border-radius: 13px;
+      background: #00c765;
+      color: #fff;
+      font-size: 20px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 10px;
+      transition: 0.2s ease;
+    }
+
+    .create-btn:hover {
+      background: #00b95c;
+      transform: translateY(-1px);
+    }
+
+    .create-btn:active {
+      transform: translateY(0);
+    }
+
+    /* Login */
+    .login-text {
+      text-align: center;
+      color: #a5a5b0;
+      font-size: 15px;
+      margin-top: 24px;
+    }
+
+    .login-text a {
+      color: #00c765;
+      text-decoration: underline;
+      font-weight: 500;
+    }
+
+    /* Message */
+    .message {
+      display: none;
+      padding: 13px 15px;
+      border-radius: 8px;
+      font-size: 14px;
+      margin-bottom: 5px;
+    }
+
+    .message.error {
+      display: block;
+      background: rgba(255, 70, 70, 0.1);
+      border: 1px solid rgba(255, 70, 70, 0.3);
+      color: #ff7b7b;
+    }
+
+    .message.success {
+      display: block;
+      background: rgba(0, 199, 101, 0.1);
+      border: 1px solid rgba(0, 199, 101, 0.3);
+      color: #00d86c;
     }
 
     .loader {
       width: 18px;
       height: 18px;
-      border: 2px solid rgba(0,0,0,.3);
-      border-top-color: #000;
+      border: 2px solid rgba(255, 255, 255, 0.35);
+      border-top-color: #fff;
       border-radius: 50%;
-      animation: spin .7s linear infinite;
+      animation: spin 0.7s linear infinite;
+    }
+
+    .hidden {
+      display: none;
     }
 
     @keyframes spin {
-      to {
-        transform: rotate(360deg);
+      to { transform: rotate(360deg); }
+    }
+
+    /* Mobile */
+    @media (max-width: 600px) {
+      .page {
+        align-items: flex-start;
+        padding: 28px 20px 40px;
+      }
+
+      .signup-container {
+        max-width: 100%;
+      }
+
+      .logo-container {
+        justify-content: flex-start;
+        margin-bottom: 38px;
+      }
+
+      .logo {
+        font-size: 34px;
+      }
+
+      .logo-symbol {
+        width: 40px;
+        height: 40px;
+        font-size: 21px;
+      }
+
+      .heading h1 {
+        font-size: 40px;
+      }
+
+      .heading p {
+        font-size: 16px;
+      }
+
+      .location-row {
+        gap: 12px;
+      }
+
+      .field label,
+      .map-label {
+        font-size: 16px;
+      }
+
+      input,
+      select {
+        height: 56px;
       }
     }
 
+    @media (max-width: 390px) {
+      .page {
+        padding-left: 16px;
+        padding-right: 16px;
+      }
+
+      .heading h1 {
+        font-size: 35px;
+      }
+
+      .heading p {
+        font-size: 15px;
+      }
+
+      .location-row {
+        grid-template-columns: 1fr;
+        gap: 18px;
+      }
+    }
   </style>
-
 </head>
-
 
 <body>
 
+  <main class="page">
 
-<!-- NAV -->
+    <div class="signup-container">
 
-<header class="fixed top-0 left-0 right-0 z-50 border-b border-white/10 glass">
+      <!-- LOGO -->
+      <div class="logo-container">
+        <div class="logo">
+          <div class="logo-symbol">F</div>
+          <span>FUNDZ</span>
+        </div>
+      </div>
 
-  <nav class="max-w-7xl mx-auto px-5 py-4">
+      <!-- HEADING -->
+      <div class="heading">
+        <h1>Create Account</h1>
+        <p>Join FUNDZ streetwear — sign up to continue</p>
+      </div>
 
-    <div class="flex items-center justify-between">
+      <!-- FORM -->
+      <form class="form" id="signupForm">
 
-      <a
-        href="index.html"
-        class="text-2xl font-black tracking-[.22em]"
-      >
-        FUNDZ
-      </a>
+        <div id="message" class="message"></div>
 
-      <div class="flex items-center gap-3">
-        <a
-          href="login.html"
-          class="rounded-full border border-white/20 px-5 py-2.5 text-sm hover:bg-white hover:text-black"
+        <!-- Full Name -->
+        <div class="field">
+          <label for="fullName">Full Name</label>
+
+          <input
+            type="text"
+            id="fullName"
+            name="fullName"
+            placeholder="Enter your full name"
+            required
+          />
+        </div>
+
+        <!-- Email -->
+        <div class="field">
+          <label for="email">Email</label>
+
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="you@email.com"
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="phone">Phone Number</label>
+          <input
+            type="tel"
+            id="phone"
+            name="phone"
+            autocomplete="tel"
+            placeholder="+234 800 000 0000"
+            required
+          />
+        </div>
+
+        <!-- Password -->
+        <div class="field">
+          <label for="password">Password</label>
+
+          <div class="input-wrapper">
+
+            <input
+              type="password"
+              id="password"
+              name="password"
+              class="password-input"
+              placeholder="••••••••••"
+              minlength="8"
+              required
+            />
+
+            <button
+              type="button"
+              class="password-toggle"
+              id="passwordToggle"
+              aria-label="Show password"
+            >
+              ◉
+            </button>
+
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="confirmPassword">Confirm Password</label>
+          <input
+            type="password"
+            id="confirmPassword"
+            name="confirmPassword"
+            placeholder="Re-enter your password"
+            minlength="8"
+            autocomplete="new-password"
+            required
+          />
+        </div>
+
+        <!-- Country -->
+        <div class="field">
+
+          <label for="country">Country</label>
+
+          <div class="country-select">
+
+            <div class="country-content">
+              <span class="flag" id="countryFlag">🇳🇬</span>
+            </div>
+
+            <select id="country" name="country">
+
+              <option value="Nigeria" data-flag="🇳🇬">
+                Nigeria
+              </option>
+
+              <option value="South Africa" data-flag="🇿🇦">
+                South Africa
+              </option>
+
+            </select>
+
+            <span class="select-arrow">⌄</span>
+
+          </div>
+
+        </div>
+
+        <!-- STATE + CITY -->
+        <div class="location-row">
+
+          <div class="field">
+
+            <label for="state">State</label>
+
+            <div class="select-wrapper">
+
+              <select id="state" name="state" required>
+                <option value="">Select state</option>
+              </select>
+
+              <span class="select-arrow">⌄</span>
+
+            </div>
+
+          </div>
+
+          <div class="field">
+
+            <label for="city">City</label>
+
+            <div class="select-wrapper">
+
+              <input
+                type="text"
+                id="city"
+                name="city"
+                placeholder="Enter your city"
+                autocomplete="address-level2"
+                required
+              />
+
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- ADDRESS -->
+        <div class="field">
+
+          <label for="address">Home Address</label>
+
+          <input
+            type="text"
+            id="address"
+            name="address"
+            placeholder="Street, area, apartment"
+            required
+          />
+
+        </div>
+
+        <!-- MAP -->
+        <div class="field">
+
+          <label class="map-label">Set Delivery Location</label>
+
+          <button
+            type="button"
+            class="map-button"
+            id="mapButton"
+          >
+
+            <span class="map-left">
+
+              <span class="map-icon">⌖</span>
+
+              <span>Set your location on map</span>
+
+            </span>
+
+            <span class="map-right">
+
+              <span>⌖</span>
+
+              <span class="arrow-right">›</span>
+
+            </span>
+
+          </button>
+
+          <p id="locationStatus" class="location-status" aria-live="polite"></p>
+
+        </div>
+
+        <!-- CREATE ACCOUNT -->
+        <button
+          id="signupButton"
+          type="submit"
+          class="create-btn"
         >
-          Login
-        </a>
+          <span id="buttonText">Create Account</span>
+          <span id="loader" class="loader hidden" aria-hidden="true"></span>
+        </button>
+
+      </form>
+
+      <!-- LOGIN -->
+      <div class="login-text">
+        Already have an account?
+        <a href="login.html">Log in</a>
       </div>
 
     </div>
 
-  </nav>
-
-</header>
-
-
-<!-- SIGNUP -->
-
-<main class="min-h-screen flex items-center justify-center px-5 pt-24 pb-16">
-
-  <div class="w-full max-w-md">
-
-
-    <div class="mb-10 text-center">
-
-      <p class="text-xs font-bold uppercase tracking-[.35em] text-white/40">
-        Welcome to FUNDZ
-      </p>
-
-      <h1 class="mt-4 text-4xl font-black uppercase">
-        Join the Family
-      </h1>
-
-      <p class="mt-3 text-sm text-white/40">
-        Create your FUNDZ account and start shopping.
-      </p>
-
-    </div>
-
-
-    <form
-      id="signupForm"
-      class="rounded-3xl border border-white/10 bg-white/[.03] p-6 sm:p-8"
-    >
-
-
-      <!-- FULL NAME -->
-
-      <label class="block">
-
-        <span class="text-xs font-bold uppercase tracking-wider text-white/50">
-          Full Name
-        </span>
-
-        <input
-          id="fullName"
-          type="text"
-          autocomplete="name"
-          required
-          class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 outline-none placeholder:text-white/20 focus:border-white/40"
-          placeholder="Your full name"
-        >
-
-      </label>
-
-
-      <!-- EMAIL -->
-
-      <label class="mt-5 block">
-
-        <span class="text-xs font-bold uppercase tracking-wider text-white/50">
-          Email
-        </span>
-
-        <input
-          id="email"
-          type="email"
-          autocomplete="email"
-          required
-          class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 outline-none placeholder:text-white/20 focus:border-white/40"
-          placeholder="you@example.com"
-        >
-
-      </label>
-
-
-      <!-- PASSWORD -->
-
-      <label class="mt-5 block">
-
-        <span class="text-xs font-bold uppercase tracking-wider text-white/50">
-          Password
-        </span>
-
-        <input
-          id="password"
-          type="password"
-          autocomplete="new-password"
-          minlength="8"
-          required
-          class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 outline-none placeholder:text-white/20 focus:border-white/40"
-          placeholder="At least 8 characters"
-        >
-
-      </label>
-
-
-      <!-- CONFIRM -->
-
-      <label class="mt-5 block">
-
-        <span class="text-xs font-bold uppercase tracking-wider text-white/50">
-          Confirm Password
-        </span>
-
-        <input
-          id="confirmPassword"
-          type="password"
-          autocomplete="new-password"
-          minlength="8"
-          required
-          class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 outline-none placeholder:text-white/20 focus:border-white/40"
-          placeholder="Repeat your password"
-        >
-
-      </label>
-
-
-      <!-- MESSAGE -->
-
-      <div
-        id="message"
-        class="mt-5 hidden text-sm leading-6"
-      ></div>
-
-
-      <!-- BUTTON -->
-
-      <button
-        id="signupButton"
-        type="submit"
-        class="mt-6 flex w-full items-center justify-center gap-3 rounded-full bg-white py-4 text-sm font-black uppercase tracking-wider text-black hover:bg-white/90 disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        <span id="buttonText">
-          Create Account
-        </span>
-
-        <span
-          id="loader"
-          class="loader hidden"
-        ></span>
-
-      </button>
-
-
-      <p class="mt-6 text-center text-xs leading-5 text-white/30">
-        By creating an account, you agree to FUNDZ's terms and policies.
-      </p>
-
-    </form>
-
-
-    <p class="mt-8 text-center text-sm text-white/40">
-
-      Already have an account?
-
-      <a
-        href="login.html"
-        class="font-bold text-white hover:underline"
-      >
-        Log in
-      </a>
-
-    </p>
-
-  </div>
-
-</main>
-
-
-<script type="module">
-
-import { supabase } from "./supabase.js";
-import {
-  signUp,
-  showMessage,
-  getRedirectUrl
-} from "./auth.js";
-
-async function redirectIfLoggedIn() {
-  const { data, error } = await supabase.auth.getSession();
-  if (error) {
-    console.error("Auth session check failed:", error);
-    return;
-  }
-
-  if (data?.session) {
-    window.location.href = "account.html";
-  }
-}
-
-redirectIfLoggedIn();
-
-
-const form =
-  document.getElementById(
-    "signupForm"
-  );
-
-const message =
-  document.getElementById(
-    "message"
-  );
-
-const button =
-  document.getElementById(
-    "signupButton"
-  );
-
-const buttonText =
-  document.getElementById(
-    "buttonText"
-  );
-
-const loader =
-  document.getElementById(
-    "loader"
-  );
-
-
-form.addEventListener(
-  "submit",
-  async event => {
-
-    event.preventDefault();
-
-
-    const fullName =
-      document
-        .getElementById("fullName")
-        .value;
-
-    const email =
-      document
-        .getElementById("email")
-        .value;
-
-    const password =
-      document
-        .getElementById("password")
-        .value;
-
-    const confirmPassword =
-      document
-        .getElementById("confirmPassword")
-        .value;
-
-
-    if (
-      password !==
-      confirmPassword
-    ) {
-
-      showMessage(
-        message,
-        "Passwords do not match."
-      );
-
-      return;
-
-    }
-
-
-    button.disabled = true;
-
-    buttonText.textContent =
-      "Creating Account...";
-
-    loader.classList.remove(
-      "hidden"
-    );
-
-
-    const result =
-      await signUp(
-        email,
-        password,
-        fullName
-      );
-
-
-    button.disabled = false;
-
-    buttonText.textContent =
-      "Create Account";
-
-    loader.classList.add(
-      "hidden"
-    );
-
-
-    if (!result.success) {
-
-      showMessage(
-        message,
-        result.message
-      );
-
-      return;
-
-    }
-
-
-    showMessage(
-      message,
-      result.message,
-      "success"
-    );
-
-
-    form.reset();
-
-
-    /*
-      Give the customer time to see
-      the verification message.
-    */
-
-  }
-);
-
-</script>
-
+  </main>
+
+<script src="./signup.js?v=4" type="module"></script>
+<script src="./auth.js?v=4" type="module"></script>
+<script type="module" src="./supabase.js"></script>
 </body>
 </html>

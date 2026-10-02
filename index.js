@@ -107,7 +107,7 @@ async function loadBrandStory() {
 
 async function loadFeaturedProducts() {
 
-  const grid = $("#featuredGrid");
+  const grid = $("#featuredGrid") || $("#hoodieGrid");
 
   if (!grid) return;
 
@@ -119,20 +119,33 @@ async function loadFeaturedProducts() {
       .from("products")
       .select("*")
       .eq("is_active", true)
-      .eq("is_featured", true)
       .order("created_at", {
         ascending: false
       })
-      .limit(8);
+      .limit(48);
 
     if (error) throw error;
 
     products = mergeProducts(products, data);
 
+    const featuredProducts = $("#hoodieGrid")
+      ? (data || []).filter(product => {
+          const description = [
+            product.name,
+            product.title,
+            product.category,
+            product.category_name,
+            product.collection
+          ].filter(Boolean).join(" ").toLowerCase();
+
+          return description.includes("hood");
+        }).slice(0, 8)
+      : (data || []);
+
     renderProductGrid(
       grid,
-      data || [],
-      "No featured products yet."
+      featuredProducts,
+      $("#hoodieGrid") ? "No hoodies available yet." : "No featured products yet."
     );
 
   } catch (error) {
@@ -216,7 +229,7 @@ async function loadBestSellers() {
 
 async function loadNewArrivals() {
 
-  const grid = $("#newGrid");
+  const grid = $("#newGrid") || $("#newProductGrid");
 
   if (!grid) return;
 
@@ -1613,6 +1626,11 @@ function setupMobileMenu() {
         "hidden"
       );
 
+      button.setAttribute(
+        "aria-expanded",
+        "true"
+      );
+
       overlay?.classList.remove(
         "hidden"
       );
@@ -1637,6 +1655,11 @@ function setupMobileMenu() {
 
     document.body.classList.remove(
       "overflow-hidden"
+    );
+
+    button.setAttribute(
+      "aria-expanded",
+      "false"
     );
 
   }

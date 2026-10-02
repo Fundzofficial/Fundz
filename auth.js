@@ -113,7 +113,8 @@ export function getSafeRedirect(url) {
 export async function signUp(
   email,
   password,
-  fullName
+  fullName,
+  profileDetails = {}
 ) {
 
   email =
@@ -167,7 +168,8 @@ export async function signUp(
       options: {
 
         data: {
-          full_name: fullName
+          ...profileDetails,
+          full_name: fullName,
         },
 
         emailRedirectTo:
@@ -199,6 +201,82 @@ export async function signUp(
     message:
       "Account created. Redirecting..."
   };
+
+}
+
+
+export async function syncSignupDetails(user) {
+
+  const details = user?.user_metadata || {};
+
+  if (!details.signup_details_pending) {
+    return { success: true, skipped: true };
+  }
+
+  const { error: profileError } = await supabase
+    .from("profiles")
+    .upsert(
+      {
+        id: user.id,
+        email: user.email,
+        full_name: details.full_name,
+        phone: details.phone,
+        email_notifications: true,
+        updated_at: new Date().toISOString()
+      },
+      { onConflict: "id" }
+    );
+
+  if (profileError) {
+    console.error("Signup profile save error:", profileError);
+    return { success: false, message: profileError.message };
+  }
+
+  if (details.address && details.city && details.state && details.country && details.phone) {
+    const { data: existingAddresses, error: lookupError } = await supabase
+      .from("addresses")
+      .select("id")
+      .eq("user_id", user.id)
+      .eq("address_line", details.address)
+      .eq("city", details.city)
+      .eq("state", details.state)
+      .eq("country", details.country)
+      .limit(1);
+
+    if (lookupError) {
+      console.error("Signup address lookup error:", lookupError);
+      return { success: false, message: lookupError.message };
+    }
+
+    if (!existingAddresses?.length) {
+      const { error: addressError } = await supabase.from("addresses").insert({
+        user_id: user.id,
+        full_name: details.full_name,
+        phone: details.phone,
+        address_line: details.address,
+        city: details.city,
+        state: details.state,
+        country: details.country,
+        postal_code: null,
+        is_default: true
+      });
+
+      if (addressError) {
+        console.error("Signup address save error:", addressError);
+        return { success: false, message: addressError.message };
+      }
+    }
+  }
+
+  const { error: metadataError } = await supabase.auth.updateUser({
+    data: { signup_details_pending: false }
+  });
+
+  if (metadataError) {
+    console.error("Signup metadata update error:", metadataError);
+  }
+
+  return { success: true };
 
 }
 

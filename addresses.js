@@ -129,6 +129,7 @@ async function setDefaultAddress(id) {
   }
 
   showMessage("Default address updated.");
+  window.dispatchEvent(new Event("fundz:delivery-address-updated"));
   await loadAddresses();
 }
 
@@ -152,6 +153,7 @@ async function deleteAddress(id) {
   }
 
   showMessage("Address removed.");
+  window.dispatchEvent(new Event("fundz:delivery-address-updated"));
   await loadAddresses();
 }
 
@@ -199,6 +201,7 @@ addressForm.addEventListener("submit", async (event) => {
     if (error) throw error;
 
     showMessage("Address saved successfully.");
+    window.dispatchEvent(new Event("fundz:delivery-address-updated"));
     addressForm.reset();
     document.getElementById("country").value = "Nigeria";
     await loadAddresses();

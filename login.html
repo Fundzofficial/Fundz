@@ -254,6 +254,7 @@
 import { supabase } from "./supabase.js";
 import {
   login,
+  syncSignupDetails,
   showMessage,
   getRedirectUrl,
   getSafeRedirect
@@ -356,6 +357,16 @@ form.addEventListener(
 
     }
 
+    const syncResult = await syncSignupDetails(result.data.user);
+
+    if (!syncResult.success) {
+      showMessage(
+        message,
+        "Login succeeded, but your saved profile or delivery details could not be updated. " + syncResult.message
+      );
+      return;
+    }
+
 
     showMessage(
       message,
@@ -394,6 +405,5 @@ form.addEventListener(
 );
 
 </script>
-
 </body>
 </html>
