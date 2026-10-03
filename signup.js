@@ -176,7 +176,7 @@ form.addEventListener(
       setMessage(
         "Account created. Check your email to confirm your account before logging in.",
         "success"
-      );
+      ); 
       form.reset();
       countryFlag.textContent = countrySelect.selectedOptions[0].dataset.flag;
       updateStates();

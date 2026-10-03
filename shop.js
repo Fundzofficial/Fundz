@@ -1726,7 +1726,7 @@ function escapeHtml(value) {
         character
       ];
 
-    }
+    } 
   );
 
 }

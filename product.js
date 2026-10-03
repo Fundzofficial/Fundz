@@ -1,43 +1,5 @@
 import { supabase } from "./supabase.js";
 
-/*
-|--------------------------------------------------------------------------
-| FUNDZ PRODUCT PAGE
-|--------------------------------------------------------------------------
-| URL:
-| product.html?id=PRODUCT_ID
-|
-| Supabase tables used:
-| products
-| categories
-| collections
-| reviews
-| wishlist
-| cart_items
-|
-| Expected product columns can include:
-| id
-| name
-| price
-| description
-| stock
-| image_url
-| image_urls
-| images
-| category_id
-| collection_id
-| is_active
-| sizes
-| colors
-| sku
-|--------------------------------------------------------------------------
-*/
-
-
-/* =========================================================
-   STATE
-========================================================= */
-
 let product = null;
 
 let productImages = [];

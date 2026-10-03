@@ -64,15 +64,18 @@ export function getSafeRedirect(url) {
 
   try {
 
+    const siteDirectory =
+      new URL(".", window.location.href);
+
     const parsed =
       new URL(
         url,
-        window.location.origin
+        siteDirectory
       );
 
     if (
-      parsed.origin !==
-      window.location.origin
+      parsed.origin !== siteDirectory.origin ||
+      !parsed.pathname.startsWith(siteDirectory.pathname)
     ) {
 
       return "account.html";
