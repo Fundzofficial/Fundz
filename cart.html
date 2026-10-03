@@ -321,6 +321,10 @@
     import {
       supabase
     } from "./supabase.js";
+    import {
+      formatPrice,
+      getPriceCurrency
+    } from "./currency.js";
 
 
     /* =====================================================
@@ -332,6 +336,8 @@
     let couponDiscount = 0;
 
     let appliedCoupon = null;
+
+    let priceCurrency = "NGN";
 
 
     /* =====================================================
@@ -1213,9 +1219,7 @@
       amount
     ) {
 
-      return `₦${Number(
-        amount || 0
-      ).toLocaleString()}`;
+      return formatPrice(amount, priceCurrency);
 
     }
 
@@ -1319,6 +1323,7 @@
     cart =
       getCart();
 
+    priceCurrency = await getPriceCurrency();
     renderCart();
 
     attachBackButton();

@@ -1,5 +1,6 @@
 import { supabase } from "./supabase.js";
 import { getWishlistProductIds, setWishlistItem } from "./wishlist-store.js";
+import { formatPrice, getPriceCurrency } from "./currency.js";
 
 /* =========================================================
    FUNDZ HOMEPAGE
@@ -9,6 +10,7 @@ import { getWishlistProductIds, setWishlistItem } from "./wishlist-store.js";
 let products = [];
 let wishlistItems = [];
 let cartItems = [];
+let priceCurrency = "NGN";
 
 
 /* =========================================================
@@ -28,6 +30,9 @@ const $$ = (selector) =>
 
 document.addEventListener("DOMContentLoaded", async () => {
 
+  priceCurrency = await getPriceCurrency();
+  updateDropAnnouncement();
+
   setupMobileMenu();
   setupNavigation();
   setupNewsletter();
@@ -38,6 +43,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   await loadCustomerState();
 
 });
+
+
+function updateDropAnnouncement() {
+  const announcement = $("#dropAnnouncement");
+
+  if (announcement) {
+    announcement.textContent = priceCurrency === "ZAR"
+      ? "SOUTH AFRICA DROP — NOW LIVE"
+      : "NIGERIA DROP — NOW LIVE";
+  }
+}
 
 
 /* =========================================================
@@ -1720,6 +1736,9 @@ supabase.auth.onAuthStateChange(
       event === "SIGNED_IN"
     ) {
 
+      priceCurrency = await getPriceCurrency();
+    updateDropAnnouncement();
+      await loadHomepage();
       await loadCustomerState();
 
     }
@@ -1896,15 +1915,6 @@ function escapeHTML(
 
 function formatMoney(value) {
 
-  return new Intl.NumberFormat(
-    "en-NG",
-    {
-      style: "currency",
-      currency: "NGN",
-      maximumFractionDigits: 0
-    }
-  ).format(
-    Number(value || 0)
-  );
+  return formatPrice(value, priceCurrency);
 
 }

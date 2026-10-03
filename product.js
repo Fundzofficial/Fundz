@@ -1,7 +1,9 @@
 import { supabase } from "./supabase.js";
 import { getWishlistProductIds, setWishlistItem } from "./wishlist-store.js";
+import { formatPrice, getPriceCurrency } from "./currency.js";
 
 let product = null;
+let priceCurrency = "NGN";
 
 let productImages = [];
 
@@ -43,6 +45,7 @@ document.addEventListener(
 
     setupStaticEvents();
 
+    priceCurrency = await getPriceCurrency();
     await loadProduct();
 
   }
@@ -2949,11 +2952,7 @@ function formatCurrency(
   value
 ) {
 
-  return `₦${Number(
-    value || 0
-  ).toLocaleString(
-    "en-NG"
-  )}`;
+  return formatPrice(value, priceCurrency);
 
 }
 

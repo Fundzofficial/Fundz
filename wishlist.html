@@ -392,6 +392,7 @@
 
 import { supabase } from "./supabase.js";
 import { getWishlistProductIds, setWishlistItem } from "./wishlist-store.js";
+import { formatPrice, getPriceCurrency } from "./currency.js";
 
 
 // =====================================================
@@ -415,6 +416,8 @@ const cartCount =
 
 const toast =
   document.getElementById("toast");
+
+let priceCurrency = "NGN";
 
 
 // =====================================================
@@ -477,16 +480,7 @@ function escapeHtml(value) {
 
 function formatMoney(value) {
 
-  return new Intl.NumberFormat(
-    "en-NG",
-    {
-      style: "currency",
-      currency: "NGN",
-      maximumFractionDigits: 0
-    }
-  ).format(
-    Number(value || 0)
-  );
+  return formatPrice(value, priceCurrency);
 
 }
 
@@ -1292,7 +1286,8 @@ function showWishlistError(message) {
 
 updateCartCount();
 
-loadWishlist();
+priceCurrency = await getPriceCurrency();
+await loadWishlist();
 
 </script>
 

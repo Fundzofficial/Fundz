@@ -1,5 +1,6 @@
 import { supabase } from "./supabase.js";
 import { getWishlistProductIds, setWishlistItem } from "./wishlist-store.js";
+import { formatPrice, getPriceCurrency } from "./currency.js";
 
 const SUPABASE_URL = "https://yzpgidujkkdyovdktgxr.supabase.co";
 const SUPABASE_ANON_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inl6cGdpZHVqa2tkeW92ZGt0Z3hyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4NDUwMjIsImV4cCI6MjEwMTQyMTAyMn0.-42vUhpATy5apXZ_xVfvBKy-tLR7AAuOQZm2m9S16bk";
@@ -21,6 +22,7 @@ let searchTerm = "";
 let sortOption = "newest";
 
 let wishlist = [];
+let priceCurrency = "NGN";
 
 // -----------------------------------------------------
 // DOM
@@ -54,6 +56,8 @@ const year =
 // =====================================================
 
 document.addEventListener("DOMContentLoaded", async () => {
+
+  priceCurrency = await getPriceCurrency();
 
   if (year) {
     year.textContent = new Date().getFullYear();
@@ -1456,16 +1460,7 @@ function showLoading() {
 
 function formatMoney(value) {
 
-  return new Intl.NumberFormat(
-    "en-NG",
-    {
-      style: "currency",
-      currency: "NGN",
-      maximumFractionDigits: 0
-    }
-  ).format(
-    Number(value || 0)
-  );
+  return formatPrice(value, priceCurrency);
 
 }
 
