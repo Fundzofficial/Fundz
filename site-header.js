@@ -66,11 +66,13 @@ header.innerHTML = `
 function preserveAction(actionId, counterId, legacyAction, legacyCounter) {
   const replacement = header.querySelector(`#${actionId}`);
   const icon = replacement.querySelector("svg").cloneNode(true);
-  const counter = legacyCounter || replacement.querySelector(`#${counterId}`);
+  const replacementCounter = replacement.querySelector(`#${counterId}`);
+  const counter = legacyCounter || replacementCounter;
 
   if (legacyAction) {
     legacyAction.className = replacement.className;
     legacyAction.setAttribute("aria-label", replacement.getAttribute("aria-label"));
+    if (counter) counter.className = replacementCounter.className;
     if (legacyAction instanceof HTMLButtonElement) {
       legacyAction.type = "button";
     }
@@ -173,6 +175,47 @@ async function loadSavedDeliveryAddress() {
 
 loadSavedDeliveryAddress();
 window.addEventListener("fundz:delivery-address-updated", loadSavedDeliveryAddress);
+
+async function loadHeaderCounts() {
+  const countElement = header.querySelector("#wishlistCount");
+  const cartCountElement = header.querySelector("#cartCount");
+
+  try {
+    const cart = JSON.parse(localStorage.getItem("fundz_cart") || "[]");
+    const cartCount = Array.isArray(cart)
+      ? cart.reduce((total, item) => total + Number(item.quantity || 1), 0)
+      : 0;
+
+    if (cartCountElement) cartCountElement.textContent = String(cartCount);
+  } catch {
+    if (cartCountElement) cartCountElement.textContent = "0";
+  }
+
+  if (!countElement) return;
+
+  try {
+    const [{ supabase }, { getWishlistProductIds }] = await Promise.all([
+      import("./supabase.js"),
+      import("./wishlist-store.js")
+    ]);
+    const { data: { user }, error: authError } = await supabase.auth.getUser();
+    if (authError || !user) {
+      countElement.textContent = "0";
+      return;
+    }
+
+    const productIds = await getWishlistProductIds(user.id);
+    countElement.textContent = String(productIds.length);
+  } catch (error) {
+    console.warn("Unable to load wishlist count:", error);
+    countElement.textContent = "0";
+  }
+}
+
+loadHeaderCounts();
+window.addEventListener("fundz:wishlist-updated", loadHeaderCounts);
+window.addEventListener("fundz:cart-updated", loadHeaderCounts);
+window.addEventListener("storage", loadHeaderCounts);
 
 function closeMenu() {
   menu.classList.add("hidden");

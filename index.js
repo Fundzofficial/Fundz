@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { getWishlistProductIds, setWishlistItem } from "./wishlist-store.js";
 
 /* =========================================================
    FUNDZ HOMEPAGE
@@ -579,8 +580,9 @@ async function loadCustomerState() {
     } =
       await supabase.auth.getUser();
 
-    wishlistItems =
-      user ? getLocalWishlist() : [];
+    wishlistItems = user
+      ? await getWishlistProductIds(user.id)
+      : [];
 
     cartItems =
       getLocalCart();
@@ -613,8 +615,9 @@ async function loadWishlist() {
   } =
     await supabase.auth.getUser();
 
-  wishlistItems =
-    user ? getLocalWishlist() : [];
+  wishlistItems = user
+    ? await getWishlistProductIds(user.id)
+    : [];
 
   updateWishlistButtons();
 
@@ -649,72 +652,19 @@ async function toggleWishlist(
   productId =
     String(productId);
 
-  const product =
-    products.find(
-      item =>
-        String(item.id) ===
-        productId
-    );
+  const exists = wishlistItems.includes(productId);
 
-  const normalizedProduct = {
-
-    id: productId,
-    name:
-      product?.name ||
-      product?.title ||
-      "FUNDZ Product",
-    price:
-      Number(product?.price || 0),
-    image_url:
-      getProductImage(product),
-    slug:
-      product?.slug ||
-      productId,
-    category:
-      product?.category ||
-      product?.collection ||
-      "",
-    collection:
-      product?.collection ||
-      "",
-    stock:
-      Number(product?.stock || 0)
-
-  };
-
-  const exists =
-    wishlistItems.some(
-      item =>
-        String(
-          item &&
-            typeof item === "object"
-            ? item.id
-            : item
-        ) === productId
-    );
-
-  if (exists) {
-
-    wishlistItems =
-      wishlistItems.filter(
-        item =>
-          String(
-            item &&
-              typeof item === "object"
-              ? item.id
-              : item
-          ) !== productId
-      );
-
-  } else {
-
-    wishlistItems.push(
-      normalizedProduct
-    );
-
+  try {
+    await setWishlistItem(user.id, productId, !exists);
+  } catch (error) {
+    console.error("Wishlist update error:", error);
+    showToast("Unable to update wishlist. Please try again.");
+    return;
   }
 
-  saveLocalWishlist();
+  wishlistItems = exists
+    ? wishlistItems.filter(id => id !== productId)
+    : [...wishlistItems, productId];
 
   updateCounts();
   updateWishlistButtons();
@@ -823,82 +773,11 @@ function getLocalCart() {
 }
 
 
-function getLocalWishlist() {
-
-  try {
-
-    const saved =
-      JSON.parse(
-        localStorage.getItem(
-          "fundz_wishlist"
-        ) || "[]"
-      );
-
-    if (!Array.isArray(saved)) {
-      return [];
-    }
-
-    return saved
-      .map(item => {
-
-        if (
-          typeof item === "string" ||
-          typeof item === "number"
-        ) {
-          return {
-            id: String(item)
-          };
-        }
-
-        if (
-          item &&
-          typeof item === "object"
-        ) {
-          return {
-            ...item,
-            id: String(
-              item.id ||
-              item.product_id ||
-              item.productId ||
-              item.slug ||
-              ""
-            )
-          };
-        }
-
-        return {
-          id: ""
-        };
-
-      })
-      .filter(item => item.id);
-
-  } catch {
-
-    return [];
-
-  }
-
-}
-
-
 function saveLocalCart(cart) {
 
   localStorage.setItem(
     "fundz_cart",
     JSON.stringify(cart)
-  );
-
-}
-
-
-function saveLocalWishlist() {
-
-  localStorage.setItem(
-    "fundz_wishlist",
-    JSON.stringify(
-      wishlistItems
-    )
   );
 
 }
@@ -1341,7 +1220,7 @@ async function loadLiveStats() {
         ),
 
       supabase
-        .from("reviews")
+        .from("product_reviews")
         .select(
           "id",
           {
@@ -1851,7 +1730,6 @@ supabase.auth.onAuthStateChange(
     ) {
 
       wishlistItems = [];
-      localStorage.removeItem("fundz_wishlist");
       cartItems =
         getLocalCart();
 

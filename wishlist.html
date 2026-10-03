@@ -391,6 +391,7 @@
 <script type="module">
 
 import { supabase } from "./supabase.js";
+import { getWishlistProductIds, setWishlistItem } from "./wishlist-store.js";
 
 
 // =====================================================
@@ -489,201 +490,51 @@ function formatMoney(value) {
 
 }
 
+function withTimeout(promise, timeoutMs) {
+  return new Promise((resolve, reject) => {
+    const timer = window.setTimeout(
+      () => reject(new Error("Wishlist request timed out.")),
+      timeoutMs
+    );
+
+    promise.then(
+      value => {
+        window.clearTimeout(timer);
+        resolve(value);
+      },
+      error => {
+        window.clearTimeout(timer);
+        reject(error);
+      }
+    );
+  });
+}
+
+function wishlistCacheKey(userId) {
+  return `fundz_wishlist_products_${userId}`;
+}
+
+function readWishlistCache(userId) {
+  try {
+    const cached = JSON.parse(localStorage.getItem(wishlistCacheKey(userId)) || "null");
+    return Array.isArray(cached) ? cached : null;
+  } catch {
+    return null;
+  }
+}
+
+function writeWishlistCache(userId, products) {
+  try {
+    localStorage.setItem(wishlistCacheKey(userId), JSON.stringify(products));
+  } catch (error) {
+    console.warn("Unable to cache wishlist:", error);
+  }
+}
+
 
 // =====================================================
 // GET WISHLIST
 // =====================================================
-
-function getWishlist() {
-
-  const candidateKeys = [
-    "fundz_wishlist",
-    "wishlist",
-    "fundz_wishlist_items",
-    "wishlist_items"
-  ];
-
-  for (const key of candidateKeys) {
-
-    try {
-
-      const saved =
-        localStorage.getItem(key);
-
-      if (!saved) {
-        continue;
-      }
-
-      const parsed =
-        JSON.parse(saved);
-
-      if (Array.isArray(parsed)) {
-
-        return parsed
-          .map(item => {
-
-            if (
-              typeof item === "string" ||
-              typeof item === "number"
-            ) {
-              return {
-                id: String(item)
-              };
-            }
-
-            if (
-              item &&
-              typeof item === "object"
-            ) {
-              return {
-                ...item,
-                id: String(
-                  item.id ??
-                  item.product_id ??
-                  item.productId ??
-                  item.slug ??
-                  ""
-                )
-              };
-            }
-
-            return {
-              id: ""
-            };
-
-          })
-          .filter(item => item.id);
-
-      }
-
-      if (
-        parsed &&
-        typeof parsed === "object" &&
-        Array.isArray(parsed.items)
-      ) {
-
-        return parsed.items
-          .map(item => {
-
-            if (
-              typeof item === "string" ||
-              typeof item === "number"
-            ) {
-              return {
-                id: String(item)
-              };
-            }
-
-            if (
-              item &&
-              typeof item === "object"
-            ) {
-              return {
-                ...item,
-                id: String(
-                  item.id ??
-                  item.product_id ??
-                  item.productId ??
-                  item.slug ??
-                  ""
-                )
-              };
-            }
-
-            return {
-              id: ""
-            };
-
-          })
-          .filter(item => item.id);
-
-      }
-
-      if (
-        typeof parsed === "string" ||
-        typeof parsed === "number"
-      ) {
-        return [
-          {
-            id: String(parsed)
-          }
-        ];
-      }
-
-    } catch {
-      continue;
-    }
-
-  }
-
-  return [];
-
-}
-
-
-// =====================================================
-// SAVE WISHLIST
-// =====================================================
-
-function saveWishlist(wishlist) {
-
-  const normalized =
-    Array.from(
-      new Map(
-        (wishlist || [])
-          .map(item => {
-
-            if (
-              typeof item === "string" ||
-              typeof item === "number"
-            ) {
-              return [
-                String(item),
-                {
-                  id: String(item)
-                }
-              ];
-            }
-
-            if (
-              item &&
-              typeof item === "object"
-            ) {
-              return [
-                String(
-                  item.id ??
-                  item.product_id ??
-                  item.productId ??
-                  item.slug ??
-                  ""
-                ),
-                {
-                  ...item,
-                  id: String(
-                    item.id ??
-                    item.product_id ??
-                    item.productId ??
-                    item.slug ??
-                    ""
-                  )
-                }
-              ];
-            }
-
-            return ["", { id: "" }];
-
-          })
-          .filter(([id]) => id)
-      ).values()
-    );
-
-  localStorage.setItem(
-    "fundz_wishlist",
-    JSON.stringify(normalized)
-  );
-
-}
-
 
 // =====================================================
 // GET CART
@@ -747,55 +598,77 @@ function updateCartCount() {
 
 async function loadWishlist() {
 
-  const wishlist =
-    getWishlist();
+  loading.classList.remove("hidden");
+  wishlistGrid.classList.add("hidden");
+  emptyState.classList.add("hidden");
 
-  console.log("wishlist debug", wishlist, localStorage.getItem("fundz_wishlist"));
+  try {
+    const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+    if (sessionError) throw sessionError;
 
-  if (wishlist.length === 0) {
+    if (!session?.user) {
+      showEmpty("Log in to see your saved FUNDZ pieces.");
+      return;
+    }
 
-    showEmpty();
+    const userId = session.user.id;
+    const cachedProducts = readWishlistCache(userId);
 
-    return;
+    if (cachedProducts?.length) {
+      renderWishlist(cachedProducts);
+      refreshWishlist(userId, { preserveOnError: true });
+      return;
+    }
 
+    await refreshWishlist(userId);
+  } catch (error) {
+    console.error("Wishlist loading error:", error);
+    showWishlistError("Unable to load your wishlist. Please try again.");
   }
 
-  const products =
-    wishlist.map(item => ({
-      ...item,
-      id: String(
-        item.id ??
-        item.product_id ??
-        item.productId ??
-        item.slug ??
-        ""
-      ),
-      name:
-        item.name ||
-        item.title ||
-        "FUNDZ Product",
-      price:
-        Number(item.price || 0),
-      image_url:
-        item.image_url ||
-        item.image ||
-        item.imageUrl ||
-        "",
-      slug:
-        item.slug ||
-        item.id ||
-        "",
-      category:
-        item.category ||
-        item.collection ||
-        "",
-      collection:
-        item.collection ||
-        ""
-    }));
+}
 
-  renderWishlist(products);
+async function refreshWishlist(userId, { preserveOnError = false } = {}) {
+  try {
+    const productIds = await withTimeout(
+      getWishlistProductIds(userId),
+      3000
+    );
+    if (!productIds.length) {
+      localStorage.removeItem(wishlistCacheKey(userId));
+      showEmpty();
+      return;
+    }
 
+    const { data, error } = await withTimeout(
+      supabase
+        .from("products")
+        .select("*")
+        .in("id", productIds),
+      3000
+    );
+
+    if (error) throw error;
+
+    const productsById = new Map((data || []).map(product => [String(product.id), product]));
+    const products = productIds
+      .map(id => productsById.get(id))
+      .filter(Boolean);
+
+    if (!products.length) {
+      localStorage.removeItem(wishlistCacheKey(userId));
+      showEmpty("Saved products are no longer available.");
+      return;
+    }
+
+    writeWishlistCache(userId, products);
+    renderWishlist(products);
+  } catch (error) {
+    console.error("Wishlist loading error:", error);
+    if (!preserveOnError) {
+      showWishlistError("Unable to load your wishlist. Please try again.");
+    }
+  }
 }
 
 
@@ -1029,7 +902,7 @@ function createProductCard(
 
 wishlistGrid.addEventListener(
   "click",
-  event => {
+  async event => {
 
     const removeButton =
       event.target.closest(
@@ -1042,7 +915,7 @@ wishlistGrid.addEventListener(
       const productId =
         removeButton.dataset.productId;
 
-      removeFromWishlist(
+      await removeFromWishlist(
         productId
       );
 
@@ -1076,33 +949,39 @@ wishlistGrid.addEventListener(
 // REMOVE WISHLIST ITEM
 // =====================================================
 
-function removeFromWishlist(
+async function removeFromWishlist(
   productId
 ) {
 
-  let wishlist =
-    getWishlist();
+  const { data: { user }, error: authError } = await supabase.auth.getUser();
+  if (authError || !user) {
+    showToast("Log in to manage your wishlist.");
+    return;
+  }
 
+  try {
+    await setWishlistItem(user.id, productId, false);
 
-  wishlist =
-    wishlist.filter(
-      id =>
-        String(id) !==
-        String(productId)
-    );
+    const cachedProducts = readWishlistCache(user.id);
+    if (cachedProducts) {
+      const remainingProducts = cachedProducts.filter(
+        product => String(product.id) !== String(productId)
+      );
+      writeWishlistCache(user.id, remainingProducts);
 
+      if (remainingProducts.length) {
+        renderWishlist(remainingProducts);
+      } else {
+        showEmpty();
+      }
+    }
 
-  saveWishlist(
-    wishlist
-  );
-
-
-  showToast(
-    "Removed from wishlist."
-  );
-
-
-  loadWishlist();
+    showToast("Removed from wishlist.");
+    await loadWishlist();
+  } catch (error) {
+    console.error("Wishlist removal error:", error);
+    showToast("Unable to remove this item. Please try again.");
+  }
 
 }
 
@@ -1251,7 +1130,7 @@ document
 
 document
   .getElementById("accountBtn")
-  .addEventListener(
+  ?.addEventListener(
     "click",
     async () => {
 
@@ -1366,7 +1245,7 @@ supabase
 // EMPTY STATE
 // =====================================================
 
-function showEmpty() {
+function showEmpty(message = "Your favorite FUNDZ pieces.") {
 
   loading.classList.add(
     "hidden"
@@ -1380,9 +1259,30 @@ function showEmpty() {
     "hidden"
   );
 
-  wishlistDescription.textContent =
-    "Your favorite FUNDZ pieces.";
+  wishlistDescription.textContent = message;
 
+}
+
+function showWishlistError(message) {
+  loading.classList.add("hidden");
+  wishlistGrid.classList.add("hidden");
+  emptyState.classList.remove("hidden");
+  wishlistDescription.textContent = message;
+
+  const heading = emptyState.querySelector("h2");
+  const description = emptyState.querySelector("p");
+  const action = emptyState.querySelector("a");
+
+  if (heading) heading.textContent = "Wishlist unavailable";
+  if (description) description.textContent = "We could not reach your saved items.";
+  if (action) {
+    action.textContent = "Try Again";
+    action.href = "#";
+    action.onclick = event => {
+      event.preventDefault();
+      loadWishlist();
+    };
+  }
 }
 
 

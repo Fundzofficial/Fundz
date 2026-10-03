@@ -1,4 +1,5 @@
 import { supabase } from "./supabase.js";
+import { getWishlistProductIds, setWishlistItem } from "./wishlist-store.js";
 
 let product = null;
 
@@ -92,59 +93,11 @@ async function loadProduct() {
 
   try {
 
-    /*
-     * First attempt:
-     * Load the product together with
-     * category and collection.
-     */
-
-    let result =
-      await supabase
-        .from("products")
-        .select(`
-          *,
-          categories (
-            id,
-            name
-          ),
-          collections (
-            id,
-            name
-          )
-        `)
-        .eq(
-          "id",
-          productId
-        )
-        .maybeSingle();
-
-
-    /*
-     * If relationships don't exist,
-     * retry with only products.
-     */
-
-    if (
-      result.error
-    ) {
-
-      console.warn(
-        "Relationship query failed. Retrying basic product query.",
-        result.error
-      );
-
-
-      result =
-        await supabase
-          .from("products")
-          .select("*")
-          .eq(
-            "id",
-            productId
-          )
-          .maybeSingle();
-
-    }
+    const result = await supabase
+      .from("products")
+      .select("*")
+      .eq("id", productId)
+      .maybeSingle();
 
 
     if (
@@ -219,19 +172,13 @@ async function initializeProduct() {
 
   renderProduct();
 
-
-  await Promise.allSettled([
-
-    loadReviews(),
-
-    loadRelatedProducts(),
-
-    loadWishlistState()
-
-  ]);
-
-
   hideLoading();
+
+  Promise.allSettled([
+    loadReviews(),
+    loadRelatedProducts(),
+    loadWishlistState()
+  ]);
 
 }
 
@@ -274,7 +221,6 @@ function renderProduct() {
     "breadcrumbCategory",
     category || "Product"
   );
-
 
   setText(
     "productDescription",
@@ -1403,27 +1349,14 @@ async function updateWishlistCount() {
       data: { user }
     } = await supabase.auth.getUser();
 
-    if (user) {
+    el.textContent = user
+      ? (await getWishlistProductIds(user.id)).length
+      : "0";
 
-      const { data, error } =
-        await supabase
-          .from("wishlist")
-          .select("id")
-          .eq("user_id", user.id);
-
-      if (!error) {
-        el.textContent = (data || []).length;
-        return;
-      }
-
-    }
-
-  } catch (e) {
-    // ignore and fall back to local
+  } catch (error) {
+    console.error("Wishlist count error:", error);
+    el.textContent = "0";
   }
-
-  const local = getLocalWishlist();
-  el.textContent = local.length;
 
 }
 
@@ -1491,39 +1424,13 @@ async function loadWishlistState() {
     }
 
 
-    const {
-      data,
-      error
-    } =
-      await supabase
-        .from("wishlist")
-        .select(
-          "id"
-        )
-        .eq(
-          "user_id",
-          user.id
-        )
-        .eq(
-          "product_id",
-          product.id
-        )
-        .maybeSingle();
-
-
-    if (error) {
-
-      throw error;
-
-    }
-
-
-    wishlistActive =
-      !!data;
+    const savedIds = await getWishlistProductIds(user.id);
+    wishlistActive = savedIds.includes(String(product.id));
 
 
     updateWishlistButton();
     await updateWishlistCount();
+    window.dispatchEvent(new Event("fundz:wishlist-updated"));
 
   } catch (error) {
 
@@ -1566,35 +1473,9 @@ async function toggleWishlist() {
 
   try {
 
-    if (
-      wishlistActive
-    ) {
-
-      const {
-        error
-      } =
-        await supabase
-          .from("wishlist")
-          .delete()
-          .eq(
-            "user_id",
-            user.id
-          )
-          .eq(
-            "product_id",
-            product.id
-          );
-
-
-      if (error) {
-
-        throw error;
-
-      }
-
-
-      wishlistActive =
-        false;
+    if (wishlistActive) {
+      await setWishlistItem(user.id, product.id, false);
+      wishlistActive = false;
 
 
       showMessage(
@@ -1603,48 +1484,8 @@ async function toggleWishlist() {
 
     } else {
 
-      const {
-        error
-      } =
-        await supabase
-          .from("wishlist")
-          .insert({
-
-            user_id:
-              user.id,
-
-            product_id:
-              product.id
-
-          });
-
-
-      if (error) {
-
-        /*
-         * Duplicate wishlist item.
-         */
-
-        if (
-          error.code ===
-          "23505"
-        ) {
-
-          wishlistActive =
-            true;
-
-        } else {
-
-          throw error;
-
-        }
-
-      } else {
-
-        wishlistActive =
-          true;
-
-      }
+      await setWishlistItem(user.id, product.id, true);
+      wishlistActive = true;
 
 
       showMessage(
@@ -1654,12 +1495,9 @@ async function toggleWishlist() {
     }
 
 
-    syncLocalWishlist(
-      wishlistActive
-    );
-
     updateWishlistButton();
     await updateWishlistCount();
+    window.dispatchEvent(new Event("fundz:wishlist-updated"));
 
   } catch (error) {
 
@@ -1758,7 +1596,7 @@ async function loadReviews() {
       error
     } =
       await supabase
-        .from("reviews")
+        .from("product_reviews")
         .select("*")
         .eq(
           "product_id",
@@ -1882,8 +1720,7 @@ function renderReviews() {
 
 
           const text =
-            review.comment ||
-            review.review ||
+            review.body ||
             "";
 
 
@@ -2160,7 +1997,7 @@ async function submitReview(
       error
     } =
       await supabase
-        .from("reviews")
+        .from("product_reviews")
         .insert({
 
           product_id:
@@ -2171,7 +2008,7 @@ async function submitReview(
 
           rating,
 
-          comment
+          body: comment
 
         });
 
@@ -3105,119 +2942,6 @@ function getLocalCart() {
 
   }
 
-}
-
-
-function getLocalWishlist() {
-
-  try {
-
-    const data =
-      localStorage.getItem(
-        "fundz_wishlist"
-      );
-
-
-    const parsed =
-      JSON.parse(
-        data || "[]"
-      );
-
-    if (!Array.isArray(parsed)) {
-      return [];
-    }
-
-    return parsed
-      .map(item => {
-
-        if (
-          typeof item === "string" ||
-          typeof item === "number"
-        ) {
-          return {
-            id: String(item)
-          };
-        }
-
-        if (
-          item &&
-          typeof item === "object"
-        ) {
-          return {
-            ...item,
-            id: String(
-              item.id ??
-              item.product_id ??
-              item.productId ??
-              item.slug ??
-              ""
-            )
-          };
-        }
-
-        return {
-          id: ""
-        };
-
-      })
-      .filter(item => item.id);
-
-  } catch {
-
-    return [];
-
-  }
-
-}
-
-function syncLocalWishlist(
-  active
-) {
-
-  try {
-    const productId =
-      String(product.id);
-
-    let wishlist =
-      getLocalWishlist();
-
-    wishlist =
-      wishlist.filter(
-        item =>
-          String(
-            item.id ||
-            item.product_id ||
-            item.slug ||
-            item
-          ) !==
-          productId
-      );
-
-    if (active) {
-      wishlist.push({
-        id: productId,
-        product_id: product.id,
-        name: product.name || "",
-        price: Number(product.price || 0),
-        stock: Number(product.stock || 0),
-        image_url:
-          product.image_url ||
-          product.image ||
-          product.imageUrl ||
-          "",
-        slug: product.slug || "",
-        category: getCategoryName(product),
-        collection: product.collection || ""
-      });
-    }
-
-    localStorage.setItem(
-      "fundz_wishlist",
-      JSON.stringify(wishlist)
-    );
-  } catch {
-    // ignore local wishlist sync failures
-  }
 }
 
 

@@ -89,8 +89,8 @@
 
     async function loadReviews() {
       const { data, error } = await supabase
-        .from('reviews')
-        .select('id, rating, comment, created_at')
+        .from('product_reviews')
+        .select('id, rating, body, created_at')
         .order('created_at', { ascending: false })
         .limit(8);
 
@@ -108,7 +108,7 @@
       reviewsList.innerHTML = reviews.map((review) => `
         <div class="rounded-xl border border-white/10 p-4 text-sm">
           <div class="flex items-center justify-between">
-            <p class="font-bold">${String(review.comment || 'Review').slice(0, 120)}</p>
+            <p class="font-bold">${String(review.body || 'Review').slice(0, 120)}</p>
             <span class="rounded-full border border-white/10 px-3 py-1 text-xs text-white/40">★ ${Number(review.rating || 0)}</span>
           </div>
           <p class="mt-2 text-white/40">${formatDate(review.created_at)}</p>

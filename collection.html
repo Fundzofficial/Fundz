@@ -381,6 +381,10 @@
     import {
       supabase
     } from "./supabase.js";
+    import {
+      getWishlistProductIds,
+      setWishlistItem
+    } from "./wishlist-store.js";
 
 
     /* =====================================================
@@ -390,6 +394,8 @@
     let collection = null;
 
     let products = [];
+
+    let wishlistProductIds = new Set();
 
     let currentSort = "newest";
 
@@ -560,6 +566,16 @@
        ===================================================== */
 
     async function loadProducts() {
+
+      try {
+        const { data: { user } } = await supabase.auth.getUser();
+        wishlistProductIds = new Set(
+          user ? await getWishlistProductIds(user.id) : []
+        );
+      } catch (error) {
+        console.error("Wishlist loading error:", error);
+        wishlistProductIds = new Set();
+      }
 
       /*
         This supports two common database designs.
@@ -898,10 +914,10 @@
                 data-wishlist="${escapeHTML(
                   product.id
                 )}"
-                class="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 bg-black/60 text-lg backdrop-blur"
-                aria-label="Add to wishlist"
+                class="absolute right-3 top-3 flex h-10 w-10 items-center justify-center rounded-full border border-white/10 text-lg backdrop-blur ${wishlistProductIds.has(String(product.id)) ? "bg-red-500 text-white" : "bg-black/60 text-white"}"
+                aria-label="${wishlistProductIds.has(String(product.id)) ? "Remove from" : "Add to"} wishlist"
               >
-                ♡
+                ${wishlistProductIds.has(String(product.id)) ? "♥" : "♡"}
               </button>
 
             </div>
@@ -994,36 +1010,20 @@
       }
 
 
-      const {
-        data: existing
-      } =
-        await supabase
-          .from("wishlist")
-          .select("id")
-          .eq(
-            "user_id",
-            user.id
-          )
-          .eq(
-            "product_id",
-            productId
-          )
-          .maybeSingle();
+      const exists = wishlistProductIds.has(String(productId));
+      try {
+        await setWishlistItem(user.id, productId, !exists);
+      } catch (error) {
+        showMessage(error.message || "Unable to update wishlist.");
+        return;
+      }
 
-
-      if (existing) {
-
-        await supabase
-          .from("wishlist")
-          .delete()
-          .eq(
-            "id",
-            existing.id
-          );
-
-
-        button.textContent =
-          "♡";
+      if (exists) {
+        wishlistProductIds.delete(String(productId));
+        button.textContent = "♡";
+        button.classList.remove("bg-red-500", "text-white");
+        button.classList.add("bg-black/60");
+        button.setAttribute("aria-label", "Add to wishlist");
 
 
         showMessage(
@@ -1031,36 +1031,11 @@
         );
 
       } else {
-
-        const {
-          error
-        } =
-          await supabase
-            .from("wishlist")
-            .insert({
-
-              user_id:
-                user.id,
-
-              product_id:
-                productId
-
-            });
-
-
-        if (error) {
-
-          showMessage(
-            error.message
-          );
-
-          return;
-
-        }
-
-
-        button.textContent =
-          "♥";
+        wishlistProductIds.add(String(productId));
+        button.textContent = "♥";
+        button.classList.add("bg-red-500", "text-white");
+        button.classList.remove("bg-black/60");
+        button.setAttribute("aria-label", "Remove from wishlist");
 
 
         showMessage(
