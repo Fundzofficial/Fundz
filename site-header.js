@@ -7,6 +7,23 @@ const legacyActions = {
   wishlistCount: existingHeader?.querySelector("#wishlistCount")
 };
 
+const appIconLinks = [
+  { rel: "manifest", href: "manifest.json" },
+  { rel: "icon", href: "assets/fg-icon-192.png", sizes: "192x192", type: "image/png" },
+  { rel: "apple-touch-icon", href: "assets/fg-icon-192.png" }
+];
+
+appIconLinks.forEach(attributes => {
+  const selector = `link[rel="${attributes.rel}"]`;
+  if (document.head.querySelector(selector)) return;
+
+  const link = document.createElement("link");
+  Object.entries(attributes).forEach(([name, value]) => {
+    link.setAttribute(name, value);
+  });
+  document.head.append(link);
+});
+
 existingHeader?.remove();
 document.getElementById("mobileMenu")?.remove();
 document.getElementById("mobileMenuOverlay")?.remove();
@@ -99,7 +116,9 @@ menu.setAttribute("aria-label", "Main navigation");
 menu.innerHTML = `
   <div class="flex h-full flex-col">
     <div class="flex items-center justify-between">
-      <a href="index.html" class="text-2xl font-black tracking-[.22em] text-[#a5ff9b]">FUNDZ</a>
+      <a href="index.html" aria-label="FUNDZ home" class="inline-flex items-center">
+        <img src="assets/fg-logo.png" alt="FUNDZ" class="h-auto w-28 object-contain sm:w-36">
+      </a>
       <button id="mobileMenuClose" type="button" class="inline-flex h-11 w-11 items-center justify-center rounded-full border border-white/20 text-2xl hover:bg-white/10" aria-label="Close navigation menu">×</button>
     </div>
     <nav class="mt-10 flex flex-col gap-5 text-lg uppercase">
