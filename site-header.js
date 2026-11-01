@@ -33,6 +33,12 @@ header.innerHTML = `
             <circle cx="11" cy="11" r="7"></circle><path d="m20 20-4-4"></path>
           </svg>
         </a>
+        <a href="account.html" aria-label="Account" class="flex h-10 w-10 items-center justify-center rounded-full hover:bg-white/10">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+            <circle cx="12" cy="8" r="3.5"></circle>
+            <path d="M5 19.5c1.4-3 4.1-4.5 7-4.5s5.6 1.5 7 4.5"></path>
+          </svg>
+        </a>
         <a href="wishlist.html" id="wishlistBtn" aria-label="Wishlist" class="relative flex h-10 w-10 items-center justify-center rounded-full hover:bg-white/10">
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
             <path d="M20.8 8.7c0 5.5-8.8 10.2-8.8 10.2S3.2 14.2 3.2 8.7A4.7 4.7 0 0 1 12 6a4.7 4.7 0 0 1 8.8 2.7Z"></path>
