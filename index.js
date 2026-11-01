@@ -49,9 +49,7 @@ function updateDropAnnouncement() {
   const announcement = $("#dropAnnouncement");
 
   if (announcement) {
-    announcement.textContent = priceCurrency === "ZAR"
-      ? "SOUTH AFRICA DROP — NOW LIVE"
-      : "NIGERIA DROP — NOW LIVE";
+    announcement.textContent = "NIGERIA DROP — NOW LIVE";
   }
 }
 
