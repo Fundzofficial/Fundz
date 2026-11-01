@@ -512,15 +512,28 @@
 
         <div class="field">
           <label for="confirmPassword">Confirm Password</label>
-          <input
-            type="password"
-            id="confirmPassword"
-            name="confirmPassword"
-            placeholder="Re-enter your password"
-            minlength="8"
-            autocomplete="new-password"
-            required
-          />
+          <div class="input-wrapper">
+            <input
+              type="password"
+              id="confirmPassword"
+              name="confirmPassword"
+              class="password-input"
+              placeholder="Re-enter your password"
+              minlength="8"
+              autocomplete="new-password"
+              required
+            />
+            <button
+              type="button"
+              class="password-toggle"
+              id="confirmPasswordToggle"
+              aria-label="Show confirm password"
+              aria-controls="confirmPassword"
+              aria-pressed="false"
+            >
+              ◉
+            </button>
+          </div>
         </div>
 
         <!-- Country -->

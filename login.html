@@ -166,14 +166,29 @@
 
         </div>
 
-        <input
-          id="password"
-          type="password"
-          autocomplete="current-password"
-          required
-          class="mt-2 w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 outline-none placeholder:text-white/20 focus:border-white/40"
-          placeholder="Your password"
-        >
+        <div class="relative mt-2">
+          <input
+            id="password"
+            type="password"
+            autocomplete="current-password"
+            required
+            class="w-full rounded-xl border border-white/10 bg-white/5 px-4 py-3.5 pr-14 outline-none placeholder:text-white/20 focus:border-white/40"
+            placeholder="Your password"
+          >
+          <button
+            id="passwordToggle"
+            type="button"
+            class="absolute inset-y-0 right-0 flex w-12 items-center justify-center text-white/50 hover:text-white"
+            aria-label="Show password"
+            aria-controls="password"
+            aria-pressed="false"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+              <path d="M2 12s3.6-7 10-7 10 7 10 7-3.6 7-10 7S2 12 2 12Z"></path>
+              <circle cx="12" cy="12" r="3"></circle>
+            </svg>
+          </button>
+        </div>
 
       </label>
 
@@ -293,6 +308,18 @@ const loader =
     "loader"
   );
 
+const passwordInput = document.getElementById("password");
+const passwordToggle = document.getElementById("passwordToggle");
+
+passwordToggle.addEventListener("click", () => {
+  const showingPassword = passwordInput.type === "password";
+  passwordInput.type = showingPassword ? "text" : "password";
+  passwordToggle.setAttribute(
+    "aria-label",
+    showingPassword ? "Hide password" : "Show password"
+  );
+  passwordToggle.setAttribute("aria-pressed", String(showingPassword));
+});
 
 form.addEventListener(
   "submit",

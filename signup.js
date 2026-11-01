@@ -20,6 +20,8 @@ const countryFlag = document.getElementById("countryFlag");
 const stateSelect = document.getElementById("state");
 const passwordInput = document.getElementById("password");
 const passwordToggle = document.getElementById("passwordToggle");
+const confirmPasswordInput = document.getElementById("confirmPassword");
+const confirmPasswordToggle = document.getElementById("confirmPasswordToggle");
 const mapButton = document.getElementById("mapButton");
 const locationStatus = document.getElementById("locationStatus");
 let deliveryCoordinates = null;
@@ -44,14 +46,20 @@ countrySelect.addEventListener("change", () => {
 
 updateStates();
 
-passwordToggle.addEventListener("click", () => {
-  const showingPassword = passwordInput.type === "password";
-  passwordInput.type = showingPassword ? "text" : "password";
-  passwordToggle.setAttribute(
-    "aria-label",
-    showingPassword ? "Hide password" : "Show password"
-  );
-});
+function bindPasswordToggle(input, toggle, label) {
+  toggle.addEventListener("click", () => {
+    const showingPassword = input.type === "password";
+    input.type = showingPassword ? "text" : "password";
+    toggle.setAttribute(
+      "aria-label",
+      `${showingPassword ? "Hide" : "Show"} ${label}`
+    );
+    toggle.setAttribute("aria-pressed", String(showingPassword));
+  });
+}
+
+bindPasswordToggle(passwordInput, passwordToggle, "password");
+bindPasswordToggle(confirmPasswordInput, confirmPasswordToggle, "confirm password");
 
 mapButton.addEventListener("click", () => {
   if (!navigator.geolocation) {
