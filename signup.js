@@ -12,10 +12,6 @@ const statesByCountry = {
     "Kebbi", "Kogi", "Kwara", "Lagos", "Nasarawa", "Niger", "Ogun",
     "Ondo", "Osun", "Oyo", "Plateau", "Rivers", "Sokoto", "Taraba",
     "Yobe", "Zamfara", "FCT"
-  ],
-  "South Africa": [
-    "Eastern Cape", "Free State", "Gauteng", "KwaZulu-Natal", "Limpopo",
-    "Mpumalanga", "Northern Cape", "North West", "Western Cape"
   ]
 };
 
